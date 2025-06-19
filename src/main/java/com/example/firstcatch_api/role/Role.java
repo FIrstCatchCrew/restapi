@@ -19,5 +19,7 @@ public class Role {
     private String label;        // e.g., "Local Fisher"
     private String description;  // e.g., "Can add and manage catches"
 
+    public RoleType getType() { return type;};
+
     // Constructors, getters, setters
 }
