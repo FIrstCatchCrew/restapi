@@ -1,12 +1,14 @@
 package com.firstcatchcrew.restapi.person;
 
+import com.firstcatchcrew.restapi.role.Role;
+
 public class PersonMapper {
 
     // Entity → DTO
     public static PersonDTO toDto(Person person) {
         PersonDTO dto = new PersonDTO();
         dto.setId(person.getId());
-        dto.setName(person.getName());
+        dto.setUsername(person.getUsername());
         dto.setEmail(person.getEmail());
         dto.setRole(person.getRole().toString()); // .getName() if it's an entity
         return dto;
@@ -16,11 +18,11 @@ public class PersonMapper {
     public static Person toEntity(PersonDTO dto) {
         Person person = new Person();
         person.setId(dto.getId());
-        person.setName(dto.getName());
+        person.setUsername(dto.getUsername());
         person.setEmail(dto.getEmail());
-        // Assuming Role is an enum here
         Role role = new Role();
-        role.setName(dto.getRole());
+        role.setTypeFromString(dto.getRole());
         person.setRole(role);
+        return person;
     }
 }
