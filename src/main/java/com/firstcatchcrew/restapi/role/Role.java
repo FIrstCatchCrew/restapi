@@ -5,12 +5,11 @@ import jakarta.persistence.*;
 @Entity
 public class Role {
 
-//    @Id
-//    @SequenceGenerator(name = "role_sequence", sequenceName = "role_sequence", allocationSize = 1, initialValue=1)
-//    @GeneratedValue(generator = "role_sequence")
-//
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "role_sequence", sequenceName = "role_sequence", allocationSize = 1, initialValue=1)
+    @GeneratedValue(generator = "role_sequence")
+
+
     private Long id;
 
     @Enumerated(EnumType.STRING)
