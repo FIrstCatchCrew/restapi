@@ -1,4 +1,4 @@
-package com.example.firstcatch_api.product.embedded;
+package com.example.firstcatch_api.fishCatch.embedded;
 
 import jakarta.persistence.Embeddable;
 
