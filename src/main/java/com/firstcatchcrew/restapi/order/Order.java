@@ -1,63 +1,74 @@
 package com.firstcatchcrew.restapi.order;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import com.firstcatchcrew.restapi.orderItem.OrderItem;
+import com.firstcatchcrew.restapi.person.Person;
+import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Order {
     @Id
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1, initialValue=1)
     @GeneratedValue(generator = "order_sequence")
-    private Long id;
-    private LocalDate date;
-    private String status;
-    private Long customerID; //update
+    private Long orderId;
+    private LocalDateTime orderDateTime;
+    private Boolean orderStatus;//Changed from String
 
+    @ManyToOne
+    private Person customer;
 
-    public Long getId() {
-        return id;
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
+
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getOrderDateTime() {
+        return orderDateTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setOrderDateTime(LocalDateTime orderDateTime) {
+        this.orderDateTime = orderDateTime;
     }
 
-    public String getStatus() {
-        return status;
+    public Boolean getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setOrderStatus(Boolean status) {
+        this.orderStatus = orderStatus;
     }
 
-    public Long getCustomerID() {
-        return customerID;
+    public Person getCustomer() {
+        return customer;
     }
 
-    public void setCustomerID(Long customerID) {
-        this.customerID = customerID;
+    public void setCustomer(Person customer) {
+        this.customer = customer;
     }
 
-    @Override
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", date=" + date +
-                ", status='" + status + '\'' +
-                ", customerID=" + customerID +
+        return "Order:{" +
+                "orderId=" + orderId +
+                ", orderDateTime=" + orderDateTime +
+                ", orderStatus=" + orderStatus +
+                ", customer=" + customer +
+                ", orderItems=" + orderItems +
                 '}' ;
     }
-
 }
