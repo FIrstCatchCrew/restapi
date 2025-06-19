@@ -1,0 +1,13 @@
+package com.firstcatchcrew.restapi;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class FirstcatchApiApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
