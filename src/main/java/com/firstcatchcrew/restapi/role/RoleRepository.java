@@ -1,4 +1,12 @@
 package com.firstcatchcrew.restapi.role;
 
-public class RoleRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface RoleRepository extends CrudRepository<Role, Long> {
+    List<Role> findByRoleType(RoleType roleType);
+    List<Role> findAll();
 }
