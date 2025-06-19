@@ -1,0 +1,12 @@
+package com.firstcatchcrew.restapi.userRole;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface UserRoleRepository extends CrudRepository<UserRole, Long> {
+    List<UserRole> findByUserRoleType(UserRoleType userRoleType);
+    List<UserRole> findAll();
+}
