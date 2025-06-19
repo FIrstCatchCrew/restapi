@@ -1,7 +1,7 @@
 package com.firstcatchcrew.restapi.person;
 
-import com.firstcatchcrew.restapi.role.Role;
-import com.firstcatchcrew.restapi.role.RoleType;
+import com.firstcatchcrew.restapi.userRole.UserRole;
+import com.firstcatchcrew.restapi.userRole.UserRoleType;
 import jakarta.persistence.*;
 
 
@@ -30,7 +30,7 @@ public class Person {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Role role;
+    private UserRole userRole;
 
 
     public long getId() {
@@ -42,12 +42,12 @@ public class Person {
     }
 
 
-    public Role getRole() {
-        return role;
+    public UserRole getRole() {
+        return userRole;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public String getPassword() {
@@ -74,8 +74,8 @@ public class Person {
         this.username = username;
     }
 
-    public RoleType getRoleType() {
-        return role.getType();
+    public UserRoleType getRoleType() {
+        return userRole.getType();
     }
     
 

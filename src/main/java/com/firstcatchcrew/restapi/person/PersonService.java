@@ -1,6 +1,6 @@
 package com.firstcatchcrew.restapi.person;
 
-import com.firstcatchcrew.restapi.role.Role;
+import com.firstcatchcrew.restapi.userRole.UserRole;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +26,8 @@ public class PersonService {
     }
 
     //CLEANUP: should this be roleType?
-    public List<Person> getPersonByRole(Role role) {
-        return personRepository.findByRole(role);
+    public List<Person> getPersonByRole(UserRole userRole) {
+        return personRepository.findByRole(userRole);
     }
 
 

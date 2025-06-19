@@ -1,6 +1,6 @@
 package com.firstcatchcrew.restapi.person;
 
-import com.firstcatchcrew.restapi.role.Role;
+import com.firstcatchcrew.restapi.userRole.UserRole;
 
 public class PersonMapper {
 
@@ -20,9 +20,9 @@ public class PersonMapper {
         person.setId(dto.getId());
         person.setUsername(dto.getUsername());
         person.setEmail(dto.getEmail());
-        Role role = new Role();
-        role.setTypeFromString(dto.getRole());
-        person.setRole(role);
+        UserRole userRole = new UserRole();
+        userRole.setTypeFromString(dto.getRole());
+        person.setRole(userRole);
         return person;
     }
 }
