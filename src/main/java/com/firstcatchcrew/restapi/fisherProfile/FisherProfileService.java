@@ -14,16 +14,11 @@ public class FisherProfileService {
         this.fisherRepository = fisherRepository;
     }
 
-//    public List<FisherProfile> getAllFishers() {
-//        return fisherRepository.findAll();
-//    }
-
     public FisherProfile getFisherById(long id) {
         Optional<FisherProfile> fisherOptional = fisherRepository.findById(id);
 
         return fisherOptional.orElse(null);
     }
-    
 
     public FisherProfile createFisher(FisherProfile newFisher) {
         return fisherRepository.save(newFisher);
@@ -35,7 +30,10 @@ public class FisherProfileService {
         if (fisherToUpdateOptional.isPresent()) {
             FisherProfile fisherToUpdate = fisherToUpdateOptional.get();
 
-            //fisherToUpdate.setUsername(updatedFisher.getUsername());;
+            fisherToUpdate.setPerson(updatedFisher.getPerson());
+            fisherToUpdate.setFishingLicenseNumber(updatedFisher.getFishingLicenseNumber());
+            fisherToUpdate.setDefaultLanding(updatedFisher.getDefaultLanding());
+            fisherToUpdate.setCatches(updatedFisher.getCatches());
 
             return fisherRepository.save(fisherToUpdate);
         }
@@ -46,6 +44,5 @@ public class FisherProfileService {
     public void deleteFisherById(long id) {
         fisherRepository.deleteById(id);
     }
-
 
 }
