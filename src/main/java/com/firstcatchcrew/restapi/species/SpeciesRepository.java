@@ -1,4 +1,11 @@
 package com.firstcatchcrew.restapi.species;
 
-public class SpeciesRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface SpeciesRepository extends CrudRepository<Species, Long> {
+    List<Species> findAll();
 }
