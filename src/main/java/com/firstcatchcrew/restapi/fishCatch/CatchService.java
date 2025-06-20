@@ -1,9 +1,7 @@
 package com.firstcatchcrew.restapi.fishCatch;
 
-import com.firstcatchcrew.restapi.orderItem.OrderItem;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,19 +35,33 @@ public class CatchService {
 //    }
 
     public Catch createCatch(Catch newCatch) {
-        newCatch.setCatchDate(LocalDateTime.now());
-        newCatch.setPickupInfo(updatedCatch.getPickupInfo());
+        //newCatch.setCatchDate(LocalDateTime.now());
 
-        // Validate pickup time (must be same date as catch)
-        if (newCatch.getPickupInfo() != null &&
-                !newCatch.getPickupInfo().getPickupTime().toLocalDate().isEqual(LocalDate.now())) {
-            throw new IllegalArgumentException("Pickup must be on the same day as the catch.");
-        }
+        // Handle default pickup info logic in the model
+        //newCatch.initializeDefaultPickupIfMissing();
 
-        // Update availability based on rules
         newCatch.updateAvailabilityStatus();
+
         return catchRepository.save(newCatch);
     }
+
+//    public Catch createCatch(Species species, FisherProfile fisher, BigDecimal quantityInKg, BigDecimal price, GeoLocation geoLocation, PickupInfo pickupInfo) {
+//        Catch newCatch = new Catch(species, fisher, quantityInKg, price, geoLocation);
+//
+//        if (pickupInfo == null) {
+//            PickupInfo defaultPickup = new PickupInfo("TBD", "TBD", newCatch.getCatchDate().withHour(12).withMinute(0));
+//            newCatch.setPickupInfo(defaultPickup);
+//        } else if (!pickupInfo.getPickupTime().toLocalDate().isEqual(newCatch.getCatchDate().toLocalDate())) {
+//            throw new IllegalArgumentException("Pickup must be on the same day as the catch.");
+//        } else {
+//            newCatch.setPickupInfo(pickupInfo);
+//        }
+//
+//        newCatch.updateAvailabilityStatus();
+//        return catchRepository.save(newCatch);
+//    }
+
+
     public Catch updateCatch(long id, Catch updatedCatch) {
         Optional<Catch> catchToUpdateOptional = catchRepository.findById(id);
 
@@ -58,16 +70,17 @@ public class CatchService {
 
             catchToUpdate.setFisher(updatedCatch.getFisher());
             catchToUpdate.setSpecies(updatedCatch.getSpecies());
-            catchToUpdate.setCatchDate(updatedCatch.getCatchDate());
             catchToUpdate.setPrice(updatedCatch.getPrice());
             catchToUpdate.setQuantityInKg(updatedCatch.getQuantityInKg());
             catchToUpdate.setGeoLocation(updatedCatch.getGeoLocation());
-            catchToUpdate.setPickupInfo(updatedCatch.getPickupInfo());
+
+            // Delegate pickup logic to the model
+            //catchToUpdate.applyOrDefaultPickupInfo(updatedCatch.getPickupInfo());
+
             catchToUpdate.updateAvailabilityStatus();
 
             return catchRepository.save(catchToUpdate);
         }
-
         return null;
     }
 

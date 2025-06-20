@@ -47,6 +47,21 @@ public class Catch {
     @Embedded
     private GeoLocation geoLocation;
 
+
+    public Catch() { };
+
+    public Catch(Species species, FisherProfile fisher, BigDecimal quantityInKg, BigDecimal price) {
+        this.species = species;
+        this.fisher = fisher;
+        this.quantityInKg = quantityInKg;
+        this.price = price;
+        this.catchDate = LocalDateTime.now();
+        this.pickupInfo = new PickupInfo("TBD", "TBD", this.catchDate.withHour(12).withMinute(0));
+        this.updateAvailabilityStatus();
+    }
+
+
+
     public Long getId() {
         return id;
     }
