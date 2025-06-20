@@ -15,14 +15,16 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
     private final PersonRepository personRepository;
-    public OrderService(PersonRepository personRepository) {
+
+    public OrderService(
+            OrderRepository orderRepository,
+            PersonRepository personRepository
+    ) {
+        this.orderRepository = orderRepository;
         this.personRepository = personRepository;
     }
+
 
     public List<Order> getAllOrders() {
         return (List<Order>) orderRepository.findAll();
