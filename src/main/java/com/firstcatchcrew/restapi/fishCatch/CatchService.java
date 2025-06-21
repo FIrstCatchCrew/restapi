@@ -13,14 +13,12 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CatchService {
     private final CatchRepository catchRepository;
     private final FisherProfileRepository fisherRepository;
     private final SpeciesRepository speciesRepository;
-
 
     public CatchService(CatchRepository catchRepository, FisherProfileRepository fisherRepository, SpeciesRepository speciesRepository, CatchMapper catchMapper) {
         this.catchRepository = catchRepository;
@@ -77,16 +75,56 @@ public class CatchService {
                 .toList();
     }
 
-//    public Catch createCatch(Catch newCatch) {
-//        //newCatch.setCatchDate(LocalDateTime.now());
-//
-//        // Handle default pickup info logic in the model
-//        //newCatch.initializeDefaultPickupIfMissing();
-//
-//        newCatch.updateAvailabilityStatus();
-//
-//        return catchRepository.save(newCatch);
-//    }
+    public List<CatchViewDTO> getCatchesByLocation(String pickupAddress) {
+        return catchRepository.findByPickupInfo_Address(pickupAddress)
+                .stream()
+                .map(CatchMapper::toViewDTO)
+                .toList();
+    }
+
+
+    public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
+        Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
+        Long speciesId = species.getSpeciesId();
+        return catchRepository.findBySpecies_Id(speciesId)
+                .stream()
+                .map(CatchMapper::toViewDTO)
+                .toList();
+    }
+
+    public List<CatchViewDTO> getCatchesBySpeciesId(Long speciesId) {
+        return catchRepository.findBySpecies_Id(speciesId)
+                .stream()
+                .map(CatchMapper::toViewDTO)
+                .toList();
+    }
+
+    public List<CatchViewDTO> getCatchesBySpeciesNameAndLocation(String speciesName, String pickupAddress) {
+        Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
+        Long speciesId = species.getSpeciesId();
+        return catchRepository.findBySpecies_IdAndPickupInfo_Address(speciesId, pickupAddress)
+                .stream()
+                .map(CatchMapper::toViewDTO)
+                .toList();
+    }
+
+    public List<CatchViewDTO> getCatchesBySpeciesNameAndLocationAndPriceRange(
+            String speciesName,
+            String pickupAddress,
+            BigDecimal minPrice,
+            BigDecimal maxPrice) {
+
+        if (speciesName == null && pickupAddress == null) {
+            return getCatchesByPriceRange(minPrice, maxPrice);
+        }
+
+        return catchRepository
+                .findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndPickupInfo_AddressIgnoreCase(
+                        minPrice, maxPrice, speciesName, pickupAddress)
+                .stream()
+                .map(CatchMapper::toViewDTO)
+                .toList();
+    }
 
     @Transactional
     public Catch createCatch(CatchCreateDTO dto) {
@@ -99,7 +137,6 @@ public class CatchService {
         newCatch.updateAvailabilityStatus();
         return catchRepository.save(newCatch);
     }
-
 
     @Transactional
     public Catch updateCatch(long id, Catch updatedCatch) {
@@ -126,41 +163,16 @@ public class CatchService {
 
     @Transactional
     public void updateAvailabilityForAllCatches() {
-        List<Catch> allCatches = catchRepository.findAll();
+        List<Catch> allCatches = catchRepository.findAllCatches(); // Fetch all catches
 
-        for (Catch catches : allCatches) {
-            catches.updateAvailabilityStatus(); // already checks logic
+        for (Catch fishCatch : allCatches) {
+            fishCatch.updateAvailabilityStatus(); // Update the availability status for each catch
         }
 
-        catchRepository.saveAll(allCatches);
+        catchRepository.saveAll(allCatches); // Save all updated catches
     }
-
 
     public void deleteCatchById(long id) {
         catchRepository.deleteById(id);
-    }
-
-    public List<CatchViewDTO> getCatchesByLocation(String pickupAddress) {
-        return catchRepository.findByPickupInfo_Address(pickupAddress);
-    }
-
-
-    public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
-        return catchRepository.findBySpecies_Id();
-    }
-
-    public List<CatchViewDTO> getCatchesBySpeciesNameAndLocation(String speciesName, String pickupAddress) {
-        Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
-        Long speciesId = species.getSpeciesId();
-        return catchRepository.findBySpecies_IdAndLocation(speciesId, pickupAddress);
-    }
-
-    public List<CatchViewDTO> getCatchesBySpeciesNameAndLocationAndPriceRange(String speciesName, String pickupAddress, BigDecimal minPrice, BigDecimal maxPrice) {
-        return catchRepository.findByPriceBetween(minPrice, maxPrice)
-                .stream()
-                .filter(catchItem -> speciesName == null || catchItem.getSpecies().getSpeciesName().equalsIgnoreCase(speciesName))
-                .filter(catchItem -> pickupAddress == null || catchItem.getPickupInfo().getAddress().equalsIgnoreCase(pickupAddress))
-                .map(CatchMapper::toViewDTO)
-                .collect(Collectors.toList());
     }
 }

@@ -2,7 +2,6 @@ package com.firstcatchcrew.restapi.fishCatch;
 
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchCreateDTO;
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
-import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +36,6 @@ public class CatchController {
         return catchService.getCatchesByFisherId(fisherId);
     }
 
-//    @GetMapping("/fisherProfile/available")
-//    public List<CatchViewDTO> getAvailableCatchesByFisherId(@RequestParam long fisherId) {
-//        return catchService.getAvailableCatchesByFisherId(fisherId);
-//    }
-//
-//    @GetMapping("/fisherProfile/sold")
-//    public List<CatchViewDTO> getSoldCatchesByFisherId(@RequestParam long fisherId) {
-//        return catchService.getSoldCatchesByFisherId(fisherId);
-//    }
-
     @GetMapping("/fisherProfile")
     public List<CatchViewDTO> getCatchesByFisherId(
             @RequestParam long fisherId,
@@ -60,7 +49,6 @@ public class CatchController {
             return catchService.getCatchesByFisherId(fisherId);
         }
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<CatchViewDTO> getCatchById(@PathVariable Long id) {
@@ -91,15 +79,11 @@ public class CatchController {
         }
     }
 
-
-
     @PostMapping
     public ResponseEntity<Catch> createCatch(@RequestBody CatchCreateDTO catchToCreate) {
         Catch newCatch = catchService.createCatch(catchToCreate);
-        //CatchViewDTO dto = CatchMapper.toViewDTO(newCatch);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCatch);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Catch> updateCatch(@PathVariable long id, @RequestBody Catch catchToUpdate) {

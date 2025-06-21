@@ -1,6 +1,5 @@
 package com.firstcatchcrew.restapi.fishCatch;
 
-import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,22 +8,32 @@ import java.util.List;
 
 
 @Repository
-public interface CatchRepository extends JpaRepository<CatchViewDTO, Long> {
-    List<CatchViewDTO> findAll();
+public interface CatchRepository extends JpaRepository<Catch, Long> {
 
-    List<CatchViewDTO> findByAvailableTrue(); // uses Spring Data’s keyword parsing to find all with available = true.
+    List<Catch> findAll();
 
-    List<CatchViewDTO> findByFisher_Id(Long id);
+    List<Catch> findAllCatches();
 
-    List<CatchViewDTO> findByFisher_IdAndOrderItemIsNotNull(Long fisherId);
+    List<Catch> findByAvailableTrue(); // uses Spring Data’s keyword parsing to find all with available = true.
 
-    List<CatchViewDTO> findByFisher_IdAndAvailableTrue(Long fisherId);
+    List<Catch> findByFisher_Id(Long id);
 
-    List<CatchViewDTO> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
+    List<Catch> findByFisher_IdAndOrderItemIsNotNull(Long fisherId);
 
-    List<CatchViewDTO> findBySpecies_Id(Long speciesId);
+    List<Catch> findByFisher_IdAndAvailableTrue(Long fisherId);
 
-    List<CatchViewDTO> findByPickupInfo_Address(String address);
+    List<Catch> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
-    List<CatchViewDTO> findBySpecies_IdAndLocation(Long speciesId, String pickupAddress);
+    List<Catch> findBySpecies_Id(Long speciesId);
+
+    List<Catch> findByPickupInfo_Address(String address);
+
+    List<Catch> findBySpecies_IdAndPickupInfo_Address(Long speciesId, String pickupAddress);
+
+    List<Catch> findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndPickupInfo_AddressIgnoreCase(
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            String speciesName,
+            String address);
+
 }

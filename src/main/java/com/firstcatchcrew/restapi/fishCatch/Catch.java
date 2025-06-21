@@ -9,13 +9,12 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Catch {
 
     @Id
-    @SequenceGenerator(name = "catch_sequence", sequenceName = "catch_sequence", allocationSize = 1, initialValue=1)
+    @SequenceGenerator(name = "catch_sequence", sequenceName = "catch_sequence", allocationSize = 1)
     @GeneratedValue(generator = "catch_sequence")
 
     private Long id;
@@ -48,7 +47,7 @@ public class Catch {
     private GeoLocation geoLocation;
 
 
-    public Catch() { };
+    public Catch() { }
 
     public Catch(Species species, FisherProfile fisher, BigDecimal quantityInKg, BigDecimal price, GeoLocation geoLocation) {
         this.species = species;
