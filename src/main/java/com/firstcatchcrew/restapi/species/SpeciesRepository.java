@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface SpeciesRepository extends CrudRepository<Species, Long> {
     List<Species> findAll();
+
+    Species getSpeciesBySpeciesName(String speciesName);
 }

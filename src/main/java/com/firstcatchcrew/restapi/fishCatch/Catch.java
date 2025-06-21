@@ -9,13 +9,12 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class Catch {
 
     @Id
-    @SequenceGenerator(name = "catch_sequence", sequenceName = "catch_sequence", allocationSize = 1, initialValue=1)
+    @SequenceGenerator(name = "catch_sequence", sequenceName = "catch_sequence", allocationSize = 1)
     @GeneratedValue(generator = "catch_sequence")
 
     private Long id;
@@ -48,19 +47,18 @@ public class Catch {
     private GeoLocation geoLocation;
 
 
-    public Catch() { };
+    public Catch() { }
 
-    public Catch(Species species, FisherProfile fisher, BigDecimal quantityInKg, BigDecimal price) {
+    public Catch(Species species, FisherProfile fisher, BigDecimal quantityInKg, BigDecimal price, GeoLocation geoLocation) {
         this.species = species;
         this.fisher = fisher;
         this.quantityInKg = quantityInKg;
         this.price = price;
         this.catchDate = LocalDateTime.now();
+        this.geoLocation = geoLocation;
         this.pickupInfo = new PickupInfo("TBD", "TBD", this.catchDate.withHour(12).withMinute(0));
         this.updateAvailabilityStatus();
     }
-
-
 
     public Long getId() {
         return id;
@@ -106,9 +104,20 @@ public class Catch {
         this.price = price;
     }
 
+    public OrderItem getOrderItem() {
+        return orderItem;
+    }
+
+    //CLEANUP: check this one
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
+        this.updateAvailabilityStatus();
+    }
+
     public boolean isAvailable() {
         return available;
     }
+
     public boolean shouldBeAvailable() {
         boolean notSold = this.orderItem == null;
         boolean pickupStillValid = pickupInfo != null && pickupInfo.getPickupTime().isAfter(LocalDateTime.now());
