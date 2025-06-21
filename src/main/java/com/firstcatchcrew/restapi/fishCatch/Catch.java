@@ -50,17 +50,16 @@ public class Catch {
 
     public Catch() { };
 
-    public Catch(Species species, FisherProfile fisher, BigDecimal quantityInKg, BigDecimal price) {
+    public Catch(Species species, FisherProfile fisher, BigDecimal quantityInKg, BigDecimal price, GeoLocation geoLocation) {
         this.species = species;
         this.fisher = fisher;
         this.quantityInKg = quantityInKg;
         this.price = price;
         this.catchDate = LocalDateTime.now();
+        this.geoLocation = geoLocation;
         this.pickupInfo = new PickupInfo("TBD", "TBD", this.catchDate.withHour(12).withMinute(0));
         this.updateAvailabilityStatus();
     }
-
-
 
     public Long getId() {
         return id;
@@ -106,9 +105,20 @@ public class Catch {
         this.price = price;
     }
 
+    public OrderItem getOrderItem() {
+        return orderItem;
+    }
+
+    //CLEANUP: check this one
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
+        this.updateAvailabilityStatus();
+    }
+
     public boolean isAvailable() {
         return available;
     }
+
     public boolean shouldBeAvailable() {
         boolean notSold = this.orderItem == null;
         boolean pickupStillValid = pickupInfo != null && pickupInfo.getPickupTime().isAfter(LocalDateTime.now());

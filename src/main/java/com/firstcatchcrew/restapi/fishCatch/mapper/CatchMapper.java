@@ -6,17 +6,24 @@ import com.firstcatchcrew.restapi.fishCatch.embedded.GeoLocation;
 import com.firstcatchcrew.restapi.fishCatch.embedded.PickupInfo;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfile;
 import com.firstcatchcrew.restapi.species.Species;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CatchMapper {
 
-    public static Catch toEntity(CatchCreateDTO dto, FisherProfile fisher, Species species) {
-        Catch fishCatch = new Catch();
+    public CatchMapper() { }
 
+    public static Catch fromCreateDTO(CatchCreateDTO dto, FisherProfile fisher, Species species) {
+        Catch fishCatch = new Catch();
         fishCatch.setFisher(fisher);
         fishCatch.setSpecies(species);
-        fishCatch.setCatchDate(dto.getCatchDate());
         fishCatch.setQuantityInKg(dto.getQuantityInKg());
         fishCatch.setPrice(dto.getPrice());
+
+        fishCatch.setGeoLocation(new GeoLocation(
+                dto.getLatitude(),
+                dto.getLongitude()
+        ));
 
         fishCatch.setPickupInfo(new PickupInfo(
                 dto.getPickupLocationName(),
@@ -24,33 +31,20 @@ public class CatchMapper {
                 dto.getPickupTime()
         ));
 
-        fishCatch.setGeoLocation(new GeoLocation(
-                dto.getLatitude(),
-                dto.getLongitude()
-        ));
-
         return fishCatch;
     }
 
-    public static CatchViewDTO toViewDTO(Catch fishCatch) {
-
-        // CLEANUP: protects against having something sold and available
-        boolean available = fishCatch.isAvailable();
-        boolean sold = fishCatch.isSold();
-
-        validateCatchStatus(sold, available);
-
+    public static CatchViewDTO toViewDTO (Catch fishCatch){
         CatchViewDTO dto = new CatchViewDTO();
 
         dto.setId(fishCatch.getId());
-        dto.setFisherName(fishCatch.getFisher().getPerson().getUsername()); // Or getFullName()
+        dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
         dto.setSpeciesName(fishCatch.getSpecies().getSpeciesName());
-
         dto.setCatchDate(fishCatch.getCatchDate());
         dto.setQuantityInKg(fishCatch.getQuantityInKg());
         dto.setPrice(fishCatch.getPrice());
-        dto.setAvailable(available);
-        dto.setSold(sold);
+        dto.setAvailable(fishCatch.isAvailable());
+        dto.setSold(fishCatch.getOrderItem() != null);
 
         PickupInfo pickup = fishCatch.getPickupInfo();
         if (pickup != null) {
@@ -68,10 +62,4 @@ public class CatchMapper {
         return dto;
     }
 
-    // CLEANUP: HELPER FUNCTION protects against having something sold and available
-    private static void validateCatchStatus(boolean sold, boolean available) {
-        if (sold && available) {
-            throw new IllegalStateException("A catch cannot be both sold and available.");
-        }
-    }
 }
