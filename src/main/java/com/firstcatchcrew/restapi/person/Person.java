@@ -30,7 +30,7 @@ public class Person {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private UserRole userRole;
+    private UserRole role;
 
 
     public long getId() {
@@ -43,11 +43,11 @@ public class Person {
 
 
     public UserRole getRole() {
-        return userRole;
+        return role;
     }
 
-    public void setRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public String getPassword() {
@@ -75,7 +75,7 @@ public class Person {
     }
 
     public UserRoleType getRoleType() {
-        return userRole.getType();
+        return role.getType();
     }
     
 

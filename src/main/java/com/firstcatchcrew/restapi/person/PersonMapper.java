@@ -10,19 +10,16 @@ public class PersonMapper {
         dto.setId(person.getId());
         dto.setUsername(person.getUsername());
         dto.setEmail(person.getEmail());
-        dto.setRole(person.getRole().toString()); // .getName() if it's an entity
+        dto.setRole(person.getRole().getType().name());// .getName() if it's an entity - changed DCE needed just type not role object
         return dto;
     }
 
     // DTO → Entity (useful when creating/updating a Person from a form)
-    public static Person toEntity(PersonDTO dto) {
+    public static Person toEntity(PersonDTO dto, UserRole roleEntity) {
         Person person = new Person();
-        person.setId(dto.getId());
         person.setUsername(dto.getUsername());
         person.setEmail(dto.getEmail());
-        UserRole userRole = new UserRole();
-        userRole.setTypeFromString(dto.getRole());
-        person.setRole(userRole);
+        person.setRole(roleEntity);
         return person;
     }
 }
