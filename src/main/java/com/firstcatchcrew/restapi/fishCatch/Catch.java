@@ -29,9 +29,7 @@ public class Catch {
 
 //    @OneToMany(mappedBy = "fishCatch", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    private List<OrderItem> orderItems;
-
-    @OneToOne(mappedBy = "fishCatch", cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_item_id")
+    @OneToOne
     private OrderItem orderItem;
 
     @Column(nullable = false)

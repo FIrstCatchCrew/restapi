@@ -12,7 +12,7 @@ public interface CatchRepository extends JpaRepository<Catch, Long> {
 
     List<Catch> findAll();
 
-    List<Catch> findAllCatches();
+//    List<Catch> findAllCatches();
 
     List<Catch> findByAvailableTrue(); // uses Spring Data’s keyword parsing to find all with available = true.
 
@@ -24,11 +24,11 @@ public interface CatchRepository extends JpaRepository<Catch, Long> {
 
     List<Catch> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
-    List<Catch> findBySpecies_Id(Long speciesId);
+    List<Catch> findBySpecies_SpeciesId(Long speciesId);
 
     List<Catch> findByPickupInfo_Address(String address);
 
-    List<Catch> findBySpecies_IdAndPickupInfo_Address(Long speciesId, String pickupAddress);
+    List<Catch> findBySpecies_SpeciesIdAndPickupInfo_Address(Long speciesId, String pickupAddress);
 
     List<Catch> findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndPickupInfo_AddressIgnoreCase(
             BigDecimal minPrice,

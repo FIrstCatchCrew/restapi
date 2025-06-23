@@ -86,14 +86,14 @@ public class CatchService {
     public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
         Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
         Long speciesId = species.getSpeciesId();
-        return catchRepository.findBySpecies_Id(speciesId)
+        return catchRepository.findBySpecies_SpeciesId(speciesId)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
     }
 
     public List<CatchViewDTO> getCatchesBySpeciesId(Long speciesId) {
-        return catchRepository.findBySpecies_Id(speciesId)
+        return catchRepository.findBySpecies_SpeciesId(speciesId)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
@@ -102,7 +102,7 @@ public class CatchService {
     public List<CatchViewDTO> getCatchesBySpeciesNameAndLocation(String speciesName, String pickupAddress) {
         Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
         Long speciesId = species.getSpeciesId();
-        return catchRepository.findBySpecies_IdAndPickupInfo_Address(speciesId, pickupAddress)
+        return catchRepository.findBySpecies_SpeciesIdAndPickupInfo_Address(speciesId, pickupAddress)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
@@ -163,7 +163,7 @@ public class CatchService {
 
     @Transactional
     public void updateAvailabilityForAllCatches() {
-        List<Catch> allCatches = catchRepository.findAllCatches(); // Fetch all catches
+        List<Catch> allCatches = catchRepository.findAll(); // Fetch all catches
 
         for (Catch fishCatch : allCatches) {
             fishCatch.updateAvailabilityStatus(); // Update the availability status for each catch

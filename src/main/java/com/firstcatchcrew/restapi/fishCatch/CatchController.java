@@ -31,10 +31,10 @@ public class CatchController {
         return catchService.getAllAvailableCatches();
     }
 
-    @GetMapping("/fisherProfile")
-    public List<CatchViewDTO> getCatchesByFisherId(@RequestParam long fisherId) {
-        return catchService.getCatchesByFisherId(fisherId);
-    }
+//    @GetMapping("/fisherProfile")
+//    public List<CatchViewDTO> getCatchesByFisherId(@RequestParam long fisherId) {
+//        return catchService.getCatchesByFisherId(fisherId);
+//    }
 
     @GetMapping("/fisherProfile")
     public List<CatchViewDTO> getCatchesByFisherId(
