@@ -52,4 +52,12 @@ public class Species {
     public void setInfoLink(String infoLink) {
         this.infoLink = infoLink;
     }
+
+    @Override
+    public String toString() {
+        return "Species{" +
+                "id=" + speciesId +
+                ", name='" + speciesName + '\'' +
+                '}';
+    }
 }

@@ -10,13 +10,13 @@ public class Landing {
     @Id
     @SequenceGenerator(name = "landing_sequence", sequenceName = "landing_sequence", allocationSize = 1, initialValue=1)
     @GeneratedValue(generator = "landing_sequence")
+    private Long landingId;
 
-    private Long id;
     private String name;
     private String address;
 
     public Long getId() {
-        return id;
+        return landingId;
     }
 
     public String getName() {
