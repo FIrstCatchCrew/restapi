@@ -26,8 +26,8 @@ public class OrderController {
     }
 
     // Orders by customer, to be connected to CLI, answer question. Status responses: 200 OK, 404 Not Found
-    @GetMapping("/order/{customerId}")
-    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable long customerId) {
+    @GetMapping("/order/{id}")
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("id") long customerId) {
         List<Order> orders = orderService.getOrdersByCustomerId(customerId);
         if (orders.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -46,18 +46,18 @@ public class OrderController {
     //Status responses: 200 OK, 404 Not Found
     @PutMapping("/order/{id}")
     public ResponseEntity<Order> updateOrder(
-            @PathVariable Long id,
+            @PathVariable("id") Long orderId,
             @RequestBody Order updatedOrder
     ) {
-        return orderService.update(id, updatedOrder)
+        return orderService.update(orderId, updatedOrder)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     //Status responses: 204 No content, 404 Not Found
     @DeleteMapping("/order/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-        boolean deleted = orderService.delete(id);
+    public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long orderId) {
+        boolean deleted = orderService.delete(orderId);
         if (!deleted) {
             return ResponseEntity.notFound().build();
         }

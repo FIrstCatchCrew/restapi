@@ -37,7 +37,6 @@ public class OrderService {
     }
 
     public Order create(Order order) {
-        // you might want to set timestamps or defaults here
         order.setOrderDateTime(LocalDateTime.now());
         order.setOrderStatus(false);
         return orderRepository.save(order);
