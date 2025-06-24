@@ -1,18 +1,9 @@
-package com.firstcatchcrew.restapi.fisherProfile;
+package com.firstcatchcrew.restapi.fisherProfile.dto;
 
-public class FisherProfileDTO {
-    private String fishingLicenseNumber;
+public class FisherProfileCreateDTO {
     private Long personId;
+    private String fishingLicenseNumber;
     private Long defaultLandingId;
-
-    // Getters and setters
-    public String getFishingLicenseNumber() {
-        return fishingLicenseNumber;
-    }
-
-    public void setFishingLicenseNumber(String fishingLicenseNumber) {
-        this.fishingLicenseNumber = fishingLicenseNumber;
-    }
 
     public Long getPersonId() {
         return personId;
@@ -20,6 +11,14 @@ public class FisherProfileDTO {
 
     public void setPersonId(Long personId) {
         this.personId = personId;
+    }
+
+    public String getFishingLicenseNumber() {
+        return fishingLicenseNumber;
+    }
+
+    public void setFishingLicenseNumber(String fishingLicenseNumber) {
+        this.fishingLicenseNumber = fishingLicenseNumber;
     }
 
     public Long getDefaultLandingId() {
