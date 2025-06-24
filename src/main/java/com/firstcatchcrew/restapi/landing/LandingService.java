@@ -1,6 +1,5 @@
 package com.firstcatchcrew.restapi.landing;
 
-import com.firstcatchcrew.restapi.species.Species;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,8 +38,10 @@ public class LandingService {
 
     }
 
-    public void deleteLandingById(long landingId) {
+    public boolean deleteLandingById(long landingId) {
+        if (!landingRepository.existsById(landingId)) return false;
         landingRepository.deleteById(landingId);
+        return true;
     }
 
 }

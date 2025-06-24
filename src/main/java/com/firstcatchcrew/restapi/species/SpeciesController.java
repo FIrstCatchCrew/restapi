@@ -40,7 +40,7 @@ public class SpeciesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
-        service.deleteSpeciesById(id);
-        return ResponseEntity.noContent().build();
+        boolean deleted = service.deleteSpeciesById(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

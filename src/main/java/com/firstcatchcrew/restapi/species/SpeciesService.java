@@ -36,14 +36,16 @@ public class SpeciesService {
             speciesToUpdate.setDescription(updatedSpecies.getDescription());
             speciesToUpdate.setImageUrl(updatedSpecies.getImageUrl());
 
-            return speciesRepository.save(updatedSpecies);
+            return speciesRepository.save(speciesToUpdate);
         }
 
         return null;
     }
 
-    public void deleteSpeciesById(long id) {
+    public boolean deleteSpeciesById(long id) {
+        if (!speciesRepository.existsById(id)) return false;
         speciesRepository.deleteById(id);
+        return true;
     }
 
 }
