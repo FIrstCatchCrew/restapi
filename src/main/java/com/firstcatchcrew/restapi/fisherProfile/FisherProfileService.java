@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class FisherProfileService {
@@ -12,6 +14,12 @@ public class FisherProfileService {
 
     public FisherProfileService(FisherProfileRepository fisherRepository) {
         this.fisherRepository = fisherRepository;
+    }
+
+    public List<FisherProfile> getAllFishers() {
+        return StreamSupport
+                .stream(fisherRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public FisherProfile getFisherById(long id) {

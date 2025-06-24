@@ -25,6 +25,12 @@ public class FisherProfileController {
         this.landingService = landingService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<FisherProfile>> getAllFishers() {
+        List<FisherProfile> fishers = fisherService.getAllFishers();
+        return ResponseEntity.ok(fishers);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<FisherProfile> getFisherById(@PathVariable long id) {
         FisherProfile fisher = fisherService.getFisherById(id);
