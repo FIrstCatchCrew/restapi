@@ -26,8 +26,8 @@ public class PersonService {
     }
 
     //CLEANUP: should this be roleType?
-    public List<Person> getPersonByRole(UserRole userRole) {
-        return personRepository.findByRole(userRole);
+    public List<Person> getPersonByRole(UserRole role) {
+        return personRepository.findByRole(role);
     }
 
 

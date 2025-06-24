@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public class UserRoleService {
 
     private final UserRoleRepository userRoleRepository;
@@ -20,37 +19,32 @@ public class UserRoleService {
     }
 
     public UserRole getUserRoleById(long id) {
-        Optional<UserRole> roleOptional = userRoleRepository.findById(id);
-
-        return roleOptional.orElse(null);
-    }
-
-    public List<UserRole> getUserRoleByRoleType(UserRoleType userRoleType) {
-        return userRoleRepository.findByUserRoleType(userRoleType);
+        return userRoleRepository.findById(id).orElse(null);
 
     }
+
+    public UserRole getByType(UserRoleType type) {
+        return userRoleRepository.findByType(type);
+    }
+
+//    public List<UserRole> getUserRoleByType(UserRoleType type) {
+//        return userRoleRepository.findByType(type);
+//    }
 
     public UserRole createUserRole(UserRole newUserRole) {
         return userRoleRepository.save(newUserRole);
     }
 
     public UserRole updateUserRole(long id, UserRole updatedUserRole) {
-        Optional<UserRole> roleToUpdateOptional = userRoleRepository.findById(id);
-
-        if (roleToUpdateOptional.isPresent()) {
-            UserRole userRoleToUpdate = roleToUpdateOptional.get();
-
-            userRoleToUpdate.setDescription(updatedUserRole.getDescription());
-            userRoleToUpdate.setLabel(updatedUserRole.getLabel());
-            userRoleToUpdate.setType(updatedUserRole.getType());             //CLEANUP: userRoleToUpdate.setTypeFromString(updatedUserRole.getType().toString());
-
-            return userRoleRepository.save(userRoleToUpdate);
-        }
-        return null;
+        return userRoleRepository.findById(id).map(existing -> {
+            existing.setDescription(updatedUserRole.getDescription());
+            existing.setLabel(updatedUserRole.getLabel());
+            existing.setType(updatedUserRole.getType());
+            return userRoleRepository.save(existing);
+        }).orElse(null);
     }
 
     public void deleteUserRoleById(long id) {
         userRoleRepository.deleteById(id);
     }
-
 }

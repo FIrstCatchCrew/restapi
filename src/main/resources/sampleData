@@ -1,0 +1,781 @@
+{
+  "roles": [
+    {
+      "type": "ADMIN",
+      "label": "Admin",
+      "description": "System administrator"
+    },
+    {
+      "type": "FISHER",
+      "label": "Fisher",
+      "description": "Licensed commercial fisher"
+    },
+    {
+      "type": "CUSTOMER",
+      "label": "Customer",
+      "description": "Regular customer"
+    }
+  ],
+  "persons": [
+    {
+      "username": "winona.ryder",
+      "email": "winona.ryder@genxmail.com",
+      "password": "password",
+      "role": "ADMIN"
+    },
+    {
+      "username": "keanu.reeves",
+      "email": "keanu.reeves@genxmail.com",
+      "password": "password",
+      "role": "ADMIN"
+    },
+    {
+      "username": "courtney.love",
+      "email": "courtney.love@genxmail.com",
+      "password": "password",
+      "role": "FISHER"
+    },
+    {
+      "username": "ethan.hawke",
+      "email": "ethan.hawke@genxmail.com",
+      "password": "password",
+      "role": "FISHER"
+    },
+    {
+      "username": "gwyneth.paltrow",
+      "email": "gwyneth.paltrow@genxmail.com",
+      "password": "password",
+      "role": "FISHER"
+    },
+    {
+      "username": "johnny.depp",
+      "email": "johnny.depp@genxmail.com",
+      "password": "password",
+      "role": "FISHER"
+    },
+    {
+      "username": "uma.thurman",
+      "email": "uma.thurman@genxmail.com",
+      "password": "password",
+      "role": "FISHER"
+    },
+    {
+      "username": "will.smith",
+      "email": "will.smith@genxmail.com",
+      "password": "password",
+      "role": "FISHER"
+    },
+    {
+      "username": "drew.barrymore",
+      "email": "drew.barrymore@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "ewan.mcgregor",
+      "email": "ewan.mcgregor@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "sandra.bullock",
+      "email": "sandra.bullock@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "brad.pitt",
+      "email": "brad.pitt@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "lisa.bonet",
+      "email": "lisa.bonet@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "david.duchovny",
+      "email": "david.duchovny@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "christina.applegate",
+      "email": "christina.applegate@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "matthew.perry",
+      "email": "matthew.perry@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "neve.campbell",
+      "email": "neve.campbell@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "jennifer.aniston",
+      "email": "jennifer.aniston@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "halle.berry",
+      "email": "halle.berry@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    },
+    {
+      "username": "jason.priestley",
+      "email": "jason.priestley@genxmail.com",
+      "password": "password",
+      "role": "CUSTOMER"
+    }
+  ],
+  "landings": [
+    {
+      "landingName": "St. John's Harbour"
+    },
+    {
+      "landingName": "Twillingate Dock"
+    },
+    {
+      "landingName": "Bonavista Port"
+    },
+    {
+      "landingName": "Burgeo Wharf"
+    },
+    {
+      "landingName": "Placentia Landing"
+    },
+    {
+      "landingName": "Port aux Basques Dock"
+    },
+    {
+      "landingName": "Lewisporte Pier"
+    },
+    {
+      "landingName": "Fogo Island Landing"
+    }
+  ],
+  "species": [
+    {
+      "speciesName": "Cod",
+      "description": "Atlantic cod fish",
+      "imageUrl": "https://example.com/cod.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Cod"
+    },
+    {
+      "speciesName": "Halibut",
+      "description": "Large flatfish",
+      "imageUrl": "https://example.com/halibut.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Halibut"
+    },
+    {
+      "speciesName": "Mackerel",
+      "description": "Fast-moving fish",
+      "imageUrl": "https://example.com/mackerel.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Mackerel"
+    },
+    {
+      "speciesName": "Herring",
+      "description": "Small schooling fish",
+      "imageUrl": "https://example.com/herring.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Herring"
+    },
+    {
+      "speciesName": "Salmon",
+      "description": "Migratory fish",
+      "imageUrl": "https://example.com/salmon.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Salmon"
+    },
+    {
+      "speciesName": "Capelin",
+      "description": "Forage fish",
+      "imageUrl": "https://example.com/capelin.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Capelin"
+    },
+    {
+      "speciesName": "Tuna",
+      "description": "Large pelagic fish",
+      "imageUrl": "https://example.com/tuna.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Tuna"
+    },
+    {
+      "speciesName": "Lobster",
+      "description": "Crustacean",
+      "imageUrl": "https://example.com/lobster.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Lobster"
+    },
+    {
+      "speciesName": "Crab",
+      "description": "Bottom dweller",
+      "imageUrl": "https://example.com/crab.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Crab"
+    },
+    {
+      "speciesName": "Swordfish",
+      "description": "Billfish predator",
+      "imageUrl": "https://example.com/swordfish.jpg",
+      "infoLink": "https://en.wikipedia.org/wiki/Swordfish"
+    }
+  ],
+  "fishers": [
+    {
+      "personId": 3,
+      "fishingLicenceNumber": "LIC-1002",
+      "defaultLanding": 3
+    },
+    {
+      "personId": 4,
+      "fishingLicenceNumber": "LIC-1003",
+      "defaultLanding": 4
+    },
+    {
+      "personId": 5,
+      "fishingLicenceNumber": "LIC-1004",
+      "defaultLanding": 5
+    },
+    {
+      "personId": 6,
+      "fishingLicenceNumber": "LIC-1005",
+      "defaultLanding": 6
+    },
+    {
+      "personId": 7,
+      "fishingLicenceNumber": "LIC-1006",
+      "defaultLanding": 7
+    },
+    {
+      "personId": 8,
+      "fishingLicenceNumber": "LIC-1007",
+      "defaultLanding": 8
+    }
+  ],
+  "catches": [
+    {
+      "fisherId": 2,
+      "speciesId": 8,
+      "catchDate": "2025-06-15T03:58:38.666906",
+      "quantityInKg": 39.27,
+      "price": 6.15,
+      "pickupLocationName": "Twillingate Dock",
+      "pickupAddress": "Dock D",
+      "pickupTime": "2025-06-25T03:58:38.666906",
+      "latitude": 47.49305,
+      "longitude": -53.19496
+    },
+    {
+      "fisherId": 2,
+      "speciesId": 4,
+      "catchDate": "2025-06-17T03:58:38.666906",
+      "quantityInKg": 18.79,
+      "price": 10.09,
+      "pickupLocationName": "St. John's Harbour",
+      "pickupAddress": "Dock B",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 47.35043,
+      "longitude": -55.88875
+    },
+    {
+      "fisherId": 2,
+      "speciesId": 5,
+      "catchDate": "2025-06-10T03:58:38.666906",
+      "quantityInKg": 5.36,
+      "price": 8.19,
+      "pickupLocationName": "Lewisporte Pier",
+      "pickupAddress": "Dock D",
+      "pickupTime": "2025-06-27T03:58:38.666906",
+      "latitude": 48.37989,
+      "longitude": -55.28594
+    },
+    {
+      "fisherId": 2,
+      "speciesId": 4,
+      "catchDate": "2025-06-12T03:58:38.666906",
+      "quantityInKg": 36.65,
+      "price": 4.07,
+      "pickupLocationName": "Fogo Island Landing",
+      "pickupAddress": "Dock C",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 47.3556,
+      "longitude": -57.13823
+    },
+    {
+      "fisherId": 1,
+      "speciesId": 8,
+      "catchDate": "2025-06-23T03:58:38.666906",
+      "quantityInKg": 30.58,
+      "price": 7.06,
+      "pickupLocationName": "Port aux Basques Dock",
+      "pickupAddress": "Dock A",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 48.59835,
+      "longitude": -59.29909
+    },
+    {
+      "fisherId": 5,
+      "speciesId": 4,
+      "catchDate": "2025-06-17T03:58:38.666906",
+      "quantityInKg": 29.44,
+      "price": 9.21,
+      "pickupLocationName": "Port aux Basques Dock",
+      "pickupAddress": "Dock B",
+      "pickupTime": "2025-06-27T03:58:38.666906",
+      "latitude": 49.10747,
+      "longitude": -55.10775
+    },
+    {
+      "fisherId": 1,
+      "speciesId": 4,
+      "catchDate": "2025-06-19T03:58:38.666906",
+      "quantityInKg": 16.93,
+      "price": 13.4,
+      "pickupLocationName": "Lewisporte Pier",
+      "pickupAddress": "Dock A",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 48.04419,
+      "longitude": -58.41025
+    },
+    {
+      "fisherId": 5,
+      "speciesId": 3,
+      "catchDate": "2025-06-11T03:58:38.666906",
+      "quantityInKg": 16.43,
+      "price": 6.56,
+      "pickupLocationName": "Placentia Landing",
+      "pickupAddress": "Dock D",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 48.16858,
+      "longitude": -54.51669
+    },
+    {
+      "fisherId": 4,
+      "speciesId": 7,
+      "catchDate": "2025-06-14T03:58:38.666906",
+      "quantityInKg": 24.1,
+      "price": 12.27,
+      "pickupLocationName": "Burgeo Wharf",
+      "pickupAddress": "Dock B",
+      "pickupTime": "2025-06-27T03:58:38.666906",
+      "latitude": 49.22106,
+      "longitude": -53.0764
+    },
+    {
+      "fisherId": 5,
+      "speciesId": 5,
+      "catchDate": "2025-06-11T03:58:38.666906",
+      "quantityInKg": 41.32,
+      "price": 7.77,
+      "pickupLocationName": "Port aux Basques Dock",
+      "pickupAddress": "Dock C",
+      "pickupTime": "2025-06-25T03:58:38.666906",
+      "latitude": 48.28908,
+      "longitude": -58.69567
+    },
+    {
+      "fisherId": 5,
+      "speciesId": 9,
+      "catchDate": "2025-06-16T03:58:38.666906",
+      "quantityInKg": 9.59,
+      "price": 8.26,
+      "pickupLocationName": "Twillingate Dock",
+      "pickupAddress": "Dock C",
+      "pickupTime": "2025-06-27T03:58:38.666906",
+      "latitude": 47.86536,
+      "longitude": -53.00914
+    },
+    {
+      "fisherId": 2,
+      "speciesId": 9,
+      "catchDate": "2025-06-22T03:58:38.666906",
+      "quantityInKg": 30.17,
+      "price": 14.62,
+      "pickupLocationName": "Port aux Basques Dock",
+      "pickupAddress": "Dock C",
+      "pickupTime": "2025-06-27T03:58:38.666906",
+      "latitude": 49.21924,
+      "longitude": -54.02943
+    },
+    {
+      "fisherId": 3,
+      "speciesId": 9,
+      "catchDate": "2025-06-18T03:58:38.666906",
+      "quantityInKg": 12.51,
+      "price": 7.64,
+      "pickupLocationName": "Placentia Landing",
+      "pickupAddress": "Dock A",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 48.92212,
+      "longitude": -54.65345
+    },
+    {
+      "fisherId": 2,
+      "speciesId": 9,
+      "catchDate": "2025-06-19T03:58:38.666906",
+      "quantityInKg": 5.23,
+      "price": 8.32,
+      "pickupLocationName": "Fogo Island Landing",
+      "pickupAddress": "Dock C",
+      "pickupTime": "2025-06-25T03:58:38.666906",
+      "latitude": 47.81251,
+      "longitude": -58.48235
+    },
+    {
+      "fisherId": 1,
+      "speciesId": 6,
+      "catchDate": "2025-06-21T03:58:38.666906",
+      "quantityInKg": 37.11,
+      "price": 4.95,
+      "pickupLocationName": "Placentia Landing",
+      "pickupAddress": "Dock A",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 48.88159,
+      "longitude": -53.58032
+    },
+    {
+      "fisherId": 6,
+      "speciesId": 6,
+      "catchDate": "2025-06-10T03:58:38.666906",
+      "quantityInKg": 7.89,
+      "price": 5.42,
+      "pickupLocationName": "Fogo Island Landing",
+      "pickupAddress": "Dock C",
+      "pickupTime": "2025-06-27T03:58:38.666906",
+      "latitude": 48.72201,
+      "longitude": -54.77123
+    },
+    {
+      "fisherId": 4,
+      "speciesId": 10,
+      "catchDate": "2025-06-16T03:58:38.666906",
+      "quantityInKg": 28.39,
+      "price": 11.47,
+      "pickupLocationName": "Burgeo Wharf",
+      "pickupAddress": "Dock A",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 49.00854,
+      "longitude": -57.93836
+    },
+    {
+      "fisherId": 4,
+      "speciesId": 4,
+      "catchDate": "2025-06-10T03:58:38.666906",
+      "quantityInKg": 37.24,
+      "price": 10.77,
+      "pickupLocationName": "Placentia Landing",
+      "pickupAddress": "Dock D",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 48.49662,
+      "longitude": -53.32644
+    },
+    {
+      "fisherId": 5,
+      "speciesId": 10,
+      "catchDate": "2025-06-21T03:58:38.666906",
+      "quantityInKg": 46.96,
+      "price": 11.97,
+      "pickupLocationName": "St. John's Harbour",
+      "pickupAddress": "Dock C",
+      "pickupTime": "2025-06-26T03:58:38.666906",
+      "latitude": 48.66313,
+      "longitude": -52.93009
+    },
+    {
+      "fisherId": 5,
+      "speciesId": 10,
+      "catchDate": "2025-06-17T03:58:38.666906",
+      "quantityInKg": 16.03,
+      "price": 6.19,
+      "pickupLocationName": "Lewisporte Pier",
+      "pickupAddress": "Dock B",
+      "pickupTime": "2025-06-25T03:58:38.666906",
+      "latitude": 49.33203,
+      "longitude": -53.04738
+    }
+  ],
+  "orders": [
+    {
+      "customerId": 10,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 1,
+          "quantity": 3
+        },
+        {
+          "catchId": 14,
+          "quantity": 2
+        },
+        {
+          "catchId": 15,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "customerId": 11,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 19,
+          "quantity": 2
+        },
+        {
+          "catchId": 2,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "customerId": 16,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 9,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "customerId": 15,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 11,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 19,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 10,
+          "quantity": 1
+        },
+        {
+          "catchId": 15,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "customerId": 19,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 20,
+          "quantity": 2
+        },
+        {
+          "catchId": 9,
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "customerId": 12,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 15,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "customerId": 16,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 2,
+          "quantity": 1
+        },
+        {
+          "catchId": 20,
+          "quantity": 2
+        },
+        {
+          "catchId": 20,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 19,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 1,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "customerId": 10,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 16,
+          "quantity": 1
+        },
+        {
+          "catchId": 14,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "customerId": 11,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 7,
+          "quantity": 2
+        },
+        {
+          "catchId": 13,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "customerId": 13,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 1,
+          "quantity": 1
+        },
+        {
+          "catchId": 16,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 13,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 3,
+          "quantity": 2
+        },
+        {
+          "catchId": 14,
+          "quantity": 3
+        },
+        {
+          "catchId": 11,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 11,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 17,
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "customerId": 11,
+      "orderStatus": true,
+      "orderItems": [
+        {
+          "catchId": 8,
+          "quantity": 2
+        },
+        {
+          "catchId": 3,
+          "quantity": 1
+        },
+        {
+          "catchId": 6,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 17,
+      "orderStatus": false,
+      "orderItems": [
+        {
+          "catchId": 19,
+          "quantity": 1
+        },
+        {
+          "catchId": 18,
+          "quantity": 1
+        },
+        {
+          "catchId": 14,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 10,
+      "orderStatus": false,
+      "orderItems": [
+        {
+          "catchId": 8,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 9,
+      "orderStatus": false,
+      "orderItems": [
+        {
+          "catchId": 18,
+          "quantity": 3
+        },
+        {
+          "catchId": 20,
+          "quantity": 3
+        },
+        {
+          "catchId": 8,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 18,
+      "orderStatus": false,
+      "orderItems": [
+        {
+          "catchId": 13,
+          "quantity": 2
+        },
+        {
+          "catchId": 5,
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "customerId": 17,
+      "orderStatus": false,
+      "orderItems": [
+        {
+          "catchId": 19,
+          "quantity": 2
+        }
+      ]
+    }
+  ]
+}

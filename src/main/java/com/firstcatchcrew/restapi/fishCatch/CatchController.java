@@ -31,10 +31,10 @@ public class CatchController {
         return catchService.getAllAvailableCatches();
     }
 
-    @GetMapping("/fisherProfile")
-    public List<CatchViewDTO> getCatchesByFisherId(@RequestParam long fisherId) {
-        return catchService.getCatchesByFisherId(fisherId);
-    }
+//    @GetMapping("/fisherProfile")
+//    public List<CatchViewDTO> getCatchesByFisherId(@RequestParam long fisherId) {
+//        return catchService.getCatchesByFisherId(fisherId);
+//    }
 
     @GetMapping("/fisherProfile")
     public List<CatchViewDTO> getCatchesByFisherId(
@@ -86,12 +86,11 @@ public class CatchController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Catch> updateCatch(@PathVariable long id, @RequestBody Catch catchToUpdate) {
-        Catch updatedCatch = catchService.updateCatch(id, catchToUpdate);
-        if (updatedCatch == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedCatch);
+    public ResponseEntity<Catch> updateCatch(
+            @PathVariable long id,
+            @RequestBody CatchCreateDTO dto) {  // reuse CatchCreateDTO if identical
+        Catch updatedCatch = catchService.updateCatch(id, dto);
+        return (updatedCatch != null) ? ResponseEntity.ok(updatedCatch) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

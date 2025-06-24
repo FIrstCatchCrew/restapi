@@ -1,5 +1,6 @@
 package com.firstcatchcrew.restapi.orderItem;
 
+import com.firstcatchcrew.restapi.fishCatch.Catch;
 import com.firstcatchcrew.restapi.order.Order;
 import jakarta.persistence.*;
 
@@ -9,10 +10,14 @@ public class OrderItem {
     @SequenceGenerator(name = "orderItem_sequence", sequenceName = "orderItem_sequence", allocationSize = 1, initialValue=1)
     @GeneratedValue(generator = "orderItem_sequence")
     private Long orderItemId;
-    private Long catchID;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "catch_id")
+    private Catch fishCatch;
+
     private Long quantity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     private Order order;
 
 
@@ -24,12 +29,12 @@ public class OrderItem {
         this.orderItemId = orderItemId;
     }
 
-    public Long getCatchID() {
-        return catchID;
+    public Catch getFishCatch() {
+        return fishCatch;
     }
 
-    public void setCatchID(Long catchID) {
-        this.catchID = catchID;
+    public void setFishCatch(Catch fishCatch) {
+        this.fishCatch = fishCatch;
     }
 
     public Long getQuantity() {
@@ -52,7 +57,7 @@ public class OrderItem {
     public String toString() {
         return "OrderItem{" +
                 "orderItemId=" + orderItemId +
-                ", catchID=" + catchID +
+                ", Catch=" + fishCatch +
                 ", quantity=" + quantity +
                 ", order=" + order +
                 '}' ;

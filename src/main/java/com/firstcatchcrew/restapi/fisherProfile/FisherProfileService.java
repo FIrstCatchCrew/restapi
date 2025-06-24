@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class FisherProfileService {
@@ -12,6 +14,12 @@ public class FisherProfileService {
 
     public FisherProfileService(FisherProfileRepository fisherRepository) {
         this.fisherRepository = fisherRepository;
+    }
+
+    public List<FisherProfile> getAllFishers() {
+        return StreamSupport
+                .stream(fisherRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public FisherProfile getFisherById(long id) {
@@ -25,20 +33,13 @@ public class FisherProfileService {
     }
 
     public FisherProfile updateFisher(long id, FisherProfile updatedFisher) {
-        Optional<FisherProfile> fisherToUpdateOptional = fisherRepository.findById(id);
-
-        if (fisherToUpdateOptional.isPresent()) {
-            FisherProfile fisherToUpdate = fisherToUpdateOptional.get();
-
-            fisherToUpdate.setPerson(updatedFisher.getPerson());
-            fisherToUpdate.setFishingLicenseNumber(updatedFisher.getFishingLicenseNumber());
-            fisherToUpdate.setDefaultLanding(updatedFisher.getDefaultLanding());
-            fisherToUpdate.setCatches(updatedFisher.getCatches());
-
-            return fisherRepository.save(fisherToUpdate);
-        }
-
-        return null;
+        return fisherRepository.findById(id)
+                .map(existing -> {
+                    existing.setPerson(updatedFisher.getPerson());
+                    existing.setFishingLicenseNumber(updatedFisher.getFishingLicenseNumber());
+                    existing.setDefaultLanding(updatedFisher.getDefaultLanding());
+                    return fisherRepository.save(existing);
+                }).orElse(null);
     }
 
     public void deleteFisherById(long id) {
