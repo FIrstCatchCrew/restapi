@@ -1,66 +1,45 @@
 package com.firstcatchcrew.restapi.fishCatch.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-// Used when returning a Catch to the client (GET request).
-// This one is for client display — includes id, availability info, and human-readable names if you want them.
-
+//CLEANUP: can add species image
 public class CatchViewDTO {
 
     private Long id;
-    private String fisherName;
     private String speciesName;
-
-    private LocalDateTime catchDate;
     private BigDecimal quantityInKg;
     private BigDecimal price;
     private boolean available;
-    private boolean sold;
 
+    //CLEANUP: catch info
+    private String fisherName;
+    private LocalDateTime timeStamp;
+    private double latitude;
+    private double longitude;
+
+    //CLEANUP: pickup info
     private String pickupLocationName;
     private String pickupAddress;
     private LocalDateTime pickupTime;
 
-    private double latitude;
-    private double longitude;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFisherName() {
-        return fisherName;
-    }
-
-    public void setFisherName(String fisherName) {
-        this.fisherName = fisherName;
-    }
-
     public String getSpeciesName() {
         return speciesName;
     }
-
     public void setSpeciesName(String speciesName) {
         this.speciesName = speciesName;
-    }
-
-    public LocalDateTime getCatchDate() {
-        return catchDate;
-    }
-
-    public void setCatchDate(LocalDateTime catchDate) {
-        this.catchDate = catchDate;
     }
 
     public BigDecimal getQuantityInKg() {
         return quantityInKg;
     }
-
     public void setQuantityInKg(BigDecimal quantityInKg) {
         this.quantityInKg = quantityInKg;
     }
@@ -68,7 +47,6 @@ public class CatchViewDTO {
     public BigDecimal getPrice() {
         return price;
     }
-
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
@@ -76,47 +54,27 @@ public class CatchViewDTO {
     public boolean isAvailable() {
         return available;
     }
-
     public void setAvailable(boolean available) {
         this.available = available;
     }
 
-    public boolean isSold() {
-        return sold;
+    public String getFisherName() {
+        return fisherName;
+    }
+    public void setFisherName(String fisherName) {
+        this.fisherName = fisherName;
     }
 
-    public void setSold(boolean sold) {
-        this.sold = sold;
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
     }
-
-    public String getPickupLocationName() {
-        return pickupLocationName;
-    }
-
-    public void setPickupLocationName(String pickupLocationName) {
-        this.pickupLocationName = pickupLocationName;
-    }
-
-    public String getPickupAddress() {
-        return pickupAddress;
-    }
-
-    public void setPickupAddress(String pickupAddress) {
-        this.pickupAddress = pickupAddress;
-    }
-
-    public LocalDateTime getPickupTime() {
-        return pickupTime;
-    }
-
-    public void setPickupTime(LocalDateTime pickupTime) {
-        this.pickupTime = pickupTime;
+    public void setTimeStamp(LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public double getLatitude() {
         return latitude;
     }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
@@ -124,9 +82,30 @@ public class CatchViewDTO {
     public double getLongitude() {
         return longitude;
     }
-
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getPickupLocationName() {
+        return pickupLocationName;
+    }
+    public void setPickupLocationName(String pickupLocationName) {
+        this.pickupLocationName = pickupLocationName;
+    }
+
+    @JsonProperty("pickup_address")
+    public String getPickupAddress() {
+        return pickupAddress;
+    }
+    public void setPickupAddress(String pickupAddress) {
+        this.pickupAddress = pickupAddress;
+    }
+
+    public LocalDateTime getPickupTime() {
+        return pickupTime;
+    }
+    public void setPickupTime(LocalDateTime pickupTime) {
+        this.pickupTime = pickupTime;
     }
 
 }

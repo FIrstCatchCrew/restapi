@@ -3,14 +3,11 @@ package com.firstcatchcrew.restapi.fishCatch;
 import com.firstcatchcrew.restapi.fishCatch.embedded.GeoLocation;
 import com.firstcatchcrew.restapi.fishCatch.embedded.PickupInfo;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfile;
-import com.firstcatchcrew.restapi.orderItem.OrderItem;
 import com.firstcatchcrew.restapi.species.Species;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Catch {
@@ -29,13 +26,13 @@ public class Catch {
     @JoinColumn(name = "species_id")
     private Species species;
 
-    @OneToMany(mappedBy = "fishCatch", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems = new ArrayList<>();
-
     @Column(nullable = false)
     private boolean available;
 
-    private LocalDateTime catchDate;
+
+    private boolean sold;
+
+    private LocalDateTime timeStamp;
     private BigDecimal quantityInKg;
     private BigDecimal price;
 
@@ -52,10 +49,10 @@ public class Catch {
         this.fisher = fisher;
         this.quantityInKg = quantityInKg;
         this.price = price;
-        this.catchDate = LocalDateTime.now();
+        this.timeStamp = LocalDateTime.now();
         this.geoLocation = geoLocation;
-        this.pickupInfo = new PickupInfo("TBD", "TBD", this.catchDate.withHour(12).withMinute(0));
-        this.updateAvailabilityStatus();
+        this.pickupInfo = new PickupInfo("TBD", "TBD", this.timeStamp.withHour(12).withMinute(0));
+        this.refreshAvailability();
     }
 
     public Long getId() {
@@ -78,12 +75,13 @@ public class Catch {
         this.species = species;
     }
 
-    public LocalDateTime getCatchDate() {
-        return catchDate;
+    public LocalDateTime getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setCatchDate(LocalDateTime catchDate) {
-        this.catchDate = catchDate;
+    public void setTimeStamp(LocalDateTime timeStamp) {
+        this.timeStamp = timeStamp;
+        refreshAvailability();
     }
 
     public BigDecimal getQuantityInKg() {
@@ -102,36 +100,39 @@ public class Catch {
         this.price = price;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-        this.updateAvailabilityStatus();
-    }
-
     public boolean isAvailable() {
         return available;
     }
 
-    public boolean shouldBeAvailable() {
-        boolean notSold = this.orderItems == null;
-        boolean pickupStillValid = pickupInfo != null && pickupInfo.getPickupTime().isAfter(LocalDateTime.now());
-        return notSold && pickupStillValid;
+    public boolean isSold() {
+        return sold;
     }
 
-    public void updateAvailabilityStatus() {
-        boolean notSold = this.orderItems == null || this.orderItems.isEmpty();
-        boolean pickupStillValid = pickupInfo != null && pickupInfo.getPickupTime().isAfter(LocalDateTime.now());
-        this.available = notSold && pickupStillValid;
+    public void setSold(boolean sold) {
+        this.sold = sold;
+        refreshAvailability();
     }
 
+
+    public void refreshAvailability() {
+        this.available = !sold && isPickupStillValid();
+    }
+
+    //CLEANUP
+    private boolean isPickupStillValid() {
+        if (pickupInfo == null || pickupInfo.getPickupTime() == null) return false;
+
+        // Option 1: allow *any future pickup time*
+        return pickupInfo.getPickupTime().isAfter(LocalDateTime.now());
+
+        // Option 2: restrict to *same calendar day* as timestamp
+        // return timeStamp != null && timeStamp.toLocalDate().isEqual(LocalDate.now());
+    }
 
     public PickupInfo getPickupInfo() { return pickupInfo; }
     public void setPickupInfo(PickupInfo pickupInfo) {
         this.pickupInfo = pickupInfo;
-        updateAvailabilityStatus();
+        refreshAvailability();
     }
 
     public GeoLocation getGeoLocation() { return geoLocation; }

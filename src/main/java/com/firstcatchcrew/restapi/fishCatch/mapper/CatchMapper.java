@@ -20,7 +20,7 @@ public class CatchMapper {
         fishCatch.setQuantityInKg(dto.getQuantityInKg());
         fishCatch.setPrice(dto.getPrice());
 
-        fishCatch.setCatchDate(
+        fishCatch.setTimeStamp(
                 dto.getCatchDate() != null ? dto.getCatchDate() : java.time.LocalDateTime.now()
         );
 
@@ -41,18 +41,23 @@ public class CatchMapper {
     public static CatchViewDTO toViewDTO (Catch fishCatch){
         CatchViewDTO dto = new CatchViewDTO();
 
-        dto.setId(fishCatch.getId());
         if (fishCatch.getFisher() != null && fishCatch.getFisher().getPerson() != null) {
             dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
         } else {
             dto.setFisherName("Unknown Fisher");
         }
-        dto.setSpeciesName(fishCatch.getSpecies().getSpeciesName());
-        dto.setCatchDate(fishCatch.getCatchDate());
+
+        if (fishCatch.getSpecies() != null) {
+            dto.setSpeciesName(fishCatch.getSpecies().getSpeciesName());
+        } else {
+            dto.setSpeciesName("Unknown Species");
+        }
+
+
+        dto.setTimeStamp(fishCatch.getTimeStamp());
         dto.setQuantityInKg(fishCatch.getQuantityInKg());
         dto.setPrice(fishCatch.getPrice());
         dto.setAvailable(fishCatch.isAvailable());
-        dto.setSold(fishCatch.getOrderItems() != null);
 
         PickupInfo pickup = fishCatch.getPickupInfo();
         if (pickup != null) {
@@ -69,5 +74,8 @@ public class CatchMapper {
 
         return dto;
     }
+
+
+
 
 }
