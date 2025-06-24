@@ -18,7 +18,7 @@ public interface CatchRepository extends JpaRepository<Catch, Long> {
 
     List<Catch> findByFisher_Id(Long id);
 
-    List<Catch> findByFisher_IdAndOrderItemIsNotNull(Long fisherId);
+    List<Catch> findByFisher_IdAndOrderItemsIsNotEmpty(Long fisherId);
 
     List<Catch> findByFisher_IdAndAvailableTrue(Long fisherId);
 

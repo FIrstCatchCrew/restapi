@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Catch {
@@ -27,10 +29,8 @@ public class Catch {
     @JoinColumn(name = "species_id")
     private Species species;
 
-//    @OneToMany(mappedBy = "fishCatch", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<OrderItem> orderItems;
-    @OneToOne
-    private OrderItem orderItem;
+    @OneToMany(mappedBy = "fishCatch", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @Column(nullable = false)
     private boolean available;
@@ -102,13 +102,12 @@ public class Catch {
         this.price = price;
     }
 
-    public OrderItem getOrderItem() {
-        return orderItem;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    //CLEANUP: check this one
-    public void setOrderItem(OrderItem orderItem) {
-        this.orderItem = orderItem;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
         this.updateAvailabilityStatus();
     }
 
@@ -117,16 +116,17 @@ public class Catch {
     }
 
     public boolean shouldBeAvailable() {
-        boolean notSold = this.orderItem == null;
+        boolean notSold = this.orderItems == null;
         boolean pickupStillValid = pickupInfo != null && pickupInfo.getPickupTime().isAfter(LocalDateTime.now());
         return notSold && pickupStillValid;
     }
 
     public void updateAvailabilityStatus() {
-        boolean notSold = this.orderItem == null;
+        boolean notSold = this.orderItems == null || this.orderItems.isEmpty();
         boolean pickupStillValid = pickupInfo != null && pickupInfo.getPickupTime().isAfter(LocalDateTime.now());
         this.available = notSold && pickupStillValid;
     }
+
 
     public PickupInfo getPickupInfo() { return pickupInfo; }
     public void setPickupInfo(PickupInfo pickupInfo) {

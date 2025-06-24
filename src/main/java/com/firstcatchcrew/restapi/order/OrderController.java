@@ -1,15 +1,13 @@
 package com.firstcatchcrew.restapi.order;
 
-
-import com.firstcatchcrew.restapi.fishCatch.CatchRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity; // Introduced to return status codes
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.net.URI;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/order")
 @CrossOrigin
 public class OrderController {
 
@@ -18,55 +16,43 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    //Status response: 200 OK
-    @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> all = orderService.getAllOrders();
-        return ResponseEntity.ok(all);
+    @GetMapping
+    public ResponseEntity<List<Order>> all() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    // Orders by customer, to be connected to CLI, answer question. Status responses: 200 OK, 404 Not Found
-    @GetMapping("/order/{id}")
-    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("id") long customerId) {
-        List<Order> orders = orderService.getOrdersByCustomerId(customerId);
-        if (orders.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(orders);
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<Order>> byCustomer(@PathVariable long customerId) {
+        var list = orderService.getOrdersByCustomerId(customerId);
+        return list.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(list);
     }
 
-    //Status responses: 201 Created + location(orderId) header
-    @PostMapping("/order")
-    public ResponseEntity<Order> createOrder(@RequestBody Order newOrder) {
-        Order saved = orderService.create(newOrder);
-        URI location = URI.create("/api/orders/" + saved.getOrderId());
-        return ResponseEntity.created(location).body(saved);
+    @PostMapping
+    public ResponseEntity<Order> create(@RequestBody OrderCreateDTO dto) {
+        Order saved = orderService.create(dto);
+        return ResponseEntity
+                .created(URI.create("/api/orders/" + saved.getOrderId()))
+                .body(saved);
     }
 
-    //Status responses: 200 OK, 404 Not Found
-    @PutMapping("/order/{id}")
-    public ResponseEntity<Order> updateOrder(
-            @PathVariable("id") Long orderId,
-            @RequestBody Order updatedOrder
+    @PutMapping("/{id}")
+    public ResponseEntity<Order> update(
+            @PathVariable Long id,
+            @RequestBody OrderCreateDTO dto
     ) {
-        return orderService.update(orderId, updatedOrder)
+        return orderService.update(id, dto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //Status responses: 204 No content, 404 Not Found
-    @DeleteMapping("/order/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long orderId) {
-        boolean deleted = orderService.delete(orderId);
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        return orderService.delete(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }
-
-
-
-
 
 

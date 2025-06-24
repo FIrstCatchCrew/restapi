@@ -20,6 +20,10 @@ public class CatchMapper {
         fishCatch.setQuantityInKg(dto.getQuantityInKg());
         fishCatch.setPrice(dto.getPrice());
 
+        fishCatch.setCatchDate(
+                dto.getCatchDate() != null ? dto.getCatchDate() : java.time.LocalDateTime.now()
+        );
+
         fishCatch.setGeoLocation(new GeoLocation(
                 dto.getLatitude(),
                 dto.getLongitude()
@@ -38,13 +42,17 @@ public class CatchMapper {
         CatchViewDTO dto = new CatchViewDTO();
 
         dto.setId(fishCatch.getId());
-        dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
+        if (fishCatch.getFisher() != null && fishCatch.getFisher().getPerson() != null) {
+            dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
+        } else {
+            dto.setFisherName("Unknown Fisher");
+        }
         dto.setSpeciesName(fishCatch.getSpecies().getSpeciesName());
         dto.setCatchDate(fishCatch.getCatchDate());
         dto.setQuantityInKg(fishCatch.getQuantityInKg());
         dto.setPrice(fishCatch.getPrice());
         dto.setAvailable(fishCatch.isAvailable());
-        dto.setSold(fishCatch.getOrderItem() != null);
+        dto.setSold(fishCatch.getOrderItems() != null);
 
         PickupInfo pickup = fishCatch.getPickupInfo();
         if (pickup != null) {

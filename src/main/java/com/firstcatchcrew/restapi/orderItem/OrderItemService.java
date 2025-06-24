@@ -30,7 +30,7 @@ public class OrderItemService {
     public Optional<OrderItem> update(Long id, OrderItem updatedOrderItem) {
         return orderItemRepository.findById(id)
                 .map(existing -> {
-                    existing.setCatchID(updatedOrderItem.getCatchID());
+                    existing.setFishCatch(updatedOrderItem.getFishCatch());
                     existing.setQuantity(updatedOrderItem.getQuantity());
                     existing.setOrder(updatedOrderItem.getOrder());
                     return orderItemRepository.save(existing);

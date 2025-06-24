@@ -16,7 +16,7 @@ public class OrderItemController {
         this.orderItemService = orderItemService;
     }
 
-    @GetMapping("/orderItems")
+    @GetMapping("/orderItem")
     public ResponseEntity<List<OrderItem>> getAll() {
         return ResponseEntity.ok(orderItemService.getAllOrderItems());
     }

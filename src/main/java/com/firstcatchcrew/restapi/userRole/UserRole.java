@@ -17,6 +17,16 @@ public class UserRole {
     private String label;        // CLEANUP: e.g., "Local Fisher"
     private String description;  // CLEANUP: e.g., "Can add and manage catches"
 
+    public UserRole() {
+
+    }
+
+    public UserRole(UserRoleType type, String label, String description) {
+        this.type = type;
+        this.label = label;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }
