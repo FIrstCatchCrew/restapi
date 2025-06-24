@@ -22,7 +22,7 @@ public class CatchService {
     private final FisherProfileRepository fisherRepository;
     private final SpeciesRepository speciesRepository;
 
-    public CatchService(CatchRepository catchRepository, FisherProfileRepository fisherRepository, SpeciesRepository speciesRepository, CatchMapper catchMapper) {
+    public CatchService(CatchRepository catchRepository, FisherProfileRepository fisherRepository, SpeciesRepository speciesRepository) {
         this.catchRepository = catchRepository;
         this.fisherRepository = fisherRepository;
         this.speciesRepository = speciesRepository;
@@ -47,20 +47,6 @@ public class CatchService {
                 .map(CatchMapper::toViewDTO)
                 .toList();
 
-    }
-
-    public List<CatchViewDTO> getCatchesByFisherId(long fisherId) {
-        return catchRepository.findByFisher_Id(fisherId)
-                .stream()
-                .map(CatchMapper::toViewDTO)
-                .toList();
-    }
-
-    public List<CatchViewDTO> getSoldCatchesByFisherId(long fisherId) {
-        return catchRepository.findByFisher_IdAndOrderItemsIsNotEmpty(fisherId)
-                .stream()
-                .map(CatchMapper::toViewDTO)
-                .toList();
     }
 
     public List<CatchViewDTO> getAvailableCatchesByFisherId(long fisherId) {
@@ -129,20 +115,20 @@ public class CatchService {
     }
 
     @Transactional
-    public Catch createCatch(CatchCreateDTO dto) {
+    public CatchViewDTO createCatch(CatchCreateDTO dto) {
         FisherProfile fisher = fisherRepository.findById(dto.getFisherId())
                 .orElseThrow(() -> new IllegalArgumentException("Fisher with id " + dto.getFisherId() + " not found."));
         Species species = speciesRepository.findById(dto.getSpeciesId())
                 .orElseThrow(() -> new IllegalArgumentException("Species with id " + dto.getSpeciesId() + " not found."));
 
         Catch newCatch = CatchMapper.fromCreateDTO(dto, fisher, species);
-        newCatch.updateAvailabilityStatus();
-        return catchRepository.save(newCatch);
+        newCatch.refreshAvailability();
+        return CatchMapper.toViewDTO(catchRepository.save(newCatch));
     }
 
 
     @Transactional
-    public Catch updateCatch(long id, CatchCreateDTO dto) {
+    public CatchViewDTO updateCatch(long id, CatchCreateDTO dto) {
         Optional<Catch> catchToUpdateOptional = catchRepository.findById(id);
         if (catchToUpdateOptional.isEmpty()) return null;
 
@@ -159,29 +145,27 @@ public class CatchService {
         catchToUpdate.setSpecies(species);
         catchToUpdate.setPrice(dto.getPrice());
         catchToUpdate.setQuantityInKg(dto.getQuantityInKg());
-        catchToUpdate.setCatchDate(dto.getCatchDate());
+        catchToUpdate.setTimeStamp(dto.getCatchDate());
 
         catchToUpdate.setGeoLocation(new GeoLocation(dto.getLatitude(), dto.getLongitude()));
         catchToUpdate.setPickupInfo(new PickupInfo(dto.getPickupLocationName(), dto.getPickupAddress(), dto.getPickupTime()));
 
-        catchToUpdate.updateAvailabilityStatus();
+        catchToUpdate.refreshAvailability();
 
-        return catchRepository.save(catchToUpdate);
+        return CatchMapper.toViewDTO(catchRepository.save(catchToUpdate));
     }
 
 
     @Transactional
-    public void updateAvailabilityForAllCatches() {
-        List<Catch> allCatches = catchRepository.findAll(); // Fetch all catches
-
-        for (Catch fishCatch : allCatches) {
-            fishCatch.updateAvailabilityStatus(); // Update the availability status for each catch
-        }
-
-        catchRepository.saveAll(allCatches); // Save all updated catches
+    public void refreshAvailabilityForAllCatches() {
+        List<Catch> allCatches = catchRepository.findAll();
+        allCatches.forEach(Catch::refreshAvailability);
+        catchRepository.saveAll(allCatches);
     }
 
-    public void deleteCatchById(long id) {
+    public boolean deleteCatchById(long id) {
+        if (!catchRepository.existsById(id)) return false;
         catchRepository.deleteById(id);
+        return true;
     }
 }

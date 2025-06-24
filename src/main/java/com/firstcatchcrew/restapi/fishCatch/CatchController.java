@@ -2,6 +2,7 @@ package com.firstcatchcrew.restapi.fishCatch;
 
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchCreateDTO;
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
+import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,33 +22,15 @@ public class CatchController {
         this.catchService = catchService;
     }
 
+
     @GetMapping
-    public List<CatchViewDTO> getAllCatches() {
-        return catchService.getAllCatches();
+    public ResponseEntity<List<CatchViewDTO>> getAllCatches() {
+        return ResponseEntity.ok(catchService.getAllCatches());
     }
 
     @GetMapping("/available")
-    public List<CatchViewDTO> getAllAvailableCatches() {
-        return catchService.getAllAvailableCatches();
-    }
-
-//    @GetMapping("/fisherProfile")
-//    public List<CatchViewDTO> getCatchesByFisherId(@RequestParam long fisherId) {
-//        return catchService.getCatchesByFisherId(fisherId);
-//    }
-
-    @GetMapping("/fisherProfile")
-    public List<CatchViewDTO> getCatchesByFisherId(
-            @RequestParam long fisherId,
-            @RequestParam(value = "status", required = false) String status // available or sold
-    ) {
-        if ("available".equalsIgnoreCase(status)) {
-            return catchService.getAvailableCatchesByFisherId(fisherId);
-        } else if ("sold".equalsIgnoreCase(status)) {
-            return catchService.getSoldCatchesByFisherId(fisherId);
-        } else {
-            return catchService.getCatchesByFisherId(fisherId);
-        }
+    public ResponseEntity<List<CatchViewDTO>> getAllAvailableCatches() {
+        return ResponseEntity.ok(catchService.getAllAvailableCatches());
     }
 
     @GetMapping("/{id}")
@@ -60,45 +43,42 @@ public class CatchController {
     }
 
     @GetMapping("/search")
-    public List<CatchViewDTO> searchCatches(
+    public ResponseEntity<List<CatchViewDTO>> searchCatches(
             @RequestParam(value = "species_name", required = false) String speciesName,
             @RequestParam(value = "pickup_address", required = false) String pickupAddress,
             @RequestParam(value = "min_price", required = false) BigDecimal minPrice,
             @RequestParam(value = "max_price", required = false) BigDecimal maxPrice
     ) {
-        if (speciesName != null && pickupAddress != null && minPrice != null && maxPrice != null) {
-            return catchService.getCatchesBySpeciesNameAndLocationAndPriceRange(speciesName, pickupAddress, minPrice, maxPrice);
-        } else if (speciesName != null && pickupAddress != null) {
-            return catchService.getCatchesBySpeciesNameAndLocation(speciesName, pickupAddress);
-        } else if (speciesName != null) {
-            return catchService.getCatchesBySpeciesName(speciesName);
-        } else if (pickupAddress != null) {
-            return catchService.getCatchesByLocation(pickupAddress);
-        } else {
-            return catchService.getAllCatches();
-        }
+        List<CatchViewDTO> results = catchService.getCatchesBySpeciesNameAndLocationAndPriceRange(
+                speciesName, pickupAddress, minPrice, maxPrice
+        );
+        return ResponseEntity.ok(results);
     }
 
     @PostMapping
-    public ResponseEntity<Catch> createCatch(@RequestBody CatchCreateDTO catchToCreate) {
-        Catch newCatch = catchService.createCatch(catchToCreate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newCatch);
+    public ResponseEntity<CatchViewDTO> createCatch(@RequestBody CatchCreateDTO newCatch) {
+        CatchViewDTO dto = catchService.createCatch(newCatch);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Catch> updateCatch(
+    public ResponseEntity<CatchViewDTO> updateCatch(
             @PathVariable long id,
             @RequestBody CatchCreateDTO dto) {  // reuse CatchCreateDTO if identical
-        Catch updatedCatch = catchService.updateCatch(id, dto);
+        CatchViewDTO updatedCatch = catchService.updateCatch(id, dto);
         return (updatedCatch != null) ? ResponseEntity.ok(updatedCatch) : ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/refresh")
+    public ResponseEntity<Void> refreshAvailability() {
+        catchService.refreshAvailabilityForAllCatches();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCatchById(@PathVariable long id) {
-        if (catchService.getCatchById(id) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        catchService.deleteCatchById(id);
-        return ResponseEntity.noContent().build();
+        return catchService.deleteCatchById(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

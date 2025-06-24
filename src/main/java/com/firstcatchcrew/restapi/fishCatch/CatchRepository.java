@@ -35,5 +35,4 @@ public interface CatchRepository extends JpaRepository<Catch, Long> {
             BigDecimal maxPrice,
             String speciesName,
             String address);
-
 }
