@@ -2,6 +2,7 @@ package com.firstcatchcrew.restapi.userRole;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,15 @@ public class UserRoleService {
         return userRoleRepository.findByType(type);
     }
 
+    public void assignRoleFromString(UserRole userRole, String input) {
+        try {
+            UserRoleType type = UserRoleType.valueOf(input.toUpperCase());
+            userRole.setType(type);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role type: " + input + ". Allowed: " + Arrays.toString(UserRoleType.values()));
+        }
+    }
+
 //    public List<UserRole> getUserRoleByType(UserRoleType type) {
 //        return userRoleRepository.findByType(type);
 //    }
@@ -44,7 +54,9 @@ public class UserRoleService {
         }).orElse(null);
     }
 
-    public void deleteUserRoleById(long id) {
+    public boolean deleteUserRoleById(long id) {
+        if (!userRoleRepository.existsById(id)) return false;
         userRoleRepository.deleteById(id);
+        return true;
     }
 }

@@ -37,11 +37,6 @@ public class UserRole {
         this.type = type;
     }
 
-    //ClEANUP: might need to do error handling here
-    public void setTypeFromString(String role) {
-        this.type = UserRoleType.valueOf(role);
-    }
-
     public String getLabel() {
         return label;
     }
