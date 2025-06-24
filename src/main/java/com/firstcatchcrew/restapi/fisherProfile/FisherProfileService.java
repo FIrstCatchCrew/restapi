@@ -1,10 +1,12 @@
 package com.firstcatchcrew.restapi.fisherProfile;
 
+import com.firstcatchcrew.restapi.fishCatch.Catch;
+import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
+import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
+import com.firstcatchcrew.restapi.fisherProfile.dto.FisherProfileViewDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -16,16 +18,47 @@ public class FisherProfileService {
         this.fisherRepository = fisherRepository;
     }
 
-    public List<FisherProfile> getAllFishers() {
+    public List<FisherProfileViewDTO> getAllFishers() {
         return StreamSupport
                 .stream(fisherRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+                .map(FisherProfileMapper::from)
+                .toList();
     }
 
-    public FisherProfile getFisherById(long id) {
-        Optional<FisherProfile> fisherOptional = fisherRepository.findById(id);
+    public FisherProfileViewDTO getFisherById(long id) {
+        return fisherRepository.findById(id)
+                .map(FisherProfileMapper::from)
+                .orElse(null);
+    }
 
-        return fisherOptional.orElse(null);
+
+    public List<CatchViewDTO> getCatchesByFisherId(long fisherId) {
+        return fisherRepository.findById(fisherId)
+                .map(FisherProfile::getCatches)
+                .orElse(List.of())
+                .stream()
+                .map(CatchMapper::toViewDTO)
+                .toList();
+    }
+
+    public List<CatchViewDTO> getSoldCatchesByFisherId(long fisherId) {
+        return fisherRepository.findById(fisherId)
+                .map(FisherProfile::getCatches)
+                .orElse(List.of())
+                .stream()
+                .filter(Catch::isSold)
+                .map(CatchMapper::toViewDTO)
+                .toList();
+    }
+
+    public List<CatchViewDTO> getExpiredUnsoldCatchesByFisherId(long fisherId) {
+        return fisherRepository.findById(fisherId)
+                .map(FisherProfile::getCatches)
+                .orElse(List.of())
+                .stream()
+                .filter(c -> !c.isAvailable() && !c.isSold())
+                .map(CatchMapper::toViewDTO)
+                .toList();
     }
 
     public FisherProfile createFisher(FisherProfile newFisher) {
@@ -42,8 +75,9 @@ public class FisherProfileService {
                 }).orElse(null);
     }
 
-    public void deleteFisherById(long id) {
+    public boolean deleteFisherById(long id) {
+        if (!fisherRepository.existsById(id)) return false;
         fisherRepository.deleteById(id);
+        return true;
     }
-
 }
