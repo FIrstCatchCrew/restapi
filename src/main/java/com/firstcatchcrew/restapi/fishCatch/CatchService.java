@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CatchService {
@@ -94,6 +97,15 @@ public class CatchService {
                 .map(CatchMapper::toViewDTO)
                 .toList();
     }
+
+    public Map<String, Set<String>> getAvailableSpeciesByLanding() {
+        return catchRepository.findByAvailableTrue().stream()
+                .collect(Collectors.groupingBy(
+                        catchObj -> catchObj.getPickupInfo().getAddress(), // or .getLanding().getName() if available
+                        Collectors.mapping(catchObj -> catchObj.getSpecies().getSpeciesName(), Collectors.toSet())
+                ));
+    }
+
 
     public List<CatchViewDTO> getCatchesBySpeciesNameAndLocationAndPriceRange(
             String speciesName,

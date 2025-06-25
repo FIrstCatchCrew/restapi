@@ -2,7 +2,6 @@ package com.firstcatchcrew.restapi.fishCatch;
 
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchCreateDTO;
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
-import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -53,6 +54,11 @@ public class CatchController {
                 speciesName, pickupAddress, minPrice, maxPrice
         );
         return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/available/species-by-landing")
+    public ResponseEntity<Map<String, Set<String>>> getSpeciesByLanding() {
+        return ResponseEntity.ok(catchService.getAvailableSpeciesByLanding());
     }
 
     @PostMapping
