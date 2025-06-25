@@ -14,23 +14,21 @@ public class Order {
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1, initialValue=1)
     @GeneratedValue(generator = "order_sequence")
     private Long orderId;
-    private LocalDateTime orderDateTime;
-    private Boolean orderStatus;//Changed from String
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Person customer;
+    private LocalDateTime orderDateTime;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn(name = "orderItemId")
     private List<OrderItem> orderItems;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id")
+    private Person customer;
 
     public Long getOrderId() {
         return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
     }
 
     public LocalDateTime getOrderDateTime() {
@@ -41,11 +39,11 @@ public class Order {
         this.orderDateTime = orderDateTime;
     }
 
-    public Boolean getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(Boolean status) {
+    public void setOrderStatus( OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -65,13 +63,4 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-    public String toString() {
-        return "Order:{" +
-                "orderId=" + orderId +
-                ", orderDateTime=" + orderDateTime +
-                ", orderStatus=" + orderStatus +
-                ", customer=" + customer +
-                ", orderItems=" + orderItems +
-                '}' ;
-    }
 }

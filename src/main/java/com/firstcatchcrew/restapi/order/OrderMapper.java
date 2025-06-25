@@ -1,8 +1,10 @@
 package com.firstcatchcrew.restapi.order;
 
-import com.firstcatchcrew.restapi.fishCatch.Catch;
+import com.firstcatchcrew.restapi.order.dto.OrderCreateDTO;
+import com.firstcatchcrew.restapi.order.dto.OrderViewDTO;
 import com.firstcatchcrew.restapi.orderItem.OrderItem;
-import com.firstcatchcrew.restapi.orderItem.OrderItemCreateDTO;
+import com.firstcatchcrew.restapi.orderItem.OrderItemMapper;
+import com.firstcatchcrew.restapi.orderItem.OrderItemViewDTO;
 import com.firstcatchcrew.restapi.person.Person;
 
 import java.time.LocalDateTime;
@@ -10,7 +12,7 @@ import java.util.List;
 
 public class OrderMapper {
 
-    public static Order fromCreateDTO(OrderCreateDTO dto,
+    public static Order toEntity(OrderCreateDTO dto,
                                       Person customer,
                                       List<OrderItem> items) {
         Order order = new Order();
@@ -22,11 +24,20 @@ public class OrderMapper {
         return order;
     }
 
-    public static OrderItem fromCreateDTO(OrderItemCreateDTO dto, Catch fishCatch) {
-        OrderItem item = new OrderItem();
-        item.setFishCatch(fishCatch);
-        item.setQuantity(dto.getQuantity());
-        // Do NOT modify fishCatch.getOrderItems() here. That belongs in service logic.
-        return item;
+    public static OrderViewDTO from(Order order) {
+        OrderViewDTO dto = new OrderViewDTO();
+
+        dto.setOrderId(order.getOrderId());
+        dto.setOrderDateTime(order.getOrderDateTime());
+        dto.setCustomerUsername(order.getCustomer().getUsername());
+        dto.setOrderStatus(order.getOrderStatus().toString());
+
+        List<OrderItemViewDTO> itemDTOs = order.getOrderItems().stream()
+                .map(OrderItemMapper::from)
+                .toList();
+
+        dto.setOrderItems(itemDTOs);
+
+        return dto;
     }
 }
