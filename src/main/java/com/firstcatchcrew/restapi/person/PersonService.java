@@ -80,4 +80,8 @@ public class PersonService {
         personRepository.deleteById(id);
         return true;
     }
+
+    public Person getPersonEntityById(long id) {
+        return personRepository.findById(id).orElse(null);
+    }
 }

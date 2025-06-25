@@ -1,8 +1,12 @@
 package com.firstcatchcrew.restapi.fisherProfile;
 
+import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
+import com.firstcatchcrew.restapi.fisherProfile.dto.FisherProfileCreateDTO;
+import com.firstcatchcrew.restapi.fisherProfile.dto.FisherProfileViewDTO;
 import com.firstcatchcrew.restapi.landing.Landing;
 import com.firstcatchcrew.restapi.landing.LandingService;
 import com.firstcatchcrew.restapi.person.Person;
+import com.firstcatchcrew.restapi.person.PersonDTO;
 import com.firstcatchcrew.restapi.person.PersonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,57 +30,76 @@ public class FisherProfileController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FisherProfile>> getAllFishers() {
-        List<FisherProfile> fishers = fisherService.getAllFishers();
-        return ResponseEntity.ok(fishers);
+    public ResponseEntity<List<FisherProfileViewDTO>> getAllFishers() {
+        return ResponseEntity.ok(fisherService.getAllFishers());
     }
 
+    @GetMapping("/{id}/catches")
+    public ResponseEntity<List<CatchViewDTO>> getCatchesByFisherId(@PathVariable long id) {
+        return ResponseEntity.ok(fisherService.getCatchesByFisherId(id));
+    }
+
+    @GetMapping("/{id}/catches/expired")
+    public ResponseEntity<List<CatchViewDTO>> getExpiredUnsoldCatchesByFisherId(@PathVariable long id) {
+        List<CatchViewDTO> catches = fisherService.getExpiredUnsoldCatchesByFisherId(id);
+        return ResponseEntity.ok(catches);
+    }
+
+    @GetMapping("/{id}/catches/sold")
+    public ResponseEntity<List<CatchViewDTO>> getSoldCatchesByFisherId(@PathVariable long id) {
+        return ResponseEntity.ok(fisherService.getSoldCatchesByFisherId(id));
+    }
+
+
     @GetMapping("/{id}")
-    public ResponseEntity<FisherProfile> getFisherById(@PathVariable long id) {
-        FisherProfile fisher = fisherService.getFisherById(id);
-        return (fisher != null) ? ResponseEntity.ok(fisher) : ResponseEntity.notFound().build();
+    public ResponseEntity<FisherProfileViewDTO> getFisherById(@PathVariable long id) {
+        FisherProfileViewDTO fisher = fisherService.getFisherById(id);
+        return (fisher != null)
+                ? ResponseEntity.ok(fisher)
+                : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<FisherProfile> createFisher(@RequestBody FisherProfileDTO dto) {
-        Person person = personService.getPersonById(dto.getPersonId());
+    public ResponseEntity<FisherProfileViewDTO> createFisher(@RequestBody FisherProfileCreateDTO dto) {
+        Person person = personService.getPersonEntityById(dto.getPersonId());
         Landing landing = landingService.getLandingById(dto.getDefaultLandingId());
 
         if (person == null || landing == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        FisherProfile profile = new FisherProfile();
-        profile.setPerson(person);
-        profile.setFishingLicenseNumber(dto.getFishingLicenseNumber());
-        profile.setDefaultLanding(landing);
+        FisherProfile saved = fisherService.createFisher(
+                FisherProfileMapper.toEntity(dto, person, landing)
+        );
 
-        FisherProfile saved = fisherService.createFisher(profile);
         URI location = URI.create("/api/fisher/" + saved.getId());
-        return ResponseEntity.created(location).body(saved);
+        return ResponseEntity.created(location).body(FisherProfileMapper.from(saved));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FisherProfile> updateFisher(@PathVariable long id, @RequestBody FisherProfileDTO dto) {
-        Person person = personService.getPersonById(dto.getPersonId());
+    public ResponseEntity<FisherProfileViewDTO> updateFisher(@PathVariable long id, @RequestBody FisherProfileCreateDTO dto) {
+        Person person = personService.getPersonEntityById(dto.getPersonId());
         Landing landing = landingService.getLandingById(dto.getDefaultLandingId());
 
         if (person == null || landing == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        FisherProfile updatedProfile = new FisherProfile();
-        updatedProfile.setPerson(person);
-        updatedProfile.setFishingLicenseNumber(dto.getFishingLicenseNumber());
-        updatedProfile.setDefaultLanding(landing);
+        FisherProfile updated = fisherService.updateFisher(
+                id,
+                FisherProfileMapper.toEntity(dto, person, landing)
+        );
 
-        FisherProfile updated = fisherService.updateFisher(id, updatedProfile);
-        return (updated != null) ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
+        return (updated != null)
+                ? ResponseEntity.ok(FisherProfileMapper.from(updated))
+                : ResponseEntity.notFound().build();
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFisher(@PathVariable long id) {
-        fisherService.deleteFisherById(id);
-        return ResponseEntity.noContent().build();
+        return fisherService.deleteFisherById(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }
