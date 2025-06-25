@@ -24,7 +24,11 @@ public class UserRoleService {
 
     }
 
-    public UserRole getByType(String roleType) {
+    public UserRole getByType(UserRoleType roleType) {
+        return userRoleRepository.findByType(roleType);
+    }
+
+    public UserRole getByTypeString(String roleType) {
         UserRoleType userRoleType = UserRoleType.valueOf(roleType.toUpperCase());
         return userRoleRepository.findByType(userRoleType);
     }

@@ -53,7 +53,6 @@ public class CatchMapper {
             dto.setSpeciesName("Unknown Species");
         }
 
-
         dto.setTimeStamp(fishCatch.getTimeStamp());
         dto.setQuantityInKg(fishCatch.getQuantityInKg());
         dto.setPrice(fishCatch.getPrice());
@@ -74,8 +73,4 @@ public class CatchMapper {
 
         return dto;
     }
-
-
-
-
 }
