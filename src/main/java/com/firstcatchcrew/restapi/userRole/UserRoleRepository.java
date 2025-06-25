@@ -9,4 +9,7 @@ import java.util.List;
 public interface UserRoleRepository extends CrudRepository<UserRole, Long> {
     UserRole findByType(UserRoleType type);
     List<UserRole> findAll();
+    UserRole findByType(String type);
+
+
 }

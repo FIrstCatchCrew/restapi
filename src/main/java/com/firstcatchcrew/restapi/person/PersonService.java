@@ -1,57 +1,83 @@
 package com.firstcatchcrew.restapi.person;
 
 import com.firstcatchcrew.restapi.userRole.UserRole;
+import com.firstcatchcrew.restapi.userRole.UserRoleRepository;
+import com.firstcatchcrew.restapi.userRole.UserRoleType;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PersonService {
 
     private final PersonRepository personRepository;
+    private final UserRoleRepository userRoleRepository;
 
-    public PersonService(PersonRepository personRepository) {
+    public PersonService(PersonRepository personRepository, UserRoleRepository userRoleRepository) {
         this.personRepository = personRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
-    public List<Person> getAllPersons() {
-        return personRepository.findAll();
+    public List<PersonDTO> getAllPersons() {
+        return personRepository.findAll()
+                .stream()
+                .map(PersonMapper::toDto)
+                .toList();
     }
 
-    public Person getPersonById(long id) {
-        Optional<Person> personOptional = personRepository.findById(id);
-
-        return personOptional.orElse(null);
+    public PersonDTO getPersonById(long id) {
+        return personRepository.findById(id)
+                .map(PersonMapper::toDto)
+                .orElse(null);
     }
 
     //CLEANUP: should this be roleType?
-    public List<Person> getPersonByRole(UserRole role) {
-        return personRepository.findByRole(role);
+    public List<PersonDTO> getPersonByRole(UserRole role) {
+        return personRepository.findByRole(role)
+                .stream()
+                .map(PersonMapper::toDto)
+                .toList();
+    }
+
+    public List<PersonDTO> getPersonByRoleType(String roleType) {
+        UserRole role = userRoleRepository.findByType(roleType);
+        return personRepository.findByRole(role)
+                .stream()
+                .map(PersonMapper::toDto)
+                .toList();
+    }
+
+    public UserRoleType getRoleTypeByPersonId(long personId) {
+        return personRepository.findById(personId)
+                .map(person -> person.getRole().getType())
+                .orElseThrow(() -> new IllegalArgumentException("Person not found"));
+    }
+
+    @Transactional
+    public PersonDTO createPerson(PersonDTO newPersonDto, UserRole roleEntity) {
+        Person newPerson = PersonMapper.toEntity(newPersonDto, roleEntity);
+        Person savedPerson = personRepository.save(newPerson);
+        return PersonMapper.toDto(savedPerson);
     }
 
 
-    public Person createPerson(Person newPerson) {
-        return personRepository.save(newPerson);
+    @Transactional
+    public PersonDTO updatePerson(long id, PersonDTO updatedPerson) {
+        return personRepository.findById(id)
+                .map(existing -> {
+                    existing.setUsername(updatedPerson.getUsername());
+                    existing.setEmail(updatedPerson.getEmail());
+                    // role update would require fetching UserRole from repo
+                    return PersonMapper.toDto(personRepository.save(existing));
+                })
+                .orElse(null);
     }
 
-    public Person updatePerson(long id, Person updatedPerson) {
-        Optional<Person> personToUpdateOptional = personRepository.findById(id);
 
-        if (personToUpdateOptional.isPresent()) {
-            Person personToUpdate = personToUpdateOptional.get();
-
-            //personToUpdate.setUsername(updatedPerson.getUsername());;
-
-            return personRepository.save(personToUpdate);
-        }
-
-        return null;
-    }
-
-    public void deletePersonById(long id) {
+    public boolean deletePersonById(long id) {
+        if (!personRepository.existsById(id)) return false;
         personRepository.deleteById(id);
+        return true;
     }
-
-
 }

@@ -25,8 +25,12 @@ public class Person {
     @GeneratedValue(generator = "person_sequence")
     private long id;
 
+    @Column(unique=true)
     private String username;
+
+    @Column(unique=true)
     private String email;
+
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -35,10 +39,6 @@ public class Person {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
 
