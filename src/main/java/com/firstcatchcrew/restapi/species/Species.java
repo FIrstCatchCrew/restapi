@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 @Entity
 public class Species {
     @Id
-    @SequenceGenerator(name = "species_sequence", sequenceName = "species_sequence", allocationSize = 1, initialValue=1)
+    @SequenceGenerator(name = "species_sequence", sequenceName = "species_sequence", allocationSize = 1)
     @GeneratedValue(generator = "species_sequence")
     private Long speciesId;
     private String speciesName;
     private String description;
     private String imageUrl;
-    private String infoLink;  //image, external link to information about species, alternative names?
+    private String infoLink;
 
     public Long getSpeciesId() {
         return speciesId;

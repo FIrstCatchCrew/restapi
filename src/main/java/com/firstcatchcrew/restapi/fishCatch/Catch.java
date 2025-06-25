@@ -118,15 +118,10 @@ public class Catch {
         this.available = !sold && isPickupStillValid();
     }
 
-    //CLEANUP
     private boolean isPickupStillValid() {
         if (pickupInfo == null || pickupInfo.getPickupTime() == null) return false;
 
-        // Option 1: allow *any future pickup time*
         return pickupInfo.getPickupTime().isAfter(LocalDateTime.now());
-
-        // Option 2: restrict to *same calendar day* as timestamp
-        // return timeStamp != null && timeStamp.toLocalDate().isEqual(LocalDate.now());
     }
 
     public PickupInfo getPickupInfo() { return pickupInfo; }

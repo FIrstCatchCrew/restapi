@@ -1,6 +1,5 @@
 package com.firstcatchcrew.restapi.landing;
 
-import com.firstcatchcrew.restapi.species.Species;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

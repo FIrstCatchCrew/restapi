@@ -70,7 +70,6 @@ public class CatchService {
                 .toList();
     }
 
-
     public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
         Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
         Long speciesId = species.getSpeciesId();
@@ -126,7 +125,6 @@ public class CatchService {
         return CatchMapper.toViewDTO(catchRepository.save(newCatch));
     }
 
-
     @Transactional
     public CatchViewDTO updateCatch(long id, CatchCreateDTO dto) {
         Optional<Catch> catchToUpdateOptional = catchRepository.findById(id);
@@ -154,7 +152,6 @@ public class CatchService {
 
         return CatchMapper.toViewDTO(catchRepository.save(catchToUpdate));
     }
-
 
     @Transactional
     public void refreshAvailabilityForAllCatches() {

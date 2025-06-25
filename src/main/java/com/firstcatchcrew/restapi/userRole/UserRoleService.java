@@ -1,10 +1,9 @@
 package com.firstcatchcrew.restapi.userRole;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserRoleService {
@@ -21,35 +20,18 @@ public class UserRoleService {
 
     public UserRole getUserRoleById(long id) {
         return userRoleRepository.findById(id).orElse(null);
-
     }
 
     public UserRole getByType(UserRoleType roleType) {
         return userRoleRepository.findByType(roleType);
     }
 
-    public UserRole getByTypeString(String roleType) {
-        UserRoleType userRoleType = UserRoleType.valueOf(roleType.toUpperCase());
-        return userRoleRepository.findByType(userRoleType);
-    }
-
-    public void assignRoleFromString(UserRole userRole, String input) {
-        try {
-            UserRoleType type = UserRoleType.valueOf(input.toUpperCase());
-            userRole.setType(type);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid role type: " + input + ". Allowed: " + Arrays.toString(UserRoleType.values()));
-        }
-    }
-
-//    public List<UserRole> getUserRoleByType(UserRoleType type) {
-//        return userRoleRepository.findByType(type);
-//    }
-
+    @Transactional
     public UserRole createUserRole(UserRole newUserRole) {
         return userRoleRepository.save(newUserRole);
     }
 
+    @Transactional
     public UserRole updateUserRole(long id, UserRole updatedUserRole) {
         return userRoleRepository.findById(id).map(existing -> {
             existing.setDescription(updatedUserRole.getDescription());

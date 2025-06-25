@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-//CLEANUP: can add species image
 public class CatchViewDTO {
 
     private Long id;

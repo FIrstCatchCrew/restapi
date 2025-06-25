@@ -40,7 +40,8 @@ public class LandingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") long landingId) {
-        service.deleteLandingById(landingId);
-        return ResponseEntity.noContent().build();
+        return service.deleteLandingById(landingId)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

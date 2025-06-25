@@ -8,8 +8,6 @@ public class OrderItemViewDTO {
     private BigDecimal quantity;
     private BigDecimal price;
 
-    // getters & setters
-
     public Long getCatchId() { return catchId;}
 
     public String getSpeciesName() { return speciesName; }

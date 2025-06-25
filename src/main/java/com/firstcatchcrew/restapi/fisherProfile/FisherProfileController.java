@@ -6,7 +6,6 @@ import com.firstcatchcrew.restapi.fisherProfile.dto.FisherProfileViewDTO;
 import com.firstcatchcrew.restapi.landing.Landing;
 import com.firstcatchcrew.restapi.landing.LandingService;
 import com.firstcatchcrew.restapi.person.Person;
-import com.firstcatchcrew.restapi.person.PersonDTO;
 import com.firstcatchcrew.restapi.person.PersonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

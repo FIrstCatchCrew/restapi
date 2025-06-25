@@ -12,11 +12,7 @@ public interface CatchRepository extends CrudRepository<Catch, Long> {
 
     List<Catch> findAll();
 
-//    List<Catch> findAllCatches();
-
-    List<Catch> findByAvailableTrue(); // uses Spring Data’s keyword parsing to find all with available = true.
-
-    List<Catch> findByFisher_Id(Long id);
+    List<Catch> findByAvailableTrue();
 
     List<Catch> findByFisher_IdAndAvailableTrue(Long fisherId);
 

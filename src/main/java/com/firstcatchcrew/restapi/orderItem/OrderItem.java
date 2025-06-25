@@ -2,7 +2,6 @@ package com.firstcatchcrew.restapi.orderItem;
 
 import com.firstcatchcrew.restapi.fishCatch.Catch;
 import com.firstcatchcrew.restapi.order.Order;
-import com.firstcatchcrew.restapi.person.Person;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -10,7 +9,7 @@ import java.math.BigDecimal;
 @Entity
 public class OrderItem {
     @Id
-    @SequenceGenerator(name = "orderItem_sequence", sequenceName = "orderItem_sequence", allocationSize = 1, initialValue=1)
+    @SequenceGenerator(name = "orderItem_sequence", sequenceName = "orderItem_sequence", allocationSize = 1)
     @GeneratedValue(generator = "orderItem_sequence")
     private Long orderItemId;
 
@@ -29,11 +28,9 @@ public class OrderItem {
         return orderItemId;
     }
 
-
     public Catch getFishCatch() {
         return fishCatch;
     }
-
     public void setFishCatch(Catch fishCatch) {
         this.fishCatch = fishCatch;
     }
@@ -41,7 +38,6 @@ public class OrderItem {
     public Order getOrder() {
         return order;
     }
-
     public void setOrder(Order order) {
         this.order = order;
     }
@@ -49,7 +45,6 @@ public class OrderItem {
     public BigDecimal getQuantity() {
         return quantity;
     }
-
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
