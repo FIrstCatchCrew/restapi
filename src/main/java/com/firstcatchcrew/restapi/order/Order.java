@@ -27,13 +27,8 @@ public class Order {
     @JoinColumn(name = "person_id")
     private Person customer;
 
-
     public Long getOrderId() {
         return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
     }
 
     public LocalDateTime getOrderDateTime() {

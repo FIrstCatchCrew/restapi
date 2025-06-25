@@ -1,6 +1,5 @@
 package com.firstcatchcrew.restapi.order;
 
-import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
 import com.firstcatchcrew.restapi.order.dto.OrderCreateDTO;
 import com.firstcatchcrew.restapi.order.dto.OrderViewDTO;
 import org.springframework.http.ResponseEntity;
@@ -44,15 +43,13 @@ public class OrderController {
                 .body(savedDto);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<OrderViewDTO> updateOrder(
-//            @PathVariable Long id,
-//            @RequestBody OrderCreateDTO dto
-//    ) {
-//        return orderService.updateOrder(id, dto)
-//                .map(ResponseEntity::ok)
-//                .orElse(ResponseEntity.notFound().build());
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderViewDTO> updateOrder(
+            @PathVariable Long id,
+            @RequestBody OrderCreateDTO dto) {
+        OrderViewDTO updatedOrder = orderService.updateOrder(id, dto);
+        return (updatedOrder != null) ? ResponseEntity.ok(updatedOrder) : ResponseEntity.notFound().build();
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
