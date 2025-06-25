@@ -1,5 +1,8 @@
 package com.firstcatchcrew.restapi.order;
 
+import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
+import com.firstcatchcrew.restapi.order.dto.OrderCreateDTO;
+import com.firstcatchcrew.restapi.order.dto.OrderViewDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,39 +20,43 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> all() {
+    public ResponseEntity<List<OrderViewDTO>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<Order>> byCustomer(@PathVariable long customerId) {
-        var list = orderService.getOrdersByCustomerId(customerId);
-        return list.isEmpty()
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(list);
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderViewDTO> getOrderById(@PathVariable long id) {
+        OrderViewDTO dto = orderService.getOrderById(id);
+        return (dto != null) ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/customer/{username}")
+    public ResponseEntity<List<OrderViewDTO>> getOrdersByCustomer(@PathVariable String username) {
+        List<OrderViewDTO> dtos = orderService.getOrdersByCustomerUsername(username);
+        return ResponseEntity.ok(dtos); // Return 200 OK even if empty
     }
 
     @PostMapping
-    public ResponseEntity<Order> create(@RequestBody OrderCreateDTO dto) {
-        Order saved = orderService.create(dto);
+    public ResponseEntity<OrderViewDTO> createOrder(@RequestBody OrderCreateDTO dto) {
+        OrderViewDTO savedDto = orderService.createOrder(dto);
         return ResponseEntity
-                .created(URI.create("/api/orders/" + saved.getOrderId()))
-                .body(saved);
+                .created(URI.create("/api/order/" + savedDto.getOrderId()))
+                .body(savedDto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Order> update(
-            @PathVariable Long id,
-            @RequestBody OrderCreateDTO dto
-    ) {
-        return orderService.update(id, dto)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<OrderViewDTO> updateOrder(
+//            @PathVariable Long id,
+//            @RequestBody OrderCreateDTO dto
+//    ) {
+//        return orderService.updateOrder(id, dto)
+//                .map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        return orderService.delete(id)
+        return orderService.deleteByOrderId(id)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }

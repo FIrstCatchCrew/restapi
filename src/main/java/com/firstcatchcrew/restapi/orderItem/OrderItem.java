@@ -2,7 +2,10 @@ package com.firstcatchcrew.restapi.orderItem;
 
 import com.firstcatchcrew.restapi.fishCatch.Catch;
 import com.firstcatchcrew.restapi.order.Order;
+import com.firstcatchcrew.restapi.person.Person;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 
 @Entity
 public class OrderItem {
@@ -10,24 +13,22 @@ public class OrderItem {
     @SequenceGenerator(name = "orderItem_sequence", sequenceName = "orderItem_sequence", allocationSize = 1, initialValue=1)
     @GeneratedValue(generator = "orderItem_sequence")
     private Long orderItemId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "catch_id")
     private Catch fishCatch;
-
-    private Long quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @Column(nullable = false)
+    private BigDecimal quantity;
 
     public Long getOrderItemId() {
         return orderItemId;
     }
 
-    public void setOrderItemId(Long orderItemId) {
-        this.orderItemId = orderItemId;
-    }
 
     public Catch getFishCatch() {
         return fishCatch;
@@ -35,14 +36,6 @@ public class OrderItem {
 
     public void setFishCatch(Catch fishCatch) {
         this.fishCatch = fishCatch;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
     }
 
     public Order getOrder() {
@@ -53,13 +46,15 @@ public class OrderItem {
         this.order = order;
     }
 
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "orderItemId=" + orderItemId +
-                ", Catch=" + fishCatch +
-                ", quantity=" + quantity +
-                ", order=" + order +
-                '}' ;
+    public BigDecimal getQuantity() {
+        return quantity;
     }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() { return fishCatch.getPrice(); }
+    public void setPrice(BigDecimal price) { fishCatch.setPrice(price); }
+
 }
