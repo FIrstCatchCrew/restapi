@@ -27,9 +27,14 @@ public class UserRoleController {
     }
 
     @GetMapping("/type/{type}")
-    public ResponseEntity<UserRole> getByType(@PathVariable UserRoleType type) {
-        UserRole role = service.getByType(type);
-        return (role != null) ? ResponseEntity.ok(role) : ResponseEntity.notFound().build();
+    public ResponseEntity<UserRole> getByType(@PathVariable String type) {
+        try {
+            UserRoleType roleType = UserRoleType.valueOf(type.toUpperCase());
+            UserRole role = service.getByType(roleType);
+            return (role != null) ? ResponseEntity.ok(role) : ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // or return a message
+        }
     }
 
     @PostMapping
