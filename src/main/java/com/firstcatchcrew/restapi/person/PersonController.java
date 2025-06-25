@@ -1,10 +1,8 @@
 package com.firstcatchcrew.restapi.person;
 
 import com.firstcatchcrew.restapi.userRole.UserRoleType;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.net.URI;
 import java.util.List;
 
 
@@ -24,13 +22,13 @@ public class PersonController {
         return ResponseEntity.ok(personService.getAllPersons());
     }
 
-    @GetMapping
+    @GetMapping("/roles")
     public ResponseEntity<List<PersonDTO>> getAllByRoleType(@RequestParam String role) {
         return ResponseEntity.ok(personService.getPersonByRoleType(role));
     }
 
     @GetMapping("/{id}/role")
-    public ResponseEntity<UserRoleType> getRoleTypeByID(@RequestParam long id) {
+    public ResponseEntity<UserRoleType> getRoleTypeByPersonID(@PathVariable long id) {
         return ResponseEntity.ok(personService.getRoleTypeByPersonId(id));
     }
 

@@ -34,6 +34,7 @@ public class Person {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
     private UserRole role;
 
 

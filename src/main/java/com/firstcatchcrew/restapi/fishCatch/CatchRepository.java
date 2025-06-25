@@ -1,6 +1,6 @@
 package com.firstcatchcrew.restapi.fishCatch;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Repository
-public interface CatchRepository extends JpaRepository<Catch, Long> {
+public interface CatchRepository extends CrudRepository<Catch, Long> {
 
     List<Catch> findAll();
 
@@ -17,8 +17,6 @@ public interface CatchRepository extends JpaRepository<Catch, Long> {
     List<Catch> findByAvailableTrue(); // uses Spring Data’s keyword parsing to find all with available = true.
 
     List<Catch> findByFisher_Id(Long id);
-
-    List<Catch> findByFisher_IdAndOrderItemsIsNotEmpty(Long fisherId);
 
     List<Catch> findByFisher_IdAndAvailableTrue(Long fisherId);
 
