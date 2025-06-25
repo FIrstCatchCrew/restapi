@@ -1,8 +1,5 @@
 package com.firstcatchcrew.restapi.fishCatch.dto;
 
-// Used when creating a new Catch (usually from a POST request).
-// No id, available, or sold — those are managed by the server or have defaults.
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

@@ -1,5 +1,6 @@
 package com.firstcatchcrew.restapi.landing;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +21,12 @@ public class LandingService {
         return landingRepository.findById(landingId).orElse(null);
     }
 
+    @Transactional
     public Landing createLanding(Landing newLanding) {
         return landingRepository.save(newLanding);
     }
 
+    @Transactional
     public Landing updateLanding(long landingId, Landing newLanding) {
         Optional<Landing> landingToUpdateOptional = landingRepository.findById(landingId);
         if (landingToUpdateOptional.isPresent()) {
@@ -35,7 +38,6 @@ public class LandingService {
             return landingRepository.save(newLanding);
         }
         return null;
-
     }
 
     public boolean deleteLandingById(long landingId) {

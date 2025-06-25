@@ -1,5 +1,6 @@
 package com.firstcatchcrew.restapi.species;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +14,6 @@ public class SpeciesService {
         this.speciesRepository = speciesRepository;
     }
 
-    public Species createSpecies(Species newSpecies) {
-        return speciesRepository.save(newSpecies);
-    }
-
     public Species getSpeciesById(long id) {
         return speciesRepository.findById(id).orElse(null);
     }
@@ -25,6 +22,12 @@ public class SpeciesService {
         return speciesRepository.findAll();
     }
 
+    @Transactional
+    public Species createSpecies(Species newSpecies) {
+        return speciesRepository.save(newSpecies);
+    }
+
+    @Transactional
     public Species updateSpecies(long id, Species updatedSpecies) {
 
         Optional<Species> speciesToUpdateOptional = speciesRepository.findById(id);

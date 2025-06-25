@@ -10,7 +10,6 @@ public class OrderCreateDTO {
     private OrderStatus orderStatus;
     private List<OrderItemViewDTO> orderItems;
 
-    // getters & setters
     public Long getCustomerId() { return customerId; }
     public void setCustomerId(Long customerId) { this.customerId = customerId; }
 

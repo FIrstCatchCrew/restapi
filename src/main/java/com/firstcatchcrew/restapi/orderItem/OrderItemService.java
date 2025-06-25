@@ -1,8 +1,8 @@
 package com.firstcatchcrew.restapi.orderItem;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +23,12 @@ public class OrderItemService {
         return orderItemRepository.findById(id);
     }
 
+    @Transactional
     public OrderItem create(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);
     }
 
+    @Transactional
     public Optional<OrderItem> update(Long id, OrderItem updatedOrderItem) {
         return orderItemRepository.findById(id)
                 .map(existing -> {

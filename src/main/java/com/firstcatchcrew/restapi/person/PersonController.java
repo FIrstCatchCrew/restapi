@@ -3,6 +3,8 @@ package com.firstcatchcrew.restapi.person;
 import com.firstcatchcrew.restapi.userRole.UserRoleType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 import java.util.List;
 
 
@@ -40,17 +42,12 @@ public class PersonController {
                 : ResponseEntity.ok(dto);
     }
 
-//CLEANUP: This doesn't work yet
-//    @PostMapping
-//    public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO dto) {
-//        try {
-//            PersonDTO created = personService.createPerson(dto, dto.getRole());
-//            URI location = URI.create("/api/person/" + created.getId());
-//            return ResponseEntity.created(location).body(created);
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().build(); // For invalid role types
-//        }
-//    }
+    @PostMapping
+    public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO dto, @RequestParam String role) {
+            PersonDTO created = personService.createPerson(dto, role);
+            URI location = URI.create("/api/person/" + created.getId());
+            return ResponseEntity.created(location).body(created);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<PersonDTO> updatePerson(

@@ -5,8 +5,6 @@ import jakarta.persistence.Embeddable;
 
 import java.time.LocalDateTime;
 
-//CLEANUP: we might want to automate pickup time
-
 @Embeddable
 public class PickupInfo {
 

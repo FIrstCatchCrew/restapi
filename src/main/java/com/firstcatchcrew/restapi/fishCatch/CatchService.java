@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CatchService {
@@ -70,7 +73,6 @@ public class CatchService {
                 .toList();
     }
 
-
     public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
         Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
         Long speciesId = species.getSpeciesId();
@@ -95,6 +97,15 @@ public class CatchService {
                 .map(CatchMapper::toViewDTO)
                 .toList();
     }
+
+    public Map<String, Set<String>> getAvailableSpeciesByLanding() {
+        return catchRepository.findByAvailableTrue().stream()
+                .collect(Collectors.groupingBy(
+                        catchObj -> catchObj.getPickupInfo().getAddress(), // or .getLanding().getName() if available
+                        Collectors.mapping(catchObj -> catchObj.getSpecies().getSpeciesName(), Collectors.toSet())
+                ));
+    }
+
 
     public List<CatchViewDTO> getCatchesBySpeciesNameAndLocationAndPriceRange(
             String speciesName,
@@ -126,7 +137,6 @@ public class CatchService {
         return CatchMapper.toViewDTO(catchRepository.save(newCatch));
     }
 
-
     @Transactional
     public CatchViewDTO updateCatch(long id, CatchCreateDTO dto) {
         Optional<Catch> catchToUpdateOptional = catchRepository.findById(id);
@@ -154,7 +164,6 @@ public class CatchService {
 
         return CatchMapper.toViewDTO(catchRepository.save(catchToUpdate));
     }
-
 
     @Transactional
     public void refreshAvailabilityForAllCatches() {

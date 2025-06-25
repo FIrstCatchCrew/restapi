@@ -12,21 +12,17 @@ public class OrderViewDTO {
     private LocalDateTime orderDateTime;
     private String orderStatus;
     private List<OrderItemViewDTO> orderItems;
-
-
+    
     public Long getOrderId() {
         return orderId;
     }
-
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-
     public String getCustomerUsername() {
         return customerUsername;
     }
-
     public void setCustomerUsername(String customerUsername) {
         this.customerUsername = customerUsername;
     }
@@ -34,7 +30,6 @@ public class OrderViewDTO {
     public LocalDateTime getOrderDateTime() {
         return orderDateTime;
     }
-
     public void setOrderDateTime(LocalDateTime orderDateTime) {
         this.orderDateTime = orderDateTime;
     }
@@ -42,7 +37,6 @@ public class OrderViewDTO {
     public String getOrderStatus() {
         return orderStatus;
     }
-
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
@@ -50,7 +44,6 @@ public class OrderViewDTO {
     public List<OrderItemViewDTO> getOrderItems() {
         return orderItems;
     }
-
     public void setOrderItems(List<OrderItemViewDTO> orderItems) {
         this.orderItems = orderItems;
     }

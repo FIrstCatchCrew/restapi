@@ -4,6 +4,7 @@ import com.firstcatchcrew.restapi.fishCatch.Catch;
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
 import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
 import com.firstcatchcrew.restapi.fisherProfile.dto.FisherProfileViewDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,10 +62,12 @@ public class FisherProfileService {
                 .toList();
     }
 
+    @Transactional
     public FisherProfile createFisher(FisherProfile newFisher) {
         return fisherRepository.save(newFisher);
     }
 
+    @Transactional
     public FisherProfile updateFisher(long id, FisherProfile updatedFisher) {
         return fisherRepository.findById(id)
                 .map(existing -> {

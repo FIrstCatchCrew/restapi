@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class UserRole {
 
     @Id
-    @SequenceGenerator(name = "role_sequence", sequenceName = "role_sequence", allocationSize = 1, initialValue=1)
+    @SequenceGenerator(name = "role_sequence", sequenceName = "role_sequence", allocationSize = 1)
     @GeneratedValue(generator = "role_sequence")
 
     private Long id;
@@ -14,12 +14,10 @@ public class UserRole {
     @Enumerated(EnumType.STRING)
     private UserRoleType type;
 
-    private String label;        // CLEANUP: e.g., "Local Fisher"
-    private String description;  // CLEANUP: e.g., "Can add and manage catches"
+    private String label;
+    private String description;
 
-    public UserRole() {
-
-    }
+    public UserRole() {}
 
     public UserRole(UserRoleType type, String label, String description) {
         this.type = type;

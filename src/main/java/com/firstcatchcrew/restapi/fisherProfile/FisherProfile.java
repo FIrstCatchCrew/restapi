@@ -15,7 +15,7 @@ public class FisherProfile {
     private Long id;
 
     @OneToOne
-    @MapsId // CLEANUP: This tells JPA: "Use the Person's ID as the ID for this FisherProfile"
+    @MapsId
     private Person person;
 
     private String fishingLicenseNumber;

@@ -8,7 +8,7 @@ import jakarta.persistence.SequenceGenerator;
 @Entity
 public class Landing {
     @Id
-    @SequenceGenerator(name = "landing_sequence", sequenceName = "landing_sequence", allocationSize = 1, initialValue=1)
+    @SequenceGenerator(name = "landing_sequence", sequenceName = "landing_sequence", allocationSize = 1)
     @GeneratedValue(generator = "landing_sequence")
     private Long landingId;
 

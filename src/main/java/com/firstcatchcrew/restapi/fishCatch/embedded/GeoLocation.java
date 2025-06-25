@@ -9,7 +9,6 @@ public class GeoLocation {
     @Column(name = "latitude")
     private double latitude;
 
-    //CLEANUP: William fixed this for me; I had it marked as "latitude"
     @Column(name = "longitude")
     private double longitude;
 

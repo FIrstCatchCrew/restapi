@@ -32,16 +32,8 @@ public class PersonService {
                 .orElse(null);
     }
 
-    //CLEANUP: should this be roleType?
-    public List<PersonDTO> getPersonByRole(UserRole role) {
-        return personRepository.findByRole(role)
-                .stream()
-                .map(PersonMapper::toDto)
-                .toList();
-    }
-
     public List<PersonDTO> getPersonByRoleType(String roleType) {
-        UserRole role = userRoleRepository.findByType(roleType);
+        UserRole role = userRoleRepository.findByTypeString(roleType);
         return personRepository.findByRole(role)
                 .stream()
                 .map(PersonMapper::toDto)
@@ -55,7 +47,8 @@ public class PersonService {
     }
 
     @Transactional
-    public PersonDTO createPerson(PersonDTO newPersonDto, UserRole roleEntity) {
+    public PersonDTO createPerson(PersonDTO newPersonDto, String role) {
+        UserRole roleEntity = userRoleRepository.findByTypeString(role);
         Person newPerson = PersonMapper.toEntity(newPersonDto, roleEntity);
         Person savedPerson = personRepository.save(newPerson);
         return PersonMapper.toDto(savedPerson);
