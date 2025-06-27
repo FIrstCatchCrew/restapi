@@ -20,8 +20,8 @@ public class CatchViewDTO {
     private double longitude;
 
     //CLEANUP: pickup info
-    private String pickupLocationName;
-    private String pickupAddress;
+    private String landingName;
+    private String pickupInstructions;
     private LocalDateTime pickupTime;
 
 
@@ -86,18 +86,18 @@ public class CatchViewDTO {
     }
 
     public String getPickupLocationName() {
-        return pickupLocationName;
+        return landingName;
     }
     public void setPickupLocationName(String pickupLocationName) {
-        this.pickupLocationName = pickupLocationName;
+        this.landingName = pickupLocationName;
     }
 
-    @JsonProperty("pickup_address")
-    public String getPickupAddress() {
-        return pickupAddress;
+    @JsonProperty("pickup_instructions")
+    public String getPickupInstructions() {
+        return pickupInstructions;
     }
-    public void setPickupAddress(String pickupAddress) {
-        this.pickupAddress = pickupAddress;
+    public void setPickupInstructions(String pickupInstructions) {
+        this.pickupInstructions = pickupInstructions;
     }
 
     public LocalDateTime getPickupTime() {

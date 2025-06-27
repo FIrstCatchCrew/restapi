@@ -18,15 +18,15 @@ public interface CatchRepository extends CrudRepository<Catch, Long> {
 
     List<Catch> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
-    List<Catch> findBySpecies_SpeciesId(Long speciesId);
+    List<Catch> findBySpecies_Id(Long speciesId);
 
-    List<Catch> findByPickupInfo_Address(String address);
+    List<Catch> findByLanding_Id(Long landingId);
 
-    List<Catch> findBySpecies_SpeciesIdAndPickupInfo_Address(Long speciesId, String pickupAddress);
+    List<Catch> findBySpecies_IdAndLanding_Id(Long speciesId, Long landingId);
 
-    List<Catch> findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndPickupInfo_AddressIgnoreCase(
+    List<Catch> findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndLanding_NameIgnoreCase(
             BigDecimal minPrice,
             BigDecimal maxPrice,
             String speciesName,
-            String address);
+            String landingName);
 }

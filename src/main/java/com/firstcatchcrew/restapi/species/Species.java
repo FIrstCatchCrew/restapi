@@ -7,18 +7,14 @@ public class Species {
     @Id
     @SequenceGenerator(name = "species_sequence", sequenceName = "species_sequence", allocationSize = 1)
     @GeneratedValue(generator = "species_sequence")
-    private Long speciesId;
+    private Long id;
     private String speciesName;
     private String description;
     private String imageUrl;
     private String infoLink;
 
     public Long getSpeciesId() {
-        return speciesId;
-    }
-
-    public void setSpeciesId(Long speciesId) {
-        this.speciesId = speciesId;
+        return id;
     }
 
     public String getSpeciesName() {
@@ -56,7 +52,7 @@ public class Species {
     @Override
     public String toString() {
         return "Species{" +
-                "id=" + speciesId +
+                "id=" + id +
                 ", name='" + speciesName + '\'' +
                 '}';
     }

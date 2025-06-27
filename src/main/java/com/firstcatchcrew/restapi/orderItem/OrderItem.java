@@ -11,7 +11,7 @@ public class OrderItem {
     @Id
     @SequenceGenerator(name = "orderItem_sequence", sequenceName = "orderItem_sequence", allocationSize = 1)
     @GeneratedValue(generator = "orderItem_sequence")
-    private Long orderItemId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "catch_id")
@@ -25,7 +25,7 @@ public class OrderItem {
     private BigDecimal quantity;
 
     public Long getOrderItemId() {
-        return orderItemId;
+        return id;
     }
 
     public Catch getFishCatch() {

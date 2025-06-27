@@ -50,4 +50,8 @@ public class UserRole {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getTypeName() {
+        return type.name().toLowerCase();
+    }
 }
