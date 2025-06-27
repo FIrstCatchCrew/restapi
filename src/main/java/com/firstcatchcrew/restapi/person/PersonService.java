@@ -48,9 +48,9 @@ public class PersonService {
     }
 
     @Transactional
-    public PersonDTO createPerson(PersonDTO newPersonDto, String role) {
-        UserRoleType type = UserRoleType.valueOf(role.toUpperCase());
-        UserRole roleEntity = userRoleRepository.findByType(type);
+    public PersonDTO createPerson(PersonDTO newPersonDto) {
+        UserRoleType roleType = UserRoleType.valueOf(newPersonDto.getRole().toUpperCase());
+        UserRole roleEntity = userRoleRepository.findByType(roleType);
         Person newPerson = PersonMapper.toEntity(newPersonDto, roleEntity);
         Person savedPerson = personRepository.save(newPerson);
         return PersonMapper.toDto(savedPerson);
