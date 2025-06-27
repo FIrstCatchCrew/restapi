@@ -43,8 +43,8 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO dto, @RequestParam String role) {
-            PersonDTO created = personService.createPerson(dto, role);
+    public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO dto) {
+            PersonDTO created = personService.createPerson(dto);
             URI location = URI.create("/api/person/" + created.getId());
             return ResponseEntity.created(location).body(created);
     }
