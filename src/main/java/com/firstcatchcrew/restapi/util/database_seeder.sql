@@ -24,10 +24,10 @@ CREATE TABLE landing (
 
 CREATE TABLE species (
                          id BIGINT PRIMARY KEY,
-                         name VARCHAR(100) NOT NULL
+                         species_name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE fish_catch (
+CREATE TABLE catch (
                             id BIGINT PRIMARY KEY,
                             fisher_id BIGINT REFERENCES person(id),
                             species_id BIGINT REFERENCES species(id),
@@ -36,7 +36,7 @@ CREATE TABLE fish_catch (
                             time_stamp TIMESTAMP,
                             quantity_in_kg DECIMAL,
                             price DECIMAL,
-                            pickup_address VARCHAR(255),
+                            landing_id BIGINT REFERENCES landing(id),
                             pickup_instructions VARCHAR(255),
                             pickup_time TIMESTAMP,
                             latitude DECIMAL,
@@ -44,7 +44,7 @@ CREATE TABLE fish_catch (
 );
 
 CREATE TABLE orders (
-                        order_id BIGINT PRIMARY KEY,
+                        id BIGINT PRIMARY KEY,
                         customer_id BIGINT REFERENCES person(id),
                         order_date_time TIMESTAMP,
                         order_status VARCHAR(50)
@@ -52,8 +52,8 @@ CREATE TABLE orders (
 
 CREATE TABLE order_item (
                             id BIGINT PRIMARY KEY,
-                            order_id BIGINT REFERENCES orders(order_id),
-                            catch_id BIGINT REFERENCES fish_catch(id),
+                            order_id BIGINT REFERENCES orders(id),
+                            catch_id BIGINT REFERENCES catch(id),
                             quantity_in_kg DECIMAL
 );
 
@@ -82,33 +82,33 @@ INSERT INTO landing (id, name) VALUES (2, 'South Dock');
 INSERT INTO landing (id, name) VALUES (3, 'West Bay');
 
 -- Insert species
-INSERT INTO species (id, name) VALUES (1, 'Cod');
-INSERT INTO species (id, name) VALUES (2, 'Halibut');
-INSERT INTO species (id, name) VALUES (3, 'Mackerel');
-INSERT INTO species (id, name) VALUES (4, 'Tuna');
-INSERT INTO species (id, name) VALUES (5, 'Salmon');
+INSERT INTO species (id, species_name) VALUES (1, 'Cod');
+INSERT INTO species (id, species_name) VALUES (2, 'Halibut');
+INSERT INTO species (id, species_name) VALUES (3, 'Mackerel');
+INSERT INTO species (id, species_name) VALUES (4, 'Tuna');
+INSERT INTO species (id, species_name) VALUES (5, 'Salmon');
 
 -- Insert catches
 -- (Catch insert SQL lines are added here from the previous completion)
 -- Insert catches
-INSERT INTO fish_catch (
+INSERT INTO catch (
     id, fisher_id, species_id, available, sold,
     time_stamp, quantity_in_kg, price,
-    pickup_address, pickup_instructions, pickup_time,
+    landing_id, pickup_instructions, pickup_time,
     latitude, longitude
 ) VALUES
-      (1, 2, 1, true, false, '2025-05-24 09:00:00', 15.62, 31.04, 'West Bay', 'Call ahead', '2025-05-24 14:00:00', 47.56061, -52.694983),
-      (2, 3, 1, false, true, '2025-05-26 10:00:00', 12.99, 52.11, 'North Dock', 'Paid already', '2025-05-26 14:00:00', 47.574873, -52.697402),
-      (3, 2, 1, true, false, '2025-05-30 10:00:00', 4.53, 30.44, 'South Dock', 'Call ahead', '2025-05-30 12:00:00', 47.575784, -52.709358),
-      (4, 1, 5, true, false, '2025-05-31 09:00:00', 3.92, 38.35, 'South Dock', 'Ring bell', '2025-05-31 12:00:00', 47.57112, -52.692956),
-      (5, 2, 2, true, false, '2025-06-09 10:00:00', 14.89, 31.15, 'South Dock', 'Bring ID', '2025-06-09 14:00:00', 47.563612, -52.702622),
-      (6, 3, 1, false, true, '2025-06-01 12:00:00', 17.96, 21.64, 'West Bay', 'Paid already', '2025-06-01 14:00:00', 47.576021, -52.698333),
-      (7, 3, 3, false, true, '2025-05-29 12:00:00', 7.89, 31.41, 'North Dock', 'Bring ID', '2025-05-29 14:00:00', 47.560912, -52.706935),
-      (8, 3, 3, false, true, '2025-05-24 11:00:00', 19.58, 49.70, 'West Bay', 'Call ahead', '2025-05-24 16:00:00', 47.563961, -52.698046),
-      (9, 3, 1, false, true, '2025-06-01 09:00:00', 2.45, 51.96, 'North Dock', 'Call ahead', '2025-06-01 12:00:00', 47.570176, -52.690719),
-      (10, 2, 1, false, true, '2025-06-19 08:00:00', 2.62, 57.22, 'West Bay', 'Ask for Joe', '2025-06-19 13:00:00', 47.564273, -52.704363),
-      (11, 3, 3, false, true, '2025-05-26 13:00:00', 8.12, 38.17, 'West Bay', 'Bring ID', '2025-05-26 18:00:00', 47.571106, -52.708053),
-      (12, 3, 3, true, false, '2025-06-11 08:00:00', 12.31, 20.79, 'South Dock', 'Bring ID', '2025-06-11 11:00:00', 47.564854, -52.707962),
-      (13, 2, 4, true, false, '2025-05-28 10:00:00', 6.05, 28.85, 'North Dock', 'Bring ID', '2025-05-28 12:00:00', 47.575213, -52.692381),
-      (14, 2, 4, true, false, '2025-06-12 08:00:00', 10.52, 50.18, 'West Bay', 'Bring ID', '2025-06-12 10:00:00', 47.569158, -52.694964),
-      (15, 1, 2, true, false, '2025-05-22 08:00:00', 13.38, 27.87, 'North Dock', 'Call ahead', '2025-05-22 12:00:00', 47.572379, -52.695826);
+      (1, 2, 1, true, false, '2025-05-24 09:00:00', 15.62, 31.04, 1, 'Call ahead', '2025-05-24 14:00:00', 47.56061, -52.694983),
+      (2, 3, 1, false, true, '2025-05-26 10:00:00', 12.99, 52.11, 2, 'Paid already', '2025-05-26 14:00:00', 47.574873, -52.697402),
+      (3, 2, 1, true, false, '2025-05-30 10:00:00', 4.53, 30.44, 1, 'Call ahead', '2025-05-30 12:00:00', 47.575784, -52.709358),
+      (4, 1, 5, true, false, '2025-05-31 09:00:00', 3.92, 38.35, 3, 'Ring bell', '2025-05-31 12:00:00', 47.57112, -52.692956),
+      (5, 2, 2, true, false, '2025-06-09 10:00:00', 14.89, 31.15, 3, 'Bring ID', '2025-06-09 14:00:00', 47.563612, -52.702622),
+      (6, 3, 1, false, true, '2025-06-01 12:00:00', 17.96, 21.64, 1, 'Paid already', '2025-06-01 14:00:00', 47.576021, -52.698333),
+      (7, 3, 3, false, true, '2025-05-29 12:00:00', 7.89, 31.41, 1, 'Bring ID', '2025-05-29 14:00:00', 47.560912, -52.706935),
+      (8, 3, 3, false, true, '2025-05-24 11:00:00', 19.58, 49.70, 3, 'Call ahead', '2025-05-24 16:00:00', 47.563961, -52.698046),
+      (9, 3, 1, false, true, '2025-06-01 09:00:00', 2.45, 51.96, 2, 'Call ahead', '2025-06-01 12:00:00', 47.570176, -52.690719),
+      (10, 2, 1, false, true, '2025-06-19 08:00:00', 2.62, 57.22, 2, 'Ask for Joe', '2025-06-19 13:00:00', 47.564273, -52.704363),
+      (11, 3, 3, false, true, '2025-05-26 13:00:00', 8.12, 38.17, 2, 'Bring ID', '2025-05-26 18:00:00', 47.571106, -52.708053),
+      (12, 3, 3, true, false, '2025-06-11 08:00:00', 12.31, 20.79, 1, 'Bring ID', '2025-06-11 11:00:00', 47.564854, -52.707962),
+      (13, 2, 4, true, false, '2025-05-28 10:00:00', 6.05, 28.85, 1, 'Bring ID', '2025-05-28 12:00:00', 47.575213, -52.692381),
+      (14, 2, 4, true, false, '2025-06-12 08:00:00', 10.52, 50.18, 2, 'Bring ID', '2025-06-12 10:00:00', 47.569158, -52.694964),
+      (15, 1, 2, true, false, '2025-05-22 08:00:00', 13.38, 27.87, 1, 'Call ahead', '2025-05-22 12:00:00', 47.572379, -52.695826);
