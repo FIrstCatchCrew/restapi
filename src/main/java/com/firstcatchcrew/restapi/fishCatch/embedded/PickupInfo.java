@@ -5,37 +5,29 @@ import jakarta.persistence.Embeddable;
 
 import java.time.LocalDateTime;
 
+
 @Embeddable
 public class PickupInfo {
 
-    @Column(name = "pickup_location_name")
-    private String locationName;
+    @Column(name = "pickup_instructions")
+    private String instructions;
 
-    @Column(name = "pickup_address")
-
-    private String address;
     @Column(name = "pickup_time")
     private LocalDateTime pickupTime;
 
     public PickupInfo() {
     }
 
-    public PickupInfo(String locationName, String address, LocalDateTime pickupTime) {
-        this.locationName = locationName;
-        this.address = address;
+    public PickupInfo(String instructions, LocalDateTime pickupTime) {
+        this.instructions = instructions;
         this.pickupTime = pickupTime;
     }
-    public String getLocationName() {
-        return locationName;
+
+    public String getInstructions() {
+        return instructions;
     }
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
     }
     public LocalDateTime getPickupTime() {
         return pickupTime;
@@ -43,4 +35,5 @@ public class PickupInfo {
     public void setPickupTime(LocalDateTime pickupTime) {
         this.pickupTime = pickupTime;
     }
+
 }

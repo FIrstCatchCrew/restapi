@@ -8,4 +8,6 @@ import java.util.List;
 @Repository
 public interface LandingRepository extends CrudRepository<Landing, Long> {
     List<Landing> findAll();
+
+    Landing getLandingByName(String landingName);
 }

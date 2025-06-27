@@ -13,7 +13,7 @@ public class Order {
     @Id
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1, initialValue=1)
     @GeneratedValue(generator = "order_sequence")
-    private Long orderId;
+    private Long id;
 
     private LocalDateTime orderDateTime;
 
@@ -28,7 +28,7 @@ public class Order {
     private Person customer;
 
     public Long getOrderId() {
-        return orderId;
+        return id;
     }
 
     public LocalDateTime getOrderDateTime() {

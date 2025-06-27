@@ -30,8 +30,7 @@ public class CatchMapper {
         ));
 
         fishCatch.setPickupInfo(new PickupInfo(
-                dto.getPickupLocationName(),
-                dto.getPickupAddress(),
+                dto.getPickupInstructions(),
                 dto.getPickupTime()
         ));
 
@@ -60,8 +59,7 @@ public class CatchMapper {
 
         PickupInfo pickup = fishCatch.getPickupInfo();
         if (pickup != null) {
-            dto.setPickupLocationName(pickup.getLocationName());
-            dto.setPickupAddress(pickup.getAddress());
+            dto.setPickupInstructions(pickup.getInstructions());
             dto.setPickupTime(pickup.getPickupTime());
         }
 

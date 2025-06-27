@@ -7,6 +7,8 @@ import com.firstcatchcrew.restapi.fishCatch.embedded.PickupInfo;
 import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfile;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfileRepository;
+import com.firstcatchcrew.restapi.landing.Landing;
+import com.firstcatchcrew.restapi.landing.LandingRepository;
 import com.firstcatchcrew.restapi.species.Species;
 import com.firstcatchcrew.restapi.species.SpeciesRepository;
 import jakarta.transaction.Transactional;
@@ -24,11 +26,13 @@ public class CatchService {
     private final CatchRepository catchRepository;
     private final FisherProfileRepository fisherRepository;
     private final SpeciesRepository speciesRepository;
+    private final LandingRepository landingRepository;
 
-    public CatchService(CatchRepository catchRepository, FisherProfileRepository fisherRepository, SpeciesRepository speciesRepository) {
+    public CatchService(CatchRepository catchRepository, FisherProfileRepository fisherRepository, SpeciesRepository speciesRepository, LandingRepository landingRepository) {
         this.catchRepository = catchRepository;
         this.fisherRepository = fisherRepository;
         this.speciesRepository = speciesRepository;
+        this.landingRepository = landingRepository;
     }
 
     public CatchViewDTO getCatchById(long id) {
@@ -66,8 +70,10 @@ public class CatchService {
                 .toList();
     }
 
-    public List<CatchViewDTO> getCatchesByLocation(String pickupAddress) {
-        return catchRepository.findByPickupInfo_Address(pickupAddress)
+    public List<CatchViewDTO> getCatchesByLocation(String landingName) {
+        Landing landing = landingRepository.getLandingByName(landingName);
+        Long landingId = landing.getId();
+        return catchRepository.findByLanding_Id(landingId)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
@@ -76,23 +82,25 @@ public class CatchService {
     public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
         Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
         Long speciesId = species.getSpeciesId();
-        return catchRepository.findBySpecies_SpeciesId(speciesId)
+        return catchRepository.findBySpecies_Id(speciesId)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
     }
 
     public List<CatchViewDTO> getCatchesBySpeciesId(Long speciesId) {
-        return catchRepository.findBySpecies_SpeciesId(speciesId)
+        return catchRepository.findBySpecies_Id(speciesId)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
     }
 
-    public List<CatchViewDTO> getCatchesBySpeciesNameAndLocation(String speciesName, String pickupAddress) {
+    public List<CatchViewDTO> getCatchesBySpeciesNameAndLocation(String speciesName, String landingName) {
         Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
         Long speciesId = species.getSpeciesId();
-        return catchRepository.findBySpecies_SpeciesIdAndPickupInfo_Address(speciesId, pickupAddress)
+        Landing landing = landingRepository.getLandingByName(landingName);
+        Long landingId = landing.getId();
+        return catchRepository.findBySpecies_IdAndLanding_Id(speciesId, landingId)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
@@ -101,7 +109,7 @@ public class CatchService {
     public Map<String, Set<String>> getAvailableSpeciesByLanding() {
         return catchRepository.findByAvailableTrue().stream()
                 .collect(Collectors.groupingBy(
-                        catchObj -> catchObj.getPickupInfo().getAddress(), // or .getLanding().getName() if available
+                        catchObj -> catchObj.getLanding().getName(), // or .getLanding().getName() if available
                         Collectors.mapping(catchObj -> catchObj.getSpecies().getSpeciesName(), Collectors.toSet())
                 ));
     }
@@ -109,17 +117,17 @@ public class CatchService {
 
     public List<CatchViewDTO> getCatchesBySpeciesNameAndLocationAndPriceRange(
             String speciesName,
-            String pickupAddress,
+            String landingName,
             BigDecimal minPrice,
             BigDecimal maxPrice) {
 
-        if (speciesName == null && pickupAddress == null) {
+        if (speciesName == null && landingName == null) {
             return getCatchesByPriceRange(minPrice, maxPrice);
         }
 
         return catchRepository
-                .findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndPickupInfo_AddressIgnoreCase(
-                        minPrice, maxPrice, speciesName, pickupAddress)
+                .findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndLanding_NameIgnoreCase(
+                        minPrice, maxPrice, speciesName, landingName)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
@@ -149,6 +157,8 @@ public class CatchService {
                 .orElseThrow(() -> new IllegalArgumentException("Fisher not found: " + dto.getFisherId()));
         Species species = speciesRepository.findById(dto.getSpeciesId())
                 .orElseThrow(() -> new IllegalArgumentException("Species not found: " + dto.getSpeciesId()));
+        Landing landing = landingRepository.findById(dto.getLandingId())
+                .orElseThrow(() -> new IllegalArgumentException("Landing not found: " + dto.getLandingId()));
 
         // Update fields
         catchToUpdate.setFisher(fisher);
@@ -156,9 +166,10 @@ public class CatchService {
         catchToUpdate.setPrice(dto.getPrice());
         catchToUpdate.setQuantityInKg(dto.getQuantityInKg());
         catchToUpdate.setTimeStamp(dto.getCatchDate());
+        catchToUpdate.setLanding(landing);
 
         catchToUpdate.setGeoLocation(new GeoLocation(dto.getLatitude(), dto.getLongitude()));
-        catchToUpdate.setPickupInfo(new PickupInfo(dto.getPickupLocationName(), dto.getPickupAddress(), dto.getPickupTime()));
+        catchToUpdate.setPickupInfo(new PickupInfo(dto.getPickupInstructions(), dto.getPickupTime()));
 
         catchToUpdate.refreshAvailability();
 

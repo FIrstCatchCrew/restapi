@@ -26,7 +26,6 @@ public class FisherProfile {
     @OneToMany(mappedBy = "fisher")
     private List<Catch> catches;
 
-
     public Long getId() {
         return id;
     }

@@ -12,8 +12,8 @@ public class CatchCreateDTO {
     private BigDecimal quantityInKg;
     private BigDecimal price;
 
-    private String pickupLocationName;
-    private String pickupAddress;
+    private Long landingId;
+    private String pickupInstructions;
     private LocalDateTime pickupTime;
 
     private double latitude;
@@ -59,20 +59,15 @@ public class CatchCreateDTO {
         this.price = price;
     }
 
-    public String getPickupLocationName() {
-        return pickupLocationName;
+    public Long getLandingId() {return landingId;}
+    public void setLandingId(Long landingId) {this.landingId = landingId;}
+
+    public String getPickupInstructions() {
+        return pickupInstructions;
     }
 
-    public void setPickupLocationName(String pickupLocationName) {
-        this.pickupLocationName = pickupLocationName;
-    }
-
-    public String getPickupAddress() {
-        return pickupAddress;
-    }
-
-    public void setPickupAddress(String pickupAddress) {
-        this.pickupAddress = pickupAddress;
+    public void setPickupInstructions(String pickupInstructions) {
+        this.pickupInstructions = pickupInstructions;
     }
 
     public LocalDateTime getPickupTime() {
