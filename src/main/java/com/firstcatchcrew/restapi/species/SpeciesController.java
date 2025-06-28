@@ -1,7 +1,10 @@
 package com.firstcatchcrew.restapi.species;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.List;
 
@@ -27,9 +30,15 @@ public class SpeciesController {
     }
 
     @PostMapping
-    public ResponseEntity<Species> create(@RequestBody Species newSpecies) {
+    public ResponseEntity<Species> create(@Validated @RequestBody Species newSpecies) {
         Species saved = service.createSpecies(newSpecies);
-        return ResponseEntity.created(URI.create("/api/species/" + saved.getSpeciesId())).body(saved);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(saved);
     }
 
     @PutMapping("/{id}")

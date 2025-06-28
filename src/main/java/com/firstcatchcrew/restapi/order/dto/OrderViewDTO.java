@@ -7,17 +7,17 @@ import java.util.List;
 
 public class OrderViewDTO {
 
-    private Long orderId;
+    private Long id;
     private String customerUsername;
     private LocalDateTime orderDateTime;
     private String orderStatus;
     private List<OrderItemViewDTO> orderItems;
     
-    public Long getOrderId() {
-        return orderId;
+    public Long getId() {
+        return id;
     }
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setId(Long orderId) {
+        this.id = orderId;
     }
 
     public String getCustomerUsername() {

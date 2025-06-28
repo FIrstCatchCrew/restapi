@@ -3,7 +3,9 @@ package com.firstcatchcrew.restapi.order;
 import com.firstcatchcrew.restapi.order.dto.OrderCreateDTO;
 import com.firstcatchcrew.restapi.order.dto.OrderViewDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -19,12 +21,12 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderViewDTO>> getAllOrders() {
+    public ResponseEntity<List<OrderViewDTO>> getAll() {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderViewDTO> getOrderById(@PathVariable long id) {
+    public ResponseEntity<OrderViewDTO> getById(@PathVariable long id) {
         OrderViewDTO dto = orderService.getOrderById(id);
         return (dto != null) ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
@@ -32,15 +34,20 @@ public class OrderController {
     @GetMapping("/customer/{username}")
     public ResponseEntity<List<OrderViewDTO>> getOrdersByCustomer(@PathVariable String username) {
         List<OrderViewDTO> dtos = orderService.getOrdersByCustomerUsername(username);
-        return ResponseEntity.ok(dtos); // Return 200 OK even if empty
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping
-    public ResponseEntity<OrderViewDTO> createOrder(@RequestBody OrderCreateDTO dto) {
-        OrderViewDTO savedDto = orderService.createOrder(dto);
-        return ResponseEntity
-                .created(URI.create("/api/order/" + savedDto.getOrderId()))
-                .body(savedDto);
+    public ResponseEntity<OrderViewDTO> create(@Validated @RequestBody OrderCreateDTO dto) {
+        OrderViewDTO saved = orderService.createOrder(dto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(saved);
     }
 
     @PutMapping("/{id}")

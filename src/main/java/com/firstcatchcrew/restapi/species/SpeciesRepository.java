@@ -9,5 +9,5 @@ import java.util.List;
 public interface SpeciesRepository extends CrudRepository<Species, Long> {
     List<Species> findAll();
 
-    Species getSpeciesBySpeciesName(String speciesName);
+    Species getSpeciesByName(String speciesName);
 }

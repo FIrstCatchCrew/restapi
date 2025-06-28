@@ -1,7 +1,10 @@
 package com.firstcatchcrew.restapi.landing;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.List;
 
@@ -27,9 +30,15 @@ public class LandingController {
     }
 
     @PostMapping
-    public ResponseEntity<Landing> create(@RequestBody Landing newLanding) {
+    public ResponseEntity<Landing> create(@Validated @RequestBody Landing newLanding) {
         Landing saved = service.createLanding(newLanding);
-        return ResponseEntity.created(URI.create("/api/landings/" + saved.getId())).body(saved);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(saved);
     }
 
     @PutMapping("/{id}")

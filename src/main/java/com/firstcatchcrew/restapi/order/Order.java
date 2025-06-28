@@ -27,7 +27,7 @@ public class Order {
     @JoinColumn(name = "person_id")
     private Person customer;
 
-    public Long getOrderId() {
+    public Long getId() {
         return id;
     }
 

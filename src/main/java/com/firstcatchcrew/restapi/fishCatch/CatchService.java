@@ -80,8 +80,8 @@ public class CatchService {
     }
 
     public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
-        Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
-        Long speciesId = species.getSpeciesId();
+        Species species = speciesRepository.getSpeciesByName(speciesName);
+        Long speciesId = species.getId();
         return catchRepository.findBySpecies_Id(speciesId)
                 .stream()
                 .map(CatchMapper::toViewDTO)
@@ -96,8 +96,8 @@ public class CatchService {
     }
 
     public List<CatchViewDTO> getCatchesBySpeciesNameAndLocation(String speciesName, String landingName) {
-        Species species = speciesRepository.getSpeciesBySpeciesName(speciesName);
-        Long speciesId = species.getSpeciesId();
+        Species species = speciesRepository.getSpeciesByName(speciesName);
+        Long speciesId = species.getId();
         Landing landing = landingRepository.getLandingByName(landingName);
         Long landingId = landing.getId();
         return catchRepository.findBySpecies_IdAndLanding_Id(speciesId, landingId)
@@ -110,7 +110,7 @@ public class CatchService {
         return catchRepository.findByAvailableTrue().stream()
                 .collect(Collectors.groupingBy(
                         catchObj -> catchObj.getLanding().getName(), // or .getLanding().getName() if available
-                        Collectors.mapping(catchObj -> catchObj.getSpecies().getSpeciesName(), Collectors.toSet())
+                        Collectors.mapping(catchObj -> catchObj.getSpecies().getName(), Collectors.toSet())
                 ));
     }
 
@@ -126,7 +126,7 @@ public class CatchService {
         }
 
         return catchRepository
-                .findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndLanding_NameIgnoreCase(
+                .findByPriceBetweenAndSpecies_NameIgnoreCaseAndLanding_NameIgnoreCase(
                         minPrice, maxPrice, speciesName, landingName)
                 .stream()
                 .map(CatchMapper::toViewDTO)

@@ -1,9 +1,11 @@
 package com.firstcatchcrew.restapi.person;
 
+import com.firstcatchcrew.restapi.fisherProfile.FisherProfileMapper;
 import com.firstcatchcrew.restapi.userRole.UserRoleType;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -44,23 +46,20 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO dto) {
-            PersonDTO created = personService.createPerson(dto);
-            URI location = URI.create("/api/person/" + created.getId());
-            return ResponseEntity.created(location).body(created);
-    }
+    public ResponseEntity<PersonDTO> create(@Validated @RequestBody PersonDTO dto) {
+            PersonDTO saved = personService.createPerson(dto);
 
-    @PostMapping("/login")
-    public ResponseEntity<PersonDTO> login(@RequestBody LoginDTO credentials) {
-        Person person = personService.authenticate(credentials.getEmail(), credentials.getPassword());
-        return (person != null)
-                ? ResponseEntity.ok(PersonMapper.toDto(person))
-                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
+            URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
 
+        return ResponseEntity.created(location).body(saved);
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PersonDTO> updatePerson(
+    public ResponseEntity<PersonDTO> update(
             @PathVariable long id,
             @RequestBody PersonDTO dto) {
         PersonDTO updatedPerson = personService.updatePerson(id, dto);
@@ -68,7 +67,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePersonById(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         return personService.deletePersonById(id)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();

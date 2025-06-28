@@ -24,7 +24,7 @@ public interface CatchRepository extends CrudRepository<Catch, Long> {
 
     List<Catch> findBySpecies_IdAndLanding_Id(Long speciesId, Long landingId);
 
-    List<Catch> findByPriceBetweenAndSpecies_SpeciesNameIgnoreCaseAndLanding_NameIgnoreCase(
+    List<Catch> findByPriceBetweenAndSpecies_NameIgnoreCaseAndLanding_NameIgnoreCase(
             BigDecimal minPrice,
             BigDecimal maxPrice,
             String speciesName,

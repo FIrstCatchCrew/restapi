@@ -8,21 +8,21 @@ public class Species {
     @SequenceGenerator(name = "species_sequence", sequenceName = "species_sequence", allocationSize = 1)
     @GeneratedValue(generator = "species_sequence")
     private Long id;
-    private String speciesName;
+    private String name;
     private String description;
     private String imageUrl;
     private String infoLink;
 
-    public Long getSpeciesId() {
+    public Long getId() {
         return id;
     }
 
-    public String getSpeciesName() {
-        return speciesName;
+    public String getName() {
+        return name;
     }
 
-    public void setSpeciesName(String speciesName) {
-        this.speciesName = speciesName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -53,7 +53,7 @@ public class Species {
     public String toString() {
         return "Species{" +
                 "id=" + id +
-                ", name='" + speciesName + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

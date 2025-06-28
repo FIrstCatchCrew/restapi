@@ -8,7 +8,9 @@ import com.firstcatchcrew.restapi.landing.LandingService;
 import com.firstcatchcrew.restapi.person.Person;
 import com.firstcatchcrew.restapi.person.PersonService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -29,7 +31,7 @@ public class FisherProfileController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FisherProfileViewDTO>> getAllFishers() {
+    public ResponseEntity<List<FisherProfileViewDTO>> getAll() {
         return ResponseEntity.ok(fisherService.getAllFishers());
     }
 
@@ -51,7 +53,7 @@ public class FisherProfileController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<FisherProfileViewDTO> getFisherById(@PathVariable long id) {
+    public ResponseEntity<FisherProfileViewDTO> getById(@PathVariable long id) {
         FisherProfileViewDTO fisher = fisherService.getFisherById(id);
         return (fisher != null)
                 ? ResponseEntity.ok(fisher)
@@ -59,7 +61,7 @@ public class FisherProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<FisherProfileViewDTO> createFisher(@RequestBody FisherProfileCreateDTO dto) {
+    public ResponseEntity<FisherProfileViewDTO> create(@Validated @RequestBody FisherProfileCreateDTO dto) {
         Person person = personService.getPersonEntityById(dto.getPersonId());
         Landing landing = landingService.getLandingById(dto.getDefaultLandingId());
 
@@ -71,12 +73,19 @@ public class FisherProfileController {
                 FisherProfileMapper.toEntity(dto, person, landing)
         );
 
-        URI location = URI.create("/api/fisher/" + saved.getId());
+        FisherProfileViewDTO viewDto = FisherProfileMapper.from(saved);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(viewDto.getId())
+                .toUri();
+
         return ResponseEntity.created(location).body(FisherProfileMapper.from(saved));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FisherProfileViewDTO> updateFisher(@PathVariable long id, @RequestBody FisherProfileCreateDTO dto) {
+    public ResponseEntity<FisherProfileViewDTO> update(@PathVariable long id, @RequestBody FisherProfileCreateDTO dto) {
         Person person = personService.getPersonEntityById(dto.getPersonId());
         Landing landing = landingService.getLandingById(dto.getDefaultLandingId());
 
@@ -96,7 +105,7 @@ public class FisherProfileController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFisher(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         return fisherService.deleteFisherById(id)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();

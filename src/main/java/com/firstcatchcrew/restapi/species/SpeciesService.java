@@ -35,7 +35,7 @@ public class SpeciesService {
         if (speciesToUpdateOptional.isPresent()) {
             Species speciesToUpdate = speciesToUpdateOptional.get();
 
-            speciesToUpdate.setSpeciesName(updatedSpecies.getSpeciesName());
+            speciesToUpdate.setName(updatedSpecies.getName());
             speciesToUpdate.setDescription(updatedSpecies.getDescription());
             speciesToUpdate.setImageUrl(updatedSpecies.getImageUrl());
 

@@ -1,7 +1,10 @@
 package com.firstcatchcrew.restapi.userRole;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.util.List;
 
@@ -38,9 +41,15 @@ public class UserRoleController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRole> create(@RequestBody UserRole role) {
+    public ResponseEntity<UserRole> create(@Validated @RequestBody UserRole role) {
         UserRole saved = service.createUserRole(role);
-        return ResponseEntity.created(URI.create("/api/roles/" + saved.getId())).body(saved);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(saved);
     }
 
     @PutMapping("/{id}")

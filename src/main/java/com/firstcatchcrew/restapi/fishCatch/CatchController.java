@@ -2,18 +2,19 @@ package com.firstcatchcrew.restapi.fishCatch;
 
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchCreateDTO;
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
-import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/catch")
+@RequestMapping("/api/catch")
 
 public class CatchController {
     private final CatchService catchService;
@@ -24,7 +25,7 @@ public class CatchController {
 
 
     @GetMapping
-    public ResponseEntity<List<CatchViewDTO>> getAllCatches() {
+    public ResponseEntity<List<CatchViewDTO>> getAll() {
         return ResponseEntity.ok(catchService.getAllCatches());
     }
 
@@ -34,7 +35,7 @@ public class CatchController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CatchViewDTO> getCatchById(@PathVariable Long id) {
+    public ResponseEntity<CatchViewDTO> getById(@PathVariable Long id) {
         CatchViewDTO dto = catchService.getCatchById(id);
         if (dto == null) {
             return ResponseEntity.notFound().build();
@@ -43,7 +44,7 @@ public class CatchController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CatchViewDTO>> searchCatches(
+    public ResponseEntity<List<CatchViewDTO>> search(
             @RequestParam(value = "species_name", required = false) String speciesName,
             @RequestParam(value = "pickup_address", required = false) String pickupAddress,
             @RequestParam(value = "min_price", required = false) BigDecimal minPrice,
@@ -56,13 +57,18 @@ public class CatchController {
     }
 
     @PostMapping
-    public ResponseEntity<CatchViewDTO> createCatch(@RequestBody CatchCreateDTO newCatch) {
+    public ResponseEntity<CatchViewDTO> create(@Validated @RequestBody CatchCreateDTO newCatch) {
         CatchViewDTO dto = catchService.createCatch(newCatch);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(dto.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CatchViewDTO> updateCatch(
+    public ResponseEntity<CatchViewDTO> update(
             @PathVariable long id,
             @RequestBody CatchCreateDTO dto) {  // reuse CatchCreateDTO if identical
         CatchViewDTO updatedCatch = catchService.updateCatch(id, dto);
@@ -76,7 +82,7 @@ public class CatchController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCatchById(@PathVariable long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable long id) {
         return catchService.deleteCatchById(id)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
