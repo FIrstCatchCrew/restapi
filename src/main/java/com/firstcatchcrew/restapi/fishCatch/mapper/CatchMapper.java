@@ -42,19 +42,8 @@ public class CatchMapper {
         CatchViewDTO dto = new CatchViewDTO();
 
         dto.setId(fishCatch.getId());
-
-        if (fishCatch.getFisher() != null && fishCatch.getFisher().getPerson() != null) {
-            dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
-        } else {
-            dto.setFisherName("Unknown Fisher");
-        }
-
-        if (fishCatch.getSpecies() != null) {
-            dto.setSpeciesName(fishCatch.getSpecies().getName());
-        } else {
-            dto.setSpeciesName("Unknown Species");
-        }
-
+        dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
+        dto.setSpeciesName(fishCatch.getSpecies().getName());
         dto.setTimeStamp(fishCatch.getTimeStamp());
         dto.setQuantityInKg(fishCatch.getQuantityInKg());
         dto.setPrice(fishCatch.getPrice());

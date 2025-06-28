@@ -114,7 +114,6 @@ public class CatchService {
                 ));
     }
 
-
     public List<CatchViewDTO> getCatchesBySpeciesNameAndLocationAndPriceRange(
             String speciesName,
             String landingName,
