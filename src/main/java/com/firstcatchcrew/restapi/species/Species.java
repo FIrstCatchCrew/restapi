@@ -8,6 +8,8 @@ public class Species {
     @SequenceGenerator(name = "species_sequence", sequenceName = "species_sequence", allocationSize = 1)
     @GeneratedValue(generator = "species_sequence")
     private Long id;
+
+    @Column(name = "species_name")
     private String name;
     private String description;
     private String imageUrl;

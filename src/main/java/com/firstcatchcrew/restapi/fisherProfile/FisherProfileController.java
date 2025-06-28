@@ -40,6 +40,7 @@ public class FisherProfileController {
         return ResponseEntity.ok(fisherService.getCatchesByFisherId(id));
     }
 
+
     @GetMapping("/{id}/catches/expired")
     public ResponseEntity<List<CatchViewDTO>> getExpiredUnsoldCatchesByFisherId(@PathVariable long id) {
         List<CatchViewDTO> catches = fisherService.getExpiredUnsoldCatchesByFisherId(id);

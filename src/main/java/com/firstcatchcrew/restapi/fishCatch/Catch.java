@@ -76,6 +76,14 @@ public class Catch {
         this.species = species;
     }
 
+    public String getSpeciesName() {
+        return species.getName();
+    }
+
+    public String getSpeciesDescription() {
+        return species.getDescription();
+    }
+
     public LocalDateTime getTimeStamp() {
         return timeStamp;
     }
