@@ -1,12 +1,15 @@
 package com.firstcatchcrew.restapi.orderItem;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/order-item")
 @CrossOrigin
 public class OrderItemController {
     private final OrderItemService orderItemService;
@@ -14,27 +17,31 @@ public class OrderItemController {
         this.orderItemService = orderItemService;
     }
 
-    @GetMapping("/orderItem")
+    @GetMapping
     public ResponseEntity<List<OrderItem>> getAll() {
         return ResponseEntity.ok(orderItemService.getAllOrderItems());
     }
 
-    @GetMapping("/orderItem/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<OrderItem> getByID(@PathVariable("id") Long orderItemId) {
         return orderItemService.findById(orderItemId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/orderItem")
-    public ResponseEntity<OrderItem> create(@RequestBody OrderItem newOrderItem) {
+    @PostMapping
+    public ResponseEntity<OrderItem> create(@Validated @RequestBody OrderItem newOrderItem) {
         OrderItem saved = orderItemService.create(newOrderItem);
-        URI location = URI.create("/api/orderItem/" + saved.getOrderItemId());
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.getOrderItemId())
+                .toUri();
         return ResponseEntity.created(location).body(saved);
     }
 
-    @PutMapping("/orderItem/{id}")
-    public ResponseEntity<OrderItem> updateOrderItem(
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderItem> update(
             @PathVariable("id") Long orderItemId,
             @RequestBody OrderItem updatedOrderItem
     ) {
@@ -43,8 +50,8 @@ public class OrderItemController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/orderItem/{id}")
-    public ResponseEntity<Void> deleteOrderItem(@PathVariable("id") Long orderItemId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long orderItemId) {
         boolean deleted = orderItemService.delete(orderItemId);
         if (!deleted) {
             return ResponseEntity.notFound().build();

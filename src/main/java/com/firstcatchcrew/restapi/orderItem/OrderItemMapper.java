@@ -13,7 +13,7 @@ public class OrderItemMapper {
 
     public static OrderItemViewDTO from(OrderItem orderItem) {
         OrderItemViewDTO dto = new OrderItemViewDTO();
-        dto.setSpeciesName(orderItem.getFishCatch().getSpecies().getSpeciesName());
+        dto.setSpeciesName(orderItem.getFishCatch().getSpecies().getName());
         dto.setPrice(orderItem.getFishCatch().getPrice());
         dto.setQuantity(orderItem.getQuantity());
         return dto;

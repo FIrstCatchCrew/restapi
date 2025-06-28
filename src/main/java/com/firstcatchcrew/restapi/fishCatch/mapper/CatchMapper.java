@@ -15,6 +15,7 @@ public class CatchMapper {
 
     public static Catch fromCreateDTO(CatchCreateDTO dto, FisherProfile fisher, Species species) {
         Catch fishCatch = new Catch();
+
         fishCatch.setFisher(fisher);
         fishCatch.setSpecies(species);
         fishCatch.setQuantityInKg(dto.getQuantityInKg());
@@ -40,6 +41,8 @@ public class CatchMapper {
     public static CatchViewDTO toViewDTO (Catch fishCatch){
         CatchViewDTO dto = new CatchViewDTO();
 
+        dto.setId(fishCatch.getId());
+
         if (fishCatch.getFisher() != null && fishCatch.getFisher().getPerson() != null) {
             dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
         } else {
@@ -47,7 +50,7 @@ public class CatchMapper {
         }
 
         if (fishCatch.getSpecies() != null) {
-            dto.setSpeciesName(fishCatch.getSpecies().getSpeciesName());
+            dto.setSpeciesName(fishCatch.getSpecies().getName());
         } else {
             dto.setSpeciesName("Unknown Species");
         }
