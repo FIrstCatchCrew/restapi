@@ -12,5 +12,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     List<Person> findByRole(UserRole role);
     List<Person> findAll();
 
+    Person findByEmail(String email);
 
 }

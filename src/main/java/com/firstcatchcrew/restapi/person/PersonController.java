@@ -1,6 +1,7 @@
 package com.firstcatchcrew.restapi.person;
 
 import com.firstcatchcrew.restapi.userRole.UserRoleType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,15 @@ public class PersonController {
             URI location = URI.create("/api/person/" + created.getId());
             return ResponseEntity.created(location).body(created);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<PersonDTO> login(@RequestBody LoginDTO credentials) {
+        Person person = personService.authenticate(credentials.getEmail(), credentials.getPassword());
+        return (person != null)
+                ? ResponseEntity.ok(PersonMapper.toDto(person))
+                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<PersonDTO> updatePerson(

@@ -79,4 +79,13 @@ public class PersonService {
     public Person getPersonEntityById(long id) {
         return personRepository.findById(id).orElse(null);
     }
+
+    public Person authenticate(String email, String password) {
+        Person person = personRepository.findByEmail(email);
+        if (person != null && person.getPassword().equals(password)) {
+            return person;
+        }
+        return null;
+    }
+
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class CatchCreateDTO {
+    private Long id;
 
     private Long fisherId;
     private Long speciesId;
@@ -18,6 +19,12 @@ public class CatchCreateDTO {
 
     private double latitude;
     private double longitude;
+
+    public Long getId(){return id; }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getFisherId() {
         return fisherId;

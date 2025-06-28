@@ -88,6 +88,8 @@ INSERT INTO species (id, species_name) VALUES (3, 'Mackerel');
 INSERT INTO species (id, species_name) VALUES (4, 'Tuna');
 INSERT INTO species (id, species_name) VALUES (5, 'Salmon');
 
+INSERT INTO fisher_profile (person_id, fishing_license_number, default_landing_id)VALUES    (1, 'LIC-001', 1),    (2, 'LIC-002', 2),    (3, 'LIC-003', 3);
+
 -- Insert catches
 -- (Catch insert SQL lines are added here from the previous completion)
 -- Insert catches
