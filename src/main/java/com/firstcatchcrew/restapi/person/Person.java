@@ -24,6 +24,8 @@ public class Person {
     @JoinColumn(name = "role_id")
     private UserRole role;
 
+    public Person() {}  //Added for Jackson, which requires it to deserialize
+
 
     public long getId() {
         return id;

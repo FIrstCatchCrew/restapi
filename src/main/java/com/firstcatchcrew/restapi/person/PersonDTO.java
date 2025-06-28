@@ -6,6 +6,8 @@ public class PersonDTO {
     private String email;
     private String role;
 
+    public PersonDTO() {}
+
     public Long getId() {
         return id;
     }
