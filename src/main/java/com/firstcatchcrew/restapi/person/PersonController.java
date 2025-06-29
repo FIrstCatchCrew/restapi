@@ -1,6 +1,5 @@
 package com.firstcatchcrew.restapi.person;
 
-import com.firstcatchcrew.restapi.fisherProfile.FisherProfileMapper;
 import com.firstcatchcrew.restapi.userRole.UserRoleType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
