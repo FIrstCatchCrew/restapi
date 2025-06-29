@@ -27,9 +27,10 @@ CREATE TABLE species (
                          species_name VARCHAR(100) NOT NULL
 );
 
+
 CREATE TABLE catch (
                             id BIGINT PRIMARY KEY,
-                            fisher_id BIGINT REFERENCES person(id),
+                            fisher_profile_id BIGINT REFERENCES person(id),
                             species_id BIGINT REFERENCES species(id),
                             available BOOLEAN,
                             sold BOOLEAN,
@@ -90,11 +91,19 @@ INSERT INTO species (id, species_name) VALUES (5, 'Salmon');
 
 INSERT INTO fisher_profile (person_id, fishing_license_number, default_landing_id)VALUES    (1, 'LIC-001', 1),    (2, 'LIC-002', 2),    (3, 'LIC-003', 3);
 
+
+INSERT INTO fisher_profile (person_id, fishing_license_number, default_landing_id)
+VALUES
+    (1, 'LIC-001', 1),
+    (2, 'LIC-002', 2),
+    (3, 'LIC-003', 3);
+
+
 -- Insert catches
 -- (Catch insert SQL lines are added here from the previous completion)
 -- Insert catches
 INSERT INTO catch (
-    id, fisher_id, species_id, available, sold,
+    id, fisher_profile_id, species_id, available, sold,
     time_stamp, quantity_in_kg, price,
     landing_id, pickup_instructions, pickup_time,
     latitude, longitude
