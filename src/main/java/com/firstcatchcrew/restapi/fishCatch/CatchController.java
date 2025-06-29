@@ -43,15 +43,22 @@ public class CatchController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/species/{name}")
+    public ResponseEntity<List<CatchViewDTO>> getAllCatchesBySpeciesName(@PathVariable String name) {
+        List<CatchViewDTO> dto = catchService.getCatchesBySpeciesName(name);
+        if (dto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(dto);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<CatchViewDTO>> search(
-            @RequestParam(value = "species_name", required = false) String speciesName,
-            @RequestParam(value = "pickup_address", required = false) String pickupAddress,
-            @RequestParam(value = "min_price", required = false) BigDecimal minPrice,
-            @RequestParam(value = "max_price", required = false) BigDecimal maxPrice
+            @RequestParam(value = "speciesName", required = false) String speciesName,
+            @RequestParam(value = "landingName", required = false) String landingName
     ) {
-        List<CatchViewDTO> results = catchService.getCatchesBySpeciesNameAndLocationAndPriceRange(
-                speciesName, pickupAddress, minPrice, maxPrice
+        List<CatchViewDTO> results = catchService.getCatchesBySpeciesNameAndLocation(
+                speciesName, landingName
         );
         return ResponseEntity.ok(results);
     }

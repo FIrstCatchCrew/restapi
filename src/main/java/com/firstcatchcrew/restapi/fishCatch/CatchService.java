@@ -9,6 +9,7 @@ import com.firstcatchcrew.restapi.fisherProfile.FisherProfile;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfileRepository;
 import com.firstcatchcrew.restapi.landing.Landing;
 import com.firstcatchcrew.restapi.landing.LandingRepository;
+import com.firstcatchcrew.restapi.person.Person;
 import com.firstcatchcrew.restapi.species.Species;
 import com.firstcatchcrew.restapi.species.SpeciesRepository;
 import jakarta.transaction.Transactional;
@@ -63,6 +64,7 @@ public class CatchService {
                 .toList();
     }
 
+
     public List<CatchViewDTO> getCatchesByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         return catchRepository.findByPriceBetween(minPrice, maxPrice)
                 .stream()
@@ -78,6 +80,7 @@ public class CatchService {
                 .map(CatchMapper::toViewDTO)
                 .toList();
     }
+
 
     public List<CatchViewDTO> getCatchesBySpeciesName(String speciesName) {
         Species species = speciesRepository.getSpeciesByName(speciesName);
@@ -96,14 +99,21 @@ public class CatchService {
     }
 
     public List<CatchViewDTO> getCatchesBySpeciesNameAndLocation(String speciesName, String landingName) {
-        Species species = speciesRepository.getSpeciesByName(speciesName);
-        Long speciesId = species.getId();
-        Landing landing = landingRepository.getLandingByName(landingName);
-        Long landingId = landing.getId();
-        return catchRepository.findBySpecies_IdAndLanding_Id(speciesId, landingId)
-                .stream()
-                .map(CatchMapper::toViewDTO)
-                .toList();
+        if (speciesName == null && landingName == null) {
+            return getAllCatches(); // fallback
+        }
+        if (speciesName != null && landingName != null) {
+            Species species = speciesRepository.getSpeciesByName(speciesName);
+            Landing landing = landingRepository.getLandingByName(landingName);
+            return catchRepository.findBySpecies_IdAndLanding_Id(species.getId(), landing.getId())
+                    .stream()
+                    .map(CatchMapper::toViewDTO)
+                    .toList();
+        }
+        if (speciesName != null) {
+            return getCatchesBySpeciesName(speciesName);
+        }
+        return getCatchesByLocation(landingName);
     }
 
     public Map<String, Set<String>> getAvailableSpeciesByLanding() {
@@ -114,23 +124,6 @@ public class CatchService {
                 ));
     }
 
-    public List<CatchViewDTO> getCatchesBySpeciesNameAndLocationAndPriceRange(
-            String speciesName,
-            String landingName,
-            BigDecimal minPrice,
-            BigDecimal maxPrice) {
-
-        if (speciesName == null && landingName == null) {
-            return getCatchesByPriceRange(minPrice, maxPrice);
-        }
-
-        return catchRepository
-                .findByPriceBetweenAndSpecies_NameIgnoreCaseAndLanding_NameIgnoreCase(
-                        minPrice, maxPrice, speciesName, landingName)
-                .stream()
-                .map(CatchMapper::toViewDTO)
-                .toList();
-    }
 
     @Transactional
     public CatchViewDTO createCatch(CatchCreateDTO dto) {

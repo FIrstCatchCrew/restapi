@@ -86,11 +86,11 @@ public class CatchViewDTO {
         this.longitude = longitude;
     }
 
-    public String getPickupLocationName() {
+    public String getLandingName() {
         return landingName;
     }
-    public void setPickupLocationName(String pickupLocationName) {
-        this.landingName = pickupLocationName;
+    public void setLandingName(String landingName) {
+        this.landingName = landingName;
     }
 
     @JsonProperty("pickup_instructions")
