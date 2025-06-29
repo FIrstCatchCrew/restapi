@@ -29,4 +29,6 @@ public interface CatchRepository extends CrudRepository<Catch, Long> {
             BigDecimal maxPrice,
             String speciesName,
             String landingName);
+
+    List<Catch> findByFisher_Person_UsernameAndAvailableTrue(String username);
 }

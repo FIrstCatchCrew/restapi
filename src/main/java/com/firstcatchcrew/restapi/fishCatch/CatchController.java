@@ -56,6 +56,17 @@ public class CatchController {
         return ResponseEntity.ok(results);
     }
 
+    @GetMapping("/api/catch/species/{name}")
+    public List<CatchViewDTO> getBySpecies(@PathVariable String name) {
+        return catchService.getCatchesBySpeciesName(name);
+    }
+
+    @GetMapping("/api/catch/fisher/{username}")
+    public List<CatchViewDTO> getByFisher(@PathVariable String username) {
+        return catchService.getAvailableCatchesByFisherName(username);
+    }
+
+
     @PostMapping
     public ResponseEntity<CatchViewDTO> create(@Validated @RequestBody CatchCreateDTO newCatch) {
         CatchViewDTO dto = catchService.createCatch(newCatch);

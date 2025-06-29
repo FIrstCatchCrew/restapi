@@ -56,8 +56,8 @@ public class CatchService {
 
     }
 
-    public List<CatchViewDTO> getAvailableCatchesByFisherId(long fisherId) {
-        return catchRepository.findByFisher_IdAndAvailableTrue(fisherId)
+    public List<CatchViewDTO> getAvailableCatchesByFisherName(String username) {
+        return catchRepository.findByFisher_Person_UsernameAndAvailableTrue(username)
                 .stream()
                 .map(CatchMapper::toViewDTO)
                 .toList();
