@@ -4,6 +4,7 @@ import com.firstcatchcrew.restapi.fishCatch.Catch;
 import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
 import com.firstcatchcrew.restapi.fishCatch.mapper.CatchMapper;
 import com.firstcatchcrew.restapi.fisherProfile.dto.FisherProfileViewDTO;
+import com.firstcatchcrew.restapi.person.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,11 @@ import java.util.stream.StreamSupport;
 public class FisherProfileService {
 
     private final FisherProfileRepository fisherRepository;
+    private final PersonRepository personRepository;
 
-    public FisherProfileService(FisherProfileRepository fisherRepository) {
+    public FisherProfileService(FisherProfileRepository fisherRepository, PersonRepository personRepository) {
         this.fisherRepository = fisherRepository;
+        this.personRepository = personRepository;
     }
 
     public List<FisherProfileViewDTO> getAllFishers() {

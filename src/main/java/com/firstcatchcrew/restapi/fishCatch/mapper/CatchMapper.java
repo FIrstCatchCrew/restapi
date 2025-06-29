@@ -44,6 +44,7 @@ public class CatchMapper {
         dto.setId(fishCatch.getId());
         dto.setFisherName(fishCatch.getFisher().getPerson().getUsername());
         dto.setSpeciesName(fishCatch.getSpecies().getName());
+        dto.setLandingName(fishCatch.getLanding().getName());
         dto.setTimeStamp(fishCatch.getTimeStamp());
         dto.setQuantityInKg(fishCatch.getQuantityInKg());
         dto.setPrice(fishCatch.getPrice());

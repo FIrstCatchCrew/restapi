@@ -24,8 +24,11 @@ public class OrderItem {
     @Column(nullable = false)
     private BigDecimal quantity;
 
-    public Long getOrderItemId() {
+    public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Catch getFishCatch() {

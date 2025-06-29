@@ -32,6 +32,12 @@ public class PersonService {
                 .orElse(null);
     }
 
+    public PersonDTO getByUsername(String username) {
+        return personRepository.findByUsername(username)
+                .map(PersonMapper::toDto)
+                .orElse(null);
+    }
+
     public List<PersonDTO> getPersonByRoleType(String role) {
         UserRoleType type = UserRoleType.valueOf(role.toUpperCase());
         UserRole roleEntity = userRoleRepository.findByType(type);
@@ -87,5 +93,6 @@ public class PersonService {
         }
         return null;
     }
+
 
 }

@@ -45,6 +45,14 @@ public class PersonController {
                 : ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity<PersonDTO> getByUsername(@PathVariable String username) {
+        PersonDTO dto = personService.getByUsername(username);
+        return (dto == null)
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(dto);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<PersonDTO> login(@RequestBody LoginDTO credentials) {
         Person person = personService.authenticate(credentials.getEmail(), credentials.getPassword());
