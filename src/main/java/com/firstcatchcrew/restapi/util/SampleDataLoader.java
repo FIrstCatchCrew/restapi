@@ -109,7 +109,7 @@
 //        List<Species> speciesList = new ArrayList<>();
 //        for (String name : speciesNames) {
 //            Species s = new Species();
-//            s.setSpeciesName(name);
+//            s.setName(name);
 //            s.setDescription("Sample info for " + name);
 //            s.setImageUrl("https://example.com/images/" + name.toLowerCase() + ".jpg");
 //            s.setInfoLink("https://en.wikipedia.org/wiki/" + name.replace(" ", "_"));
@@ -148,10 +148,10 @@
 //            c.setSpecies(species.get(i % species.size()));
 //            c.setQuantityInKg(BigDecimal.valueOf(10 + i));
 //            c.setPrice(BigDecimal.valueOf(12 + i));
-//            c.setCatchDate(LocalDateTime.now().minusDays(i));
+//            c.setTimeStamp(LocalDateTime.now().minusDays(i));
 //            c.setGeoLocation(new GeoLocation(48.0 + (i % 5), -53.0 - (i % 5)));
 //            c.setPickupInfo(new PickupInfo("Dock " + i, "Somewhere NL", LocalDateTime.now().plusDays(3)));
-//            c.updateAvailabilityStatus();
+//            c.refreshAvailability();
 //            catches.add(c);
 //        }
 //

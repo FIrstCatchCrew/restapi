@@ -4,6 +4,10 @@ This API will power FirstCatch, a community-driven platform designed to connect 
 ## Technical Description:
 A Java Spring Boot REST API that manages the FirstCatch application backend. It handles entities such as Catch, Person, FisherProfile, and Order, and provides endpoints to retrieve and manage seafood catch data, users (fishers/customers), and associated orders.
 
+### Build Structure
+We used a package-by-feature approach to build the project. Each package contains the code for a specific feature (including models, dtos, mappers, service, and controller), and the main package contains the entry point for the application.
+<p align="center"> <img src="images/build-structure.png" alt="sample build structure" style="max-width: 100%; height: auto;"> </p>
+
 ### How to Run
 1. Navigate to the backend directory: ```cd firstcatch-api```
 
