@@ -70,9 +70,11 @@ public class CatchController {
     @PutMapping("/{id}")
     public ResponseEntity<CatchViewDTO> update(
             @PathVariable long id,
-            @RequestBody CatchCreateDTO dto) {  // reuse CatchCreateDTO if identical
+            @RequestBody CatchCreateDTO dto) {
         CatchViewDTO updatedCatch = catchService.updateCatch(id, dto);
-        return (updatedCatch != null) ? ResponseEntity.ok(updatedCatch) : ResponseEntity.notFound().build();
+        return (updatedCatch != null)
+                ? ResponseEntity.ok(updatedCatch)
+                : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/refresh")
