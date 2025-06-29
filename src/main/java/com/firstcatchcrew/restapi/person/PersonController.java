@@ -2,6 +2,7 @@ package com.firstcatchcrew.restapi.person;
 
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfileMapper;
 import com.firstcatchcrew.restapi.userRole.UserRoleType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,15 @@ public class PersonController {
                 ? ResponseEntity.notFound().build()
                 : ResponseEntity.ok(dto);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<PersonDTO> login(@RequestBody LoginDTO credentials) {
+        Person person = personService.authenticate(credentials.getEmail(), credentials.getPassword());
+        return (person != null)
+                ? ResponseEntity.ok(PersonMapper.toDto(person))
+                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
 
     @PostMapping
     public ResponseEntity<PersonDTO> create(@Validated @RequestBody PersonDTO dto) {
