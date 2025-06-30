@@ -9,7 +9,6 @@ import com.firstcatchcrew.restapi.fisherProfile.FisherProfile;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfileRepository;
 import com.firstcatchcrew.restapi.landing.Landing;
 import com.firstcatchcrew.restapi.landing.LandingRepository;
-import com.firstcatchcrew.restapi.person.Person;
 import com.firstcatchcrew.restapi.species.Species;
 import com.firstcatchcrew.restapi.species.SpeciesRepository;
 import jakarta.transaction.Transactional;
