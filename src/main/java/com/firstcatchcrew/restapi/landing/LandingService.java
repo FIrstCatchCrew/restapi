@@ -35,7 +35,7 @@ public class LandingService {
             landingToUpdate.setName(newLanding.getName());
             landingToUpdate.setAddress(newLanding.getAddress());
 
-            return landingRepository.save(newLanding);
+            return landingRepository.save(landingToUpdate);
         }
         return null;
     }
