@@ -2,6 +2,7 @@
 -- Insert roles
 INSERT INTO user_role (id, type, label, description) VALUES (1, 'FISHER', 'Fisher', 'Can manage catches');
 INSERT INTO user_role (id, type, label, description) VALUES (2, 'CUSTOMER', 'Customer', 'Can place orders');
+INSERT INTO user_role (id, type, label, description) VALUES (3, 'ADMIN', 'Admin', 'Can place orders');
 
 -- Insert people (fishers and customers)
 INSERT INTO person (id, username, email, password, role_id) VALUES (1, 'fisher1', 'fisher1@example.com', 'fisherpass1', 1);
@@ -17,6 +18,7 @@ INSERT INTO person (id, username, email, password, role_id) VALUES (10, 'custome
 INSERT INTO person (id, username, email, password, role_id) VALUES (11, 'customer7', 'customer7@example.com', 'custpass7', 2);
 INSERT INTO person (id, username, email, password, role_id) VALUES (12, 'customer8', 'customer8@example.com', 'custpass8', 2);
 INSERT INTO person (id, username, email, password, role_id) VALUES (13, 'customer9', 'customer9@example.com', 'custpass9', 2);
+INSERT INTO person (id, username, email, password, role_id) VALUES (14, 'admin', 'admin@example.com', 'adminpass', 3);
 
 -- Insert landings
 INSERT INTO landing (id, name) VALUES (1, 'North Dock');
