@@ -1,66 +1,8 @@
 
-DROP TABLE IF EXISTS order_item, orders, person, user_role, landing, species, fish_catch CASCADE;
-
--- Table creation statements
-CREATE TABLE user_role (
-                           id BIGINT PRIMARY KEY,
-                           type VARCHAR(50) NOT NULL,
-                           label VARCHAR(100),
-                           description TEXT
-);
-
-CREATE TABLE person (
-                        id BIGINT PRIMARY KEY,
-                        username VARCHAR(100) UNIQUE NOT NULL,
-                        email VARCHAR(100) UNIQUE NOT NULL,
-                        password VARCHAR(100) NOT NULL,
-                        role_id BIGINT REFERENCES user_role(id)
-);
-
-CREATE TABLE landing (
-                         id BIGINT PRIMARY KEY,
-                         name VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE species (
-                         id BIGINT PRIMARY KEY,
-                         species_name VARCHAR(100) NOT NULL
-);
-
-
-CREATE TABLE catch (
-                            id BIGINT PRIMARY KEY,
-                            fisher_profile_id BIGINT REFERENCES person(id),
-                            species_id BIGINT REFERENCES species(id),
-                            available BOOLEAN,
-                            sold BOOLEAN,
-                            time_stamp TIMESTAMP,
-                            quantity_in_kg DECIMAL,
-                            price DECIMAL,
-                            landing_id BIGINT REFERENCES landing(id),
-                            pickup_instructions VARCHAR(255),
-                            pickup_time TIMESTAMP,
-                            latitude DECIMAL,
-                            longitude DECIMAL
-);
-
-CREATE TABLE orders (
-                        id BIGINT PRIMARY KEY,
-                        customer_id BIGINT REFERENCES person(id),
-                        order_date_time TIMESTAMP,
-                        order_status VARCHAR(50)
-);
-
-CREATE TABLE order_item (
-                            id BIGINT PRIMARY KEY,
-                            order_id BIGINT REFERENCES orders(id),
-                            catch_id BIGINT REFERENCES catch(id),
-                            quantity_in_kg DECIMAL
-);
-
 -- Insert roles
 INSERT INTO user_role (id, type, label, description) VALUES (1, 'FISHER', 'Fisher', 'Can manage catches');
 INSERT INTO user_role (id, type, label, description) VALUES (2, 'CUSTOMER', 'Customer', 'Can place orders');
+INSERT INTO user_role (id, type, label, description) VALUES (3, 'ADMIN', 'Admin', 'Can place orders');
 
 -- Insert people (fishers and customers)
 INSERT INTO person (id, username, email, password, role_id) VALUES (1, 'fisher1', 'fisher1@example.com', 'fisherpass1', 1);
@@ -76,6 +18,7 @@ INSERT INTO person (id, username, email, password, role_id) VALUES (10, 'custome
 INSERT INTO person (id, username, email, password, role_id) VALUES (11, 'customer7', 'customer7@example.com', 'custpass7', 2);
 INSERT INTO person (id, username, email, password, role_id) VALUES (12, 'customer8', 'customer8@example.com', 'custpass8', 2);
 INSERT INTO person (id, username, email, password, role_id) VALUES (13, 'customer9', 'customer9@example.com', 'custpass9', 2);
+INSERT INTO person (id, username, email, password, role_id) VALUES (14, 'admin', 'admin@example.com', 'adminpass', 3);
 
 -- Insert landings
 INSERT INTO landing (id, name) VALUES (1, 'North Dock');
@@ -123,3 +66,31 @@ INSERT INTO catch (
       (13, 2, 4, true, false, '2025-05-28 10:00:00', 6.05, 28.85, 1, 'Bring ID', '2025-05-28 12:00:00', 47.575213, -52.692381),
       (14, 2, 4, true, false, '2025-06-12 08:00:00', 10.52, 50.18, 2, 'Bring ID', '2025-06-12 10:00:00', 47.569158, -52.694964),
       (15, 1, 2, true, false, '2025-05-22 08:00:00', 13.38, 27.87, 1, 'Call ahead', '2025-05-22 12:00:00', 47.572379, -52.695826);
+
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (1, '2025-06-19 10:00:00', 'PAID', 4);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (2, '2025-06-22 12:00:00', 'FULFILLED', 5);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (3, '2025-06-20 09:00:00', 'PENDING', 6);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (4, '2025-06-25 11:00:00', 'CANCELLED', 7);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (5, '2025-06-26 14:00:00', 'PAID', 8);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (6, '2025-06-18 08:00:00', 'FULFILLED', 9);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (7, '2025-06-23 15:00:00', 'PAID', 10);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (8, '2025-06-21 10:30:00', 'PENDING', 11);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (9, '2025-06-28 13:45:00', 'FULFILLED', 12);
+INSERT INTO orders (id, order_date_time, order_status, person_id) VALUES (10, '2025-06-30 16:00:00', 'CANCELLED', 13);
+
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (1, 2.50, 1, 1);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (2, 1.00, 3, 1);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (3, 3.75, 4, 2);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (4, 1.25, 2, 2);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (5, 4.00, 5, 3);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (6, 2.25, 7, 3);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (7, 1.10, 6, 4);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (8, 2.80, 8, 5);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (9, 3.33, 10, 6);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (10, 2.00, 9, 6);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (11, 1.90, 11, 7);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (12, 2.60, 13, 8);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (13, 3.00, 12, 9);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (14, 1.50, 15, 9);
+INSERT INTO order_items (id, quantity, catch_id, order_id) VALUES (15, 2.75, 14, 10);
+
