@@ -1,10 +1,10 @@
-# Full Stack Deployment (React + Spring Boot + MariaDB) with AWS EC2 and S3
+# Full Stack Deployment (React + Spring Boot + mySQLDB) with AWS S3, EC2 and RDS
 
-This guide outlines the steps to deploy a React frontend (hosted on S3) and a Spring Boot backend (containerized on EC2 with MariaDB).
+This guide outlines the steps to deploy a React frontend (hosted on S3) and a Spring Boot backend (containerized on EC2).
 
-## 0. Add Docker Support to your Backend
+## 1. Create RDS Database on AWS
 
-### 1. Build Your Spring Boot Project
+## 2. Add Docker Support to your Backend
 
 From the root of your project:
 
@@ -14,7 +14,7 @@ run mvn clean package
 
 This generates a .jar file in the target/ directory (e.g., target/myapp-0.0.1-SNAPSHOT.jar)
 
-### 2. Create a `Dockerfile` like the one below.
+### 1. Create a `Dockerfile` like the one below.
 
 ```yml
 FROM openjdk:24-jdk-slim
@@ -26,7 +26,7 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 ARG JAR_FILE=target/\*.jar works as long as there's only one .jar file
 You can also hardcode the exact .jar file if needed
 
-### 3. (Optional) Use a .dockerignore File
+### 2. (Optional) Use a .dockerignore File
 
 If you have multiple .jar files (e.g., .jar.original files), add:
 
@@ -38,7 +38,7 @@ target/*.jar.original
 
 This prevents Docker from accidentally copying the wrong file.
 
-### 4. Create a `docker-compose.yml` like the one below
+### 3. Create a `docker-compose.yml` like the one below
 
 ```yaml
 services:
@@ -47,7 +47,7 @@ services:
     build: .
     network_mode: host
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/<database-name>
+      SPRING_DATASOURCE_URL: jdbc:mysql://<RDS-endpoint>:3306/<database-name>
       SPRING_DATASOURCE_USERNAME: <username>
       SPRING_DATASOURCE_PASSWORD: <password>
 ```
@@ -55,7 +55,7 @@ services:
 build: . allows you to build and run with docker-compose up --build
 network_mode: host is required only if your database is running outside of Docker on the host machine. You might want to use PORTS: 8080 : 8080 instead.
 
-### 5. When you have your EC2 instance running, you can build and run (see also **Create Your EC2 Instance**, steps 6-7)
+### 4. When you have your EC2 instance running, you can build and run (see also **Create Your EC2 Instance**, steps 6-7)
 
 ```bash
 Copy
@@ -94,7 +94,7 @@ Add the following rules (for testing / open access):
 
 Use this IP in your frontend’s `.env` and API calls.
 
-## 3. Add DB & Backend
+## 3. Add Backend
 
 This will be done by connecting to EC2 from terminal (i.e. SSH into Your EC2 Instance)
 
@@ -102,7 +102,7 @@ This will be done by connecting to EC2 from terminal (i.e. SSH into Your EC2 Ins
 ssh -i ~/Downloads/your-key.pem ec2-user@<your-elastic-ip>
 ```
 
-### 1. Create MariaDB
+### 1. Create MariaDB (skip if you have RDS)
 
 #### Option A: Use MariaDB Installed on the EC2 Host
 
@@ -121,7 +121,7 @@ GRANT ALL PRIVILEGES ON firstcatch_db.* TO 'admin'@'%';
 FLUSH PRIVILEGES;
 ```
 
-#### Option B: Use MariaDB in Docker (Recommended)
+#### Option B: Use MariaDB in Docker
 
 Add this to your backend docker-compose.yml file:
 
