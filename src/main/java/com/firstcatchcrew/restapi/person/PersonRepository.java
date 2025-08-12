@@ -15,5 +15,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     Person findByEmail(String email);
     Optional<Person> findByUsername(String username);
+    boolean existsByEmailIgnoreCase(String email);
 
 }

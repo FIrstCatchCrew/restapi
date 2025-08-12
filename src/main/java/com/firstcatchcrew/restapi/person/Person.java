@@ -1,31 +1,53 @@
 package com.firstcatchcrew.restapi.person;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firstcatchcrew.restapi.userRole.UserRole;
 import com.firstcatchcrew.restapi.userRole.UserRoleType;
 import jakarta.persistence.*;
 
 @Entity
+@Table(
+        name = "people",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"email"}),
+                @UniqueConstraint(columnNames = {"username"})
+        },
+        indexes = {
+                @Index(name = "idx_people_email", columnList = "email"),
+                @Index(name = "idx_people_username", columnList = "username")
+        }
+)
 public class Person {
 
     @Id
-    @SequenceGenerator(name = "person_sequence", sequenceName = "person_sequence", allocationSize = 1)
-    @GeneratedValue(generator = "person_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique=true)
+    @Column(nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(unique=true)
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
-    private String password;
+    @JsonIgnore
+    @Column(name = "password_hash", nullable = false, length = 100)
+    private String passwordHash;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private UserRole role;
+
+    @Column(nullable = false)
+    private boolean enabled = true;
 
     public Person() {}  //Added for Jackson, which requires it to deserialize
 
+    @PrePersist
+    @PreUpdate
+    private void normalize() {
+        if (email != null) email = email.trim().toLowerCase();
+        if (username != null) username = username.trim();
+    }
 
     public long getId() {
         return id;
@@ -39,10 +61,10 @@ public class Person {
     }
 
     public String getPassword() {
-        return password;
+        return passwordHash;
     }
     public void setPassword(String password) {
-        this.password = password;
+        this.passwordHash = password;
     }
 
     public String getEmail() {
