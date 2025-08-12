@@ -88,7 +88,7 @@ public class PersonService {
 
     public Person authenticate(String email, String password) {
         Person person = personRepository.findByEmail(email);
-        if (person != null && person.getPassword().equals(password)) {
+        if (person != null && person.getPasswordHash().equals(password)) {
             return person;
         }
         return null;

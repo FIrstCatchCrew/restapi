@@ -60,10 +60,10 @@ public class Person {
         this.role = role;
     }
 
-    public String getPassword() {
+    public String getPasswordHash() {
         return passwordHash;
     }
-    public void setPassword(String password) {
+    public void setPasswordHash(String password) {
         this.passwordHash = password;
     }
 
@@ -79,6 +79,13 @@ public class Person {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public UserRoleType getRoleType() {
