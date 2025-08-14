@@ -131,7 +131,13 @@ public class CatchService {
         Species species = speciesRepository.findById(dto.getSpeciesId())
                 .orElseThrow(() -> new IllegalArgumentException("Species with id " + dto.getSpeciesId() + " not found."));
 
-        Catch newCatch = CatchMapper.fromCreateDTO(dto, fisher, species);
+        Landing landing = null;
+        if (dto.getLandingId() != null) {
+            landing = landingRepository.findById(dto.getLandingId())
+                    .orElseThrow(() -> new IllegalArgumentException("Landing with id " + dto.getLandingId() + " not found."));
+        }
+
+        Catch newCatch = CatchMapper.fromCreateDTO(dto, fisher, species, landing); // Pass landing
         newCatch.refreshAvailability();
         return CatchMapper.toViewDTO(catchRepository.save(newCatch));
     }

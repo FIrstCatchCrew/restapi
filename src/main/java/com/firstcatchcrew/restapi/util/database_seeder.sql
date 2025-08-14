@@ -27,6 +27,14 @@ CREATE TABLE species (
                          species_name VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE fisher_profile (
+                         person_id BIGINT PRIMARY KEY,
+                         fishing_license_number VARCHAR(255),
+                         default_landing_id BIGINT
+);
+
+
+
 
 CREATE TABLE catch (
                             id BIGINT PRIMARY KEY,
@@ -57,7 +65,6 @@ CREATE TABLE order_item (
                             catch_id BIGINT REFERENCES catch(id),
                             quantity_in_kg DECIMAL
 );
-
 -- Insert roles
 INSERT INTO user_role (id, type, label, description) VALUES (1, 'FISHER', 'Fisher', 'Can manage catches');
 INSERT INTO user_role (id, type, label, description) VALUES (2, 'CUSTOMER', 'Customer', 'Can place orders');
