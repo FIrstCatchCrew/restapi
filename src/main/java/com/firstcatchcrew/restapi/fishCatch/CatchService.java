@@ -130,8 +130,10 @@ public class CatchService {
                 .orElseThrow(() -> new IllegalArgumentException("Fisher with id " + dto.getFisherId() + " not found."));
         Species species = speciesRepository.findById(dto.getSpeciesId())
                 .orElseThrow(() -> new IllegalArgumentException("Species with id " + dto.getSpeciesId() + " not found."));
+        Landing landing = landingRepository.findById(dto.getLandingId())
+                .orElseThrow(() -> new IllegalArgumentException("Landing with id " + dto.getLandingId() + " not found."));
 
-        Catch newCatch = CatchMapper.fromCreateDTO(dto, fisher, species);
+        Catch newCatch = CatchMapper.fromCreateDTO(dto, fisher, species, landing);
         newCatch.refreshAvailability();
         return CatchMapper.toViewDTO(catchRepository.save(newCatch));
     }

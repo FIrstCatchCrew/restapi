@@ -5,34 +5,47 @@ import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
 import com.firstcatchcrew.restapi.fishCatch.embedded.GeoLocation;
 import com.firstcatchcrew.restapi.fishCatch.embedded.PickupInfo;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfile;
+import com.firstcatchcrew.restapi.landing.Landing;
 import com.firstcatchcrew.restapi.species.Species;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class CatchMapper {
 
     public CatchMapper() { }
 
-    public static Catch fromCreateDTO(CatchCreateDTO dto, FisherProfile fisher, Species species) {
+    public static Catch fromCreateDTO(CatchCreateDTO dto, FisherProfile fisher, Species species, Landing landing) {
         Catch fishCatch = new Catch();
 
         fishCatch.setFisher(fisher);
         fishCatch.setSpecies(species);
+        fishCatch.setLanding(landing);
         fishCatch.setQuantityInKg(dto.getQuantityInKg());
         fishCatch.setPrice(dto.getPrice());
 
-        fishCatch.setTimeStamp(
-                dto.getCatchDate() != null ? dto.getCatchDate() : java.time.LocalDateTime.now()
-        );
+        LocalDateTime catchDate = dto.getCatchDate() != null
+                ? dto.getCatchDate()
+                : LocalDateTime.now();
 
+        fishCatch.setTimeStamp(catchDate);
+
+        // CHORE: CHANGE ME -- implement functionality for fisher to set this
+        // Pickup time: always 3 hours after catch
+        LocalDateTime pickupTime = catchDate.plusHours(3);
+
+
+        // CHORE: CHANGE ME -- implement automatic geo tagging
         fishCatch.setGeoLocation(new GeoLocation(
                 dto.getLatitude(),
                 dto.getLongitude()
         ));
 
+
         fishCatch.setPickupInfo(new PickupInfo(
-                dto.getPickupInstructions(),
-                dto.getPickupTime()
+                dto.getPickupInstructions() != null ? dto.getPickupInstructions() : "No specific instructions",
+                pickupTime
         ));
 
         return fishCatch;
