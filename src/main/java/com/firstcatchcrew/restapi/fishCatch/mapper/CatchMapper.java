@@ -5,6 +5,7 @@ import com.firstcatchcrew.restapi.fishCatch.dto.CatchViewDTO;
 import com.firstcatchcrew.restapi.fishCatch.embedded.GeoLocation;
 import com.firstcatchcrew.restapi.fishCatch.embedded.PickupInfo;
 import com.firstcatchcrew.restapi.fisherProfile.FisherProfile;
+import com.firstcatchcrew.restapi.landing.Landing;
 import com.firstcatchcrew.restapi.species.Species;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,12 @@ public class CatchMapper {
 
     public CatchMapper() { }
 
-    public static Catch fromCreateDTO(CatchCreateDTO dto, FisherProfile fisher, Species species) {
+    public static Catch fromCreateDTO(CatchCreateDTO dto, FisherProfile fisher, Species species, Landing landing) {
         Catch fishCatch = new Catch();
 
         fishCatch.setFisher(fisher);
         fishCatch.setSpecies(species);
+        fishCatch.setLanding(landing); // ADD THIS LINE
         fishCatch.setQuantityInKg(dto.getQuantityInKg());
         fishCatch.setPrice(dto.getPrice());
 
